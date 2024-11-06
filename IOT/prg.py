@@ -5,14 +5,14 @@ import json
 import logging
 
 # Configuration
-mqttServer = "chirpstack.iut-blagnac.fr"
+mqttServer = "mqtt.iut-blagnac.fr"
 topic_temperature = "AM107/#"
 topic_solaire = "Solaredge/#"
 logging.basicConfig(level=logging.INFO)
 
 # Callback de réception des messages
 def on_message(client, userdata, msg):
-    print(f"Message reçu sur le topic {msg.topic}: OK")
+    #print(f"Message reçu sur le topic {msg.topic}: OK")
     try:
         # Désérialisation du message
         payload_str = msg.payload.decode()
