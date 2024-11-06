@@ -6,25 +6,23 @@ import logging
 import configparser
 import os
 
-#on lit le fichier de config
+# Lecture de la configuration
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-#on utilisera une valeur par defaut pour le serveur et les topics si aucune valeur n'est fournie dans le fichier de config
-mqttServer = config.get('MQTT', 'server', fallback='mqtt.iut-blagnac.fr')
-topics = config.get('MQTT', 'topics', fallback='AM107/#, solaredge/#').split(',')
+mqttServer = config.get('MQTT', 'server')
+topics = config.get('MQTT', 'topics').split(',')
+data = config.get('MQTT', 'data').split(',')
 
 logging.basicConfig(level=logging.INFO)
-
 
 file_path = 'donnees.txt'
 file_descriptor = os.open(file_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
 
-
 def on_message(client, userdata, msg):
     print(f"Message reçu sur le topic {msg.topic}: OK")
     try:
-        #on deserialise le message
+        # Désérialisation du message
         payload_str = msg.payload.decode()
         jsonMsg = json.loads(payload_str)
         
@@ -56,16 +54,16 @@ def on_message(client, userdata, msg):
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)
 
-#connexion et souscription
+# Connexion et souscription
 client = mqtt.Client()
 client.on_message = on_message
 client.connect(mqttServer, port=1883, keepalive=60)
 
-#abonnement aux topics
+# S'abonner aux topics définis dans la configuration
 for topic in topics:
     client.subscribe(topic.strip(), qos=0)
 
 client.loop_forever()
 
-#fermeture du fichier
+# Fermer le fichier à la fin du programme
 os.close(file_descriptor)
