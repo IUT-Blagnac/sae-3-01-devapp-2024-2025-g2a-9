@@ -6,7 +6,8 @@ import logging
 
 # Configuration
 mqttServer = "chirpstack.iut-blagnac.fr"
-topic_subscribe = "AM107/#"
+topic_temperature = "AM107/#"
+topic_solaire = "Solaredge/#"
 logging.basicConfig(level=logging.INFO)
 
 # Callback de réception des messages
@@ -25,15 +26,17 @@ def on_message(client, userdata, msg):
             # Le second élément contient les informations de l'appareil
             device_info = jsonMsg[1]
             
-            # Extraction des informations de température
             temperature = sensor_data.get('temperature')
-            # Extraction des informations de salle
             room = device_info.get('room')
+            lastDayData = sensor_data.get('currentPower')
             
             if temperature is not None and room is not None:
-                print(f"Température: {temperature} °C dans la salle {room}")
+                #print(f"Température: {temperature} °C dans la salle {room}")
+                pass
+            elif lastDayData is not None:
+                print(f"Production solaire: {lastDayData} Wh")
             else:
-                logging.error("Température ou salle non trouvée dans les données")
+                logging.error("aucune donnée de température ou de production solaire")
         else:
             logging.error("Format de message inattendu")
     
@@ -44,5 +47,6 @@ def on_message(client, userdata, msg):
 client = mqtt.Client()
 client.on_message = on_message
 client.connect(mqttServer, port=1883, keepalive=60)
-client.subscribe(topic_subscribe, qos=0)
+client.subscribe(topic_temperature, qos=0)
+client.subscribe(topic_solaire, qos=0)
 client.loop_forever()
