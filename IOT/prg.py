@@ -17,48 +17,26 @@ config_file = 'config.ini'
 if not os.path.isfile(config_file):
     raise FileNotFoundError(f"Le fichier de configuration '{config_file}' est introuvable dans le répertoire courant., Il faut lancer le script dans le repertoire contenant le fichier config.ini")
 
-# Lecture de la configuration
+#on lit le fichier de config
 config = configparser.ConfigParser()
 config.read(config_file)
 
-# Afficher les sections trouvées
-print("Sections trouvées dans config.ini :", config.sections())
-
-# Afficher le contenu brut du fichier
-with open(config_file, 'r', encoding='utf-8') as f:
-    content = f.read()
-    print("Contenu de config.ini :")
-    print(repr(content))
-
-# Vérification des valeurs de configuration
-if not config.has_section('MQTT'):
-    raise ValueError("La section 'MQTT' est manquante dans le fichier config.ini")
-if not config.has_option('MQTT', 'server'):
-    raise ValueError("La configuration 'server' est manquante dans le fichier config.ini")
-if not config.has_option('MQTT', 'topics'):
-    raise ValueError("La configuration 'topics' est manquante dans le fichier config.ini")
-if not config.has_section('OUTPUT'):
-    raise ValueError("La section 'OUTPUT' est manquante dans le fichier config.ini")
-if not config.has_option('OUTPUT', 'file'):
-    raise ValueError("La configuration 'file' est manquante dans le fichier config.ini")
-
+#on recupere les valeurs des parametres
 mqttServer = config.get('MQTT', 'server')
 topics = config.get('MQTT', 'topics').split(',')
 output_file = config.get('OUTPUT', 'file')
 
-print("Topics:", topics)
-print("Output file:", output_file)
-
+#on configure le logging (pour afficher les messages d'erreur)
 logging.basicConfig(level=logging.INFO)
 
 def on_message(client, userdata, msg):
     print(f"Message reçu sur le topic {msg.topic}: OK")
     try:
-        # Désérialisation du message
+        #on deserialise le message
         payload_str = msg.payload.decode()
         jsonMsg = json.loads(payload_str)
 
-        # Lire les données existantes
+        #on lit les données
         if os.path.exists(output_file):
             with open(output_file, 'r') as f:
                 try:
@@ -68,22 +46,22 @@ def on_message(client, userdata, msg):
         else:
             data_list = []
 
-        # Ajouter les nouvelles données
+        #on ajoute les nouvelles données à la liste
         data_list.append(jsonMsg)
 
-        # Écrire les données mises à jour dans le fichier JSON
+        # on écrit la liste dans le fichier
         with open(output_file, 'w') as f:
             json.dump(data_list, f, indent=4)
 
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)
 
-# Connexion et souscription
+#connexion et souscription
 client = mqtt.Client()
 client.on_message = on_message
 client.connect(mqttServer, port=1883, keepalive=60)
 
-# S'abonner aux topics définis dans la configuration
+#on s'abonne aux topics données dans le fichier de config
 for topic in topics:
     client.subscribe(topic.strip(), qos=0)
 
