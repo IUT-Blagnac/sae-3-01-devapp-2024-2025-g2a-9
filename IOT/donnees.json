@@ -1,3 +1,0 @@
-{"lastUpdateTime": "2024-11-07 10:22:33", "lifeTimeData": {"energy": 3192278}, "lastYearData": {"energy": 2711248}, "lastMonthData": {"energy": 76376}, "lastDayData": {"energy": 1387}, "currentPower": {"power": 1496.9198}, "measuredBy": "INVERTER"}
-[{"temperature": 19.7, "humidity": 64.5, "activity": 0, "co2": 547, "tvoc": 127, "illumination": 28, "infrared": 8, "infrared_and_visible": 29, "pressure": 1001}, {"deviceName": "AM107-53", "devEUI": "24e124128c143581", "room": "C102", "floor": 1, "Building": "C"}]
-[{"temperature": 19.7, "humidity": 64.5, "activity": 0, "co2": 547, "tvoc": 127, "illumination": 28, "infrared": 8, "infrared_and_visible": 29, "pressure": 1001}, {"deviceName": "AM107-53", "devEUI": "24e124128c143581", "room": "C102", "floor": 1, "Building": "C"}]
