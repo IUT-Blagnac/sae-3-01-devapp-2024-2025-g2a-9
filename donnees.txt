@@ -1,6 +1,0 @@
-Production solaire sur la dernière journée: 5904 Wh
-Production solaire sur la dernière journée: 5904 Wh
-Température: 24.6 °C dans la salle E209
-Température: 24.6 °C dans la salle E209
-Température: 23.1 °C dans la salle E003
-Température: 23.1 °C dans la salle E003

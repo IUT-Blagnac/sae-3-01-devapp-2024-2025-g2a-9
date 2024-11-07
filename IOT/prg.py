@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+#
+# ATTENTION le script doit etre executé dans le meme dossier que le fichier config.ini
+#
+
 import paho.mqtt.client as mqtt
 import json
 import logging
@@ -10,9 +14,9 @@ import os
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+output_file = config.get('OUTPUT', 'file')
 mqttServer = config.get('MQTT', 'server')
 topics = config.get('MQTT', 'topics').split(',')
-data = config.get('MQTT', 'data').split(',')
 
 logging.basicConfig(level=logging.INFO)
 
@@ -26,31 +30,10 @@ def on_message(client, userdata, msg):
         payload_str = msg.payload.decode()
         jsonMsg = json.loads(payload_str)
         
-        if "AM107" in msg.topic:
-            if isinstance(jsonMsg, list) and len(jsonMsg) >= 2:
-                sensor_data = jsonMsg[0]
-                device_info = jsonMsg[1]
-                
-                temperature = sensor_data.get('temperature')
-                room = device_info.get('room')
-                
-                if temperature is not None and room is not None:
-                    data_str = f"Température: {temperature} °C dans la salle {room}\n"
-                    os.write(file_descriptor, data_str.encode())
-                else:
-                    logging.error("Température ou salle non trouvée dans les données")
-            else:
-                logging.error("Format de message inattendu pour AM107")
-        
-        elif "solaredge" in msg.topic:
-            lastDayData = jsonMsg.get('lastDayData', {}).get('energy')
-            
-            if lastDayData is not None:
-                data_str = f"Production solaire sur la dernière journée: {lastDayData} Wh\n"
-                os.write(file_descriptor, data_str.encode())
-            else:
-                logging.error("Données de production solaire non trouvées")
-    
+        # Écrire les données dans le fichier JSON
+        with open(output_file, 'a') as f:
+            json.dump(jsonMsg, f)
+            f.write('\n')  # Pour séparer les enregistrements
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)
 
