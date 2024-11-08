@@ -26,6 +26,17 @@ mqttServer = config.get('MQTT', 'server')
 topics = config.get('MQTT', 'topics').split(',')
 output_file = config.get('OUTPUT', 'file')
 
+max_temp = config.getfloat('valeurs_max', 'temperature')
+max_humidity = config.getfloat('valeurs_max', 'humidite')
+max_activite = config.getfloat('valeurs_max', 'activity')
+max_co2 = config.getfloat('valeurs_max', 'co2')
+max_tvoc = config.getfloat('valeurs_max', 'tvoc')
+max_illumination = config.getfloat('valeurs_max', 'illumination')
+max_infrarouge = config.getfloat('valeurs_max', 'infrared')
+max_infrarouge_visible = config.getfloat('valeurs_max', 'infrared_and_visible')
+max_pression = config.getfloat('valeurs_max', 'pressure')
+
+
 #on configure le logging (pour afficher les messages d'erreur)
 logging.basicConfig(level=logging.INFO)
 
