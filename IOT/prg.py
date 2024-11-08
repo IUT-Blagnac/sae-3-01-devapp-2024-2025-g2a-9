@@ -27,7 +27,7 @@ topics = config.get('MQTT', 'topics').split(',')
 output_file = config.get('OUTPUT', 'file')
 
 max_temp = config.getfloat('valeurs_max', 'temperature')
-max_humidity = config.getfloat('valeurs_max', 'humidite')
+max_humidity = config.getfloat('valeurs_max', 'humidity')
 max_activite = config.getfloat('valeurs_max', 'activity')
 max_co2 = config.getfloat('valeurs_max', 'co2')
 max_tvoc = config.getfloat('valeurs_max', 'tvoc')

@@ -116,5 +116,323 @@
             "floor": 0,
             "Building": "E"
         }
-    ]
+    ],
+    {
+        "lastUpdateTime": "2024-11-08 14:42:49",
+        "lifeTimeData": {
+            "energy": 3214918
+        },
+        "lastYearData": {
+            "energy": 2733888
+        },
+        "lastMonthData": {
+            "energy": 99016
+        },
+        "lastDayData": {
+            "energy": 11650
+        },
+        "currentPower": {
+            "power": 1869.1914
+        },
+        "measuredBy": "INVERTER"
+    },
+    [
+        {
+            "temperature": 24.8,
+            "humidity": 48.5,
+            "activity": 0,
+            "co2": 640,
+            "tvoc": 46,
+            "illumination": 6,
+            "infrared": 2,
+            "infrared_and_visible": 7,
+            "pressure": 996
+        },
+        {
+            "deviceName": "AM107-37",
+            "devEUI": "24e124128c019569",
+            "room": "E100",
+            "floor": 1,
+            "Building": "E"
+        }
+    ],
+    [
+        {
+            "temperature": 24.8,
+            "humidity": 48.5,
+            "activity": 0,
+            "co2": 640,
+            "tvoc": 46,
+            "illumination": 6,
+            "infrared": 2,
+            "infrared_and_visible": 7,
+            "pressure": 996
+        },
+        {
+            "deviceName": "AM107-37",
+            "devEUI": "24e124128c019569",
+            "room": "E100",
+            "floor": 1,
+            "Building": "E"
+        }
+    ],
+    [
+        {
+            "temperature": 19.3,
+            "humidity": 66,
+            "activity": 0,
+            "co2": 452,
+            "tvoc": 216,
+            "illumination": 1,
+            "infrared": 1,
+            "infrared_and_visible": 1,
+            "pressure": 996.4
+        },
+        {
+            "deviceName": "AM107-24",
+            "devEUI": "24e124128c015284",
+            "room": "C006",
+            "floor": 0,
+            "Building": "C"
+        }
+    ],
+    [
+        {
+            "temperature": 19.3,
+            "humidity": 66,
+            "activity": 0,
+            "co2": 452,
+            "tvoc": 216,
+            "illumination": 1,
+            "infrared": 1,
+            "infrared_and_visible": 1,
+            "pressure": 996.4
+        },
+        {
+            "deviceName": "AM107-24",
+            "devEUI": "24e124128c015284",
+            "room": "C006",
+            "floor": 0,
+            "Building": "C"
+        }
+    ],
+    [
+        {
+            "temperature": 20.5,
+            "humidity": 63,
+            "activity": 9,
+            "co2": 616,
+            "tvoc": 232,
+            "illumination": 14,
+            "infrared": 9,
+            "infrared_and_visible": 24,
+            "pressure": 995.8
+        },
+        {
+            "deviceName": "AM107-50",
+            "devEUI": "24e124128c016491",
+            "room": "hall-amphi",
+            "floor": 0,
+            "Building": "A"
+        }
+    ],
+    [
+        {
+            "temperature": 20.5,
+            "humidity": 63,
+            "activity": 9,
+            "co2": 616,
+            "tvoc": 232,
+            "illumination": 14,
+            "infrared": 9,
+            "infrared_and_visible": 24,
+            "pressure": 995.8
+        },
+        {
+            "deviceName": "AM107-50",
+            "devEUI": "24e124128c016491",
+            "room": "hall-amphi",
+            "floor": 0,
+            "Building": "A"
+        }
+    ],
+    [
+        {
+            "temperature": 23.3,
+            "humidity": 52.5,
+            "activity": 64,
+            "co2": 568,
+            "tvoc": 136,
+            "illumination": 241,
+            "infrared": 81,
+            "infrared_and_visible": 269,
+            "pressure": 996
+        },
+        {
+            "deviceName": "AM107-33",
+            "devEUI": "24e124128c019417",
+            "room": "E103",
+            "floor": 1,
+            "Building": "E"
+        }
+    ],
+    [
+        {
+            "temperature": 23.3,
+            "humidity": 52.5,
+            "activity": 64,
+            "co2": 568,
+            "tvoc": 136,
+            "illumination": 241,
+            "infrared": 81,
+            "infrared_and_visible": 269,
+            "pressure": 996
+        },
+        {
+            "deviceName": "AM107-33",
+            "devEUI": "24e124128c019417",
+            "room": "E103",
+            "floor": 1,
+            "Building": "E"
+        }
+    ],
+    [
+        {
+            "temperature": 24.4,
+            "humidity": 51.5,
+            "activity": 206,
+            "co2": 677,
+            "tvoc": 102,
+            "illumination": 12,
+            "infrared": 7,
+            "infrared_and_visible": 19,
+            "pressure": 995
+        },
+        {
+            "deviceName": "AM107-32",
+            "devEUI": "24e124128c016122",
+            "room": "E102",
+            "floor": 1,
+            "Building": "E"
+        }
+    ],
+    [
+        {
+            "temperature": 24.4,
+            "humidity": 51.5,
+            "activity": 206,
+            "co2": 677,
+            "tvoc": 102,
+            "illumination": 12,
+            "infrared": 7,
+            "infrared_and_visible": 19,
+            "pressure": 995
+        },
+        {
+            "deviceName": "AM107-32",
+            "devEUI": "24e124128c016122",
+            "room": "E102",
+            "floor": 1,
+            "Building": "E"
+        }
+    ],
+    [
+        {
+            "temperature": 24.3,
+            "humidity": 58.5,
+            "activity": 0,
+            "co2": 1377,
+            "tvoc": 116,
+            "illumination": 54,
+            "infrared": 19,
+            "infrared_and_visible": 62,
+            "pressure": 995.8
+        },
+        {
+            "deviceName": "AM107-2",
+            "devEUI": "24e124128c017943",
+            "room": "B110",
+            "floor": 1,
+            "Building": "B"
+        }
+    ],
+    [
+        {
+            "temperature": 24.3,
+            "humidity": 58.5,
+            "activity": 0,
+            "co2": 1377,
+            "tvoc": 116,
+            "illumination": 54,
+            "infrared": 19,
+            "infrared_and_visible": 62,
+            "pressure": 995.8
+        },
+        {
+            "deviceName": "AM107-2",
+            "devEUI": "24e124128c017943",
+            "room": "B110",
+            "floor": 1,
+            "Building": "B"
+        }
+    ],
+    [
+        {
+            "temperature": 21.2,
+            "humidity": 59.5,
+            "activity": 0,
+            "co2": 571,
+            "tvoc": 250,
+            "illumination": 10,
+            "infrared": 8,
+            "infrared_and_visible": 20,
+            "pressure": 996.5
+        },
+        {
+            "deviceName": "AM107-49",
+            "devEUI": "24e124128c017200",
+            "room": "hall-entr\u00e9e-principale",
+            "floor": 0,
+            "Building": "A"
+        }
+    ],
+    [
+        {
+            "temperature": 21.2,
+            "humidity": 59.5,
+            "activity": 0,
+            "co2": 571,
+            "tvoc": 250,
+            "illumination": 10,
+            "infrared": 8,
+            "infrared_and_visible": 20,
+            "pressure": 996.5
+        },
+        {
+            "deviceName": "AM107-49",
+            "devEUI": "24e124128c017200",
+            "room": "hall-entr\u00e9e-principale",
+            "floor": 0,
+            "Building": "A"
+        }
+    ],
+    {
+        "lastUpdateTime": "2024-11-08 14:59:33",
+        "lifeTimeData": {
+            "energy": 3214918
+        },
+        "lastYearData": {
+            "energy": 2733888
+        },
+        "lastMonthData": {
+            "energy": 99016
+        },
+        "lastDayData": {
+            "energy": 11650
+        },
+        "currentPower": {
+            "power": 1869.1914
+        },
+        "measuredBy": "INVERTER"
+    }
 ]
