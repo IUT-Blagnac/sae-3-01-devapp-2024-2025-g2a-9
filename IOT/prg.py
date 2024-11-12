@@ -21,7 +21,7 @@ config = configparser.ConfigParser()
 config.read(fichier_config)
 
 serveur_mqtt = config.get('MQTT', 'server')
-sujets = config.get('MQTT', 'topics').split(',')
+topics = config.get('MQTT', 'topics').split(',')
 fichier_sortie = config.get('OUTPUT', 'file')
 
 #on lit les valeurs de seuil dans le fichier de config et on prends des valeurs par défaut (fallback) si ces données ne sont pas trouvées
@@ -110,7 +110,7 @@ client.on_message = on_message
 client.connect(serveur_mqtt, port=1883, keepalive=60)
 
 #on s'abonne aux topics
-for sujet in sujets:
-    client.subscribe(sujet.strip(), qos=0)
+for topic in topics:
+    client.subscribe(topic.strip(), qos=0)
 
 client.loop_forever()
