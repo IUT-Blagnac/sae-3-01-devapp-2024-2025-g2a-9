@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-
 #
-# ATTENTION le script doit etre executé dans le meme dossier que le fichier config.ini
-# True pour une des valeurs du json signifie que le seuil a été dépassé
+# ATTENTION le script doit être exécuté dans le même dossier que le fichier config.ini
+# True pour une des valeurs du JSON signifie que le seuil a été dépassé
 #
 
 import paho.mqtt.client as mqtt
@@ -12,24 +11,22 @@ import logging
 import configparser
 import os
 
-#verif existance config.ini
-config_file = 'config.ini'
-if not os.path.isfile(config_file):
-    raise FileNotFoundError(f"Le fichier de configuration '{config_file}' est introuvable dans le répertoire courant.")
+#on verifie que config.ini existe
+fichier_config = 'config.ini'
+if not os.path.isfile(fichier_config):
+    raise FileNotFoundError(f"Le fichier de configuration '{fichier_config}' est introuvable dans le répertoire courant.")
 
 #on lit le fichier de config
 config = configparser.ConfigParser()
-config.read(config_file)
+config.read(fichier_config)
 
+serveur_mqtt = config.get('MQTT', 'server')
+sujets = config.get('MQTT', 'topics').split(',')
+fichier_sortie = config.get('OUTPUT', 'file')
 
-mqttServer = config.get('MQTT', 'server')
-topics = config.get('MQTT', 'topics').split(',')
-output_file = config.get('OUTPUT', 'file')
-
-
-#on lit les seuils depuis le fichier de config avec des valeurs par défaut (on convertit en float)
+#on lit les valeurs de seuil dans le fichier de config et on prends des valeurs par défaut (fallback) si ces données ne sont pas trouvées
 max_temp = float(config.getint('valeurs_max', 'temperature', fallback=25))
-max_humidity = float(config.getint('valeurs_max', 'humidity', fallback=60))
+max_humidite = float(config.getint('valeurs_max', 'humidity', fallback=60))
 max_activite = float(config.getint('valeurs_max', 'activity', fallback=10))
 max_co2 = float(config.getint('valeurs_max', 'co2', fallback=1000))
 max_tvoc = float(config.getint('valeurs_max', 'tvoc', fallback=500))
@@ -40,10 +37,11 @@ max_pression = float(config.getint('valeurs_max', 'pressure', fallback=1013))
 
 logging.basicConfig(level=logging.INFO)
 
-def verif_données(data):
-    seuil = {
+def verifier_donnees(donnees):
+    #on utilise des dictionnaires comme quoi on écoute en cours
+    seuils = {
         'temperature': max_temp,
-        'humidity': max_humidity,
+        'humidity': max_humidite,
         'activity': max_activite,
         'co2': max_co2,
         'tvoc': max_tvoc,
@@ -52,66 +50,67 @@ def verif_données(data):
         'infrared_and_visible': max_infrarouge_visible,
         'pressure': max_pression
     }
-    result = {}
-    for key, value in data.items():
-        if key in seuil:
-            result[key] = (value, value > seuil[key])
+
+    resultat = {}
+    for cle, valeur in donnees.items():
+        if cle in seuils:
+            resultat[cle] = (valeur, valeur > seuils[cle])
         else:
-            result[key] = (value, False)
-    return result
+            resultat[cle] = (valeur, False)
+    return resultat
 
 def on_message(client, userdata, msg):
-    print(f"Message reçu sur le topic {msg.topic}: OK")
+    print(f"Message reçu sur le sujet {msg.topic}: OK")
     try:
-        # Désérialisation du message
+        #on désérialise le message
         payload_str = msg.payload.decode()
         jsonMsg = json.loads(payload_str)
 
-        combined_data = {}
+        donnees_combinees = {}
 
         if "AM107" in msg.topic:
-            if isinstance(jsonMsg, list) and len(jsonMsg) >= 2:
-                sensor_data = jsonMsg[0]
-                device_info = jsonMsg[1]
+            if isinstance(jsonMsg, list) and len(jsonMsg) >= 2: #on vérifie que le message est une liste d'au moins 2 éléments
+                donnees_capteur = jsonMsg[0]
+                infos_appareil = jsonMsg[1]
 
-                # Vérifier les seuils pour les données des capteurs
-                donnees_capteur_verifie = verif_données(sensor_data)
-                donnees_appareil_verifie = {k: (v, False) for k, v in device_info.items()}  # Pas de seuils pour les infos de l'appareil
+                #on vérifie si les seuils n'ont pas été dépassés
+                donnees_capteur_verifiees = verifier_donnees(donnees_capteur)
+                infos_appareil_verifiees = {k: (v, False) for k, v in infos_appareil.items()}  #on mets les valeurs de l'appareil à False
 
                 # Combiner les données vérifiées
-                combined_data = {**donnees_capteur_verifie, **donnees_appareil_verifie}
+                donnees_combinees = {**donnees_capteur_verifiees, **infos_appareil_verifiees}
 
         elif "solaredge" in msg.topic:
-            # Pas de vérification des seuils pour les données des panneaux solaires
-            combined_data = jsonMsg
+            #pas de seuils pour les données des panneaux solaires
+            donnees_combinees = jsonMsg
 
-        # Lire les données existantes
-        if os.path.exists(output_file):
-            with open(output_file, 'r') as f:
+        #on mets les données existantes dans une liste
+        if os.path.exists(fichier_sortie):
+            with open(fichier_sortie, 'r') as f:
                 try:
-                    data_list = json.load(f)
+                    liste_donnees = json.load(f)
                 except json.JSONDecodeError:
-                    data_list = []
+                    liste_donnees = []
         else:
-            data_list = []
+            liste_donnees = []
 
-        # Ajouter les nouvelles données
-        data_list.append(combined_data)
+        #on ajoute les données vérifiées à la liste
+        liste_donnees.append(donnees_combinees)
 
-        # Écrire les données mises à jour dans le fichier JSON
-        with open(output_file, 'w') as f:
-            json.dump(data_list, f, indent=4)
+        #on écrit la liste dans le fichier de sortie
+        with open(fichier_sortie, 'w') as f:
+            json.dump(liste_donnees, f, indent=4)
 
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)
 
-# Connexion et souscription
+#connexion au serveur MQTT
 client = mqtt.Client()
 client.on_message = on_message
-client.connect(mqttServer, port=1883, keepalive=60)
+client.connect(serveur_mqtt, port=1883, keepalive=60)
 
-# S'abonner aux topics définis dans la configuration
-for topic in topics:
-    client.subscribe(topic.strip(), qos=0)
+#on s'abonne aux topics
+for sujet in sujets:
+    client.subscribe(sujet.strip(), qos=0)
 
 client.loop_forever()
