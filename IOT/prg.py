@@ -1,53 +1,91 @@
 #!/usr/bin/env python3
 
+
+#
+# ATTENTION le script doit etre executé dans le meme dossier que le fichier config.ini
+# True pour une des valeurs du json signifie que le seuil a été dépassé
+#
+
 import paho.mqtt.client as mqtt
 import json
 import logging
 import configparser
 import os
 
-
-#
-# ATTENTION le script doit etre executé dans le meme dossier que le fichier config.ini
-#
-
-
-#verif si le fichier de config existe bien
+#verif existance config.ini
 config_file = 'config.ini'
 if not os.path.isfile(config_file):
-    raise FileNotFoundError(f"Le fichier de configuration '{config_file}' est introuvable dans le répertoire courant., Il faut lancer le script dans le repertoire contenant le fichier config.ini")
+    raise FileNotFoundError(f"Le fichier de configuration '{config_file}' est introuvable dans le répertoire courant.")
 
 #on lit le fichier de config
 config = configparser.ConfigParser()
 config.read(config_file)
 
-#on recupere les valeurs des parametres
+
 mqttServer = config.get('MQTT', 'server')
 topics = config.get('MQTT', 'topics').split(',')
 output_file = config.get('OUTPUT', 'file')
 
-max_temp = config.getfloat('valeurs_max', 'temperature')
-max_humidity = config.getfloat('valeurs_max', 'humidity')
-max_activite = config.getfloat('valeurs_max', 'activity')
-max_co2 = config.getfloat('valeurs_max', 'co2')
-max_tvoc = config.getfloat('valeurs_max', 'tvoc')
-max_illumination = config.getfloat('valeurs_max', 'illumination')
-max_infrarouge = config.getfloat('valeurs_max', 'infrared')
-max_infrarouge_visible = config.getfloat('valeurs_max', 'infrared_and_visible')
-max_pression = config.getfloat('valeurs_max', 'pressure')
 
+#on lit les seuils depuis le fichier de config avec des valeurs par défaut (on convertit en float)
+max_temp = float(config.getint('valeurs_max', 'temperature', fallback=25))
+max_humidity = float(config.getint('valeurs_max', 'humidity', fallback=60))
+max_activite = float(config.getint('valeurs_max', 'activity', fallback=10))
+max_co2 = float(config.getint('valeurs_max', 'co2', fallback=1000))
+max_tvoc = float(config.getint('valeurs_max', 'tvoc', fallback=500))
+max_illumination = float(config.getint('valeurs_max', 'illumination', fallback=100))
+max_infrarouge = float(config.getint('valeurs_max', 'infrared', fallback=10))
+max_infrarouge_visible = float(config.getint('valeurs_max', 'infrared_and_visible', fallback=20))
+max_pression = float(config.getint('valeurs_max', 'pressure', fallback=1013))
 
-#on configure le logging (pour afficher les messages d'erreur)
 logging.basicConfig(level=logging.INFO)
+
+def verif_données(data):
+    seuil = {
+        'temperature': max_temp,
+        'humidity': max_humidity,
+        'activity': max_activite,
+        'co2': max_co2,
+        'tvoc': max_tvoc,
+        'illumination': max_illumination,
+        'infrared': max_infrarouge,
+        'infrared_and_visible': max_infrarouge_visible,
+        'pressure': max_pression
+    }
+    result = {}
+    for key, value in data.items():
+        if key in seuil:
+            result[key] = (value, value > seuil[key])
+        else:
+            result[key] = (value, False)
+    return result
 
 def on_message(client, userdata, msg):
     print(f"Message reçu sur le topic {msg.topic}: OK")
     try:
-        #on deserialise le message
+        # Désérialisation du message
         payload_str = msg.payload.decode()
         jsonMsg = json.loads(payload_str)
 
-        #on lit les données
+        combined_data = {}
+
+        if "AM107" in msg.topic:
+            if isinstance(jsonMsg, list) and len(jsonMsg) >= 2:
+                sensor_data = jsonMsg[0]
+                device_info = jsonMsg[1]
+
+                # Vérifier les seuils pour les données des capteurs
+                donnees_capteur_verifie = verif_données(sensor_data)
+                donnees_appareil_verifie = {k: (v, False) for k, v in device_info.items()}  # Pas de seuils pour les infos de l'appareil
+
+                # Combiner les données vérifiées
+                combined_data = {**donnees_capteur_verifie, **donnees_appareil_verifie}
+
+        elif "solaredge" in msg.topic:
+            # Pas de vérification des seuils pour les données des panneaux solaires
+            combined_data = jsonMsg
+
+        # Lire les données existantes
         if os.path.exists(output_file):
             with open(output_file, 'r') as f:
                 try:
@@ -57,22 +95,22 @@ def on_message(client, userdata, msg):
         else:
             data_list = []
 
-        #on ajoute les nouvelles données à la liste
-        data_list.append(jsonMsg)
+        # Ajouter les nouvelles données
+        data_list.append(combined_data)
 
-        # on écrit la liste dans le fichier
+        # Écrire les données mises à jour dans le fichier JSON
         with open(output_file, 'w') as f:
             json.dump(data_list, f, indent=4)
 
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)
 
-#connexion et souscription
+# Connexion et souscription
 client = mqtt.Client()
 client.on_message = on_message
 client.connect(mqttServer, port=1883, keepalive=60)
 
-#on s'abonne aux topics données dans le fichier de config
+# S'abonner aux topics définis dans la configuration
 for topic in topics:
     client.subscribe(topic.strip(), qos=0)
 
