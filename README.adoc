@@ -84,7 +84,7 @@ Projet est réalisé par::
 - https://github.com/Perceval00731[FUZI-BELAID Thomas]
 - https://github.com/MASTTTTT[GUILLUY Matt]
 
-Tuteur/tutrice enseignant(e) de l'équipe:: mailto:jean-michel.bruel@univ-tlse2.fr[JMB]
+Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 == Contexte général
 
