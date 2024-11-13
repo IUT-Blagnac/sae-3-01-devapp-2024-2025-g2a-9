@@ -14,7 +14,7 @@ import json
 import logging
 import configparser
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 #on verifie que config.ini existe
 fichier_config = 'config.ini'
@@ -28,6 +28,7 @@ config.read(fichier_config)
 serveur_mqtt = config.get('MQTT', 'server')
 topics = config.get('MQTT', 'topics').split(',')
 fichier_sortie = config.get('OUTPUT', 'file')
+frequence_ecriture = config.getint('OUTPUT', 'frequence', fallback=60)  # Fréquence d'écriture en secondes
 
 #on lit les valeurs de seuil dans le fichier de config et on prends des valeurs par défaut (fallback) si ces données ne sont pas trouvées
 max_temp = float(config.getint('valeurs_max', 'temperature', fallback=35))
@@ -41,6 +42,10 @@ max_infrarouge_visible = float(config.getint('valeurs_max', 'infrared_and_visibl
 max_pression = float(config.getint('valeurs_max', 'pressure', fallback=1013))
 
 logging.basicConfig(level=logging.INFO)
+
+# Variable pour stocker les données en attente d'écriture
+donnees_en_attente = []
+dernier_ecriture = datetime.now()
 
 def verifier_donnees(donnees):
     #on utilise des dictionnaires comme quoi on écoute en cours
@@ -64,7 +69,31 @@ def verifier_donnees(donnees):
             resultat[cle] = (valeur, False)
     return resultat
 
+def ecrire_donnees():
+    global dernier_ecriture
+    # Lire les données existantes
+    if os.path.exists(fichier_sortie):
+        with open(fichier_sortie, 'r') as f:
+            try:
+                liste_donnees = json.load(f)
+            except json.JSONDecodeError:
+                liste_donnees = []
+    else:
+        liste_donnees = []
+
+    # Ajouter les nouvelles données
+    liste_donnees.extend(donnees_en_attente)
+
+    # Écrire les données mises à jour dans le fichier JSON
+    with open(fichier_sortie, 'w') as f:
+        json.dump(liste_donnees, f, indent=4)
+
+    # Réinitialiser la liste des données en attente et mettre à jour le dernier temps d'écriture
+    donnees_en_attente.clear()
+    dernier_ecriture = datetime.now()
+
 def on_message(client, userdata, msg):
+    global dernier_ecriture
     print(f"Message reçu sur le sujet {msg.topic}: OK")
     try:
         #on désérialise le message
@@ -86,28 +115,18 @@ def on_message(client, userdata, msg):
                 donnees_combinees = {**donnees_capteur_verifiees, **infos_appareil_verifiees}
 
                 # Ajouter l'heure de réception du message
-                donnees_combinees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                donnees_combinees["heure_reception"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         elif "solaredge" in msg.topic:
             #pas de seuils pour les données des panneaux solaires
             donnees_combinees = jsonMsg
 
-        #on mets les données existantes dans une liste
-        if os.path.exists(fichier_sortie):
-            with open(fichier_sortie, 'r') as f:
-                try:
-                    liste_donnees = json.load(f)
-                except json.JSONDecodeError:
-                    liste_donnees = []
-        else:
-            liste_donnees = []
+        # Ajouter les données combinées à la liste en attente d'écriture
+        donnees_en_attente.append(donnees_combinees)
 
-        #on ajoute les données vérifiées à la liste
-        liste_donnees.append(donnees_combinees)
-
-        #on écrit la liste dans le fichier de sortie
-        with open(fichier_sortie, 'w') as f:
-            json.dump(liste_donnees, f, indent=4)
+        # Vérifier si le temps écoulé depuis la dernière écriture dépasse la fréquence d'écriture
+        if frequence_ecriture == 0 or (datetime.now() - dernier_ecriture).total_seconds() >= frequence_ecriture:
+            ecrire_donnees()
 
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)

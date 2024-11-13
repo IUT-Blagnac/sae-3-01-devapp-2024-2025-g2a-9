@@ -1,30 +1,49 @@
 [
     {
-        "lastUpdateTime": "2024-11-13 12:10:32",
+        "lastUpdateTime": "2024-11-13 15:09:22",
         "lifeTimeData": {
-            "energy": 3244173
+            "energy": 3250385
         },
         "lastYearData": {
-            "energy": 2763848
+            "energy": 2769594
         },
         "lastMonthData": {
-            "energy": 128976
+            "energy": 134722
         },
         "lastDayData": {
-            "energy": 2778
+            "energy": 8524
         },
         "currentPower": {
-            "power": 1191.503
+            "power": 2822.0354
+        },
+        "measuredBy": "INVERTER"
+    },
+    {
+        "lastUpdateTime": "2024-11-13 15:09:22",
+        "lifeTimeData": {
+            "energy": 3250385
+        },
+        "lastYearData": {
+            "energy": 2769594
+        },
+        "lastMonthData": {
+            "energy": 134722
+        },
+        "lastDayData": {
+            "energy": 8524
+        },
+        "currentPower": {
+            "power": 2822.0354
         },
         "measuredBy": "INVERTER"
     },
     {
         "temperature": [
-            19.3,
+            23.1,
             false
         ],
         "humidity": [
-            46.5,
+            46,
             false
         ],
         "activity": [
@@ -32,39 +51,39 @@
             false
         ],
         "co2": [
-            440,
-            false
+            1382,
+            true
         ],
         "tvoc": [
-            74,
+            97,
             false
         ],
         "illumination": [
-            157,
+            1,
             false
         ],
         "infrared": [
-            41,
-            true
+            1,
+            false
         ],
         "infrared_and_visible": [
-            153,
-            true
+            1,
+            false
         ],
         "pressure": [
-            998.9,
+            998.2,
             false
         ],
         "deviceName": [
-            "AM107-42",
+            "AM107-22",
             false
         ],
         "devEUI": [
-            "24e124128c016549",
+            "24e124128c016872",
             false
         ],
         "room": [
-            "E210",
+            "B234",
             false
         ],
         "floor": [
@@ -72,18 +91,18 @@
             false
         ],
         "Building": [
-            "E",
+            "B",
             false
         ],
-        "heure_reception": "2024-11-13 12:18:08"
+        "heure_reception": "2024-11-13 15:23:02"
     },
     {
         "temperature": [
-            19.3,
+            23.1,
             false
         ],
         "humidity": [
-            46.5,
+            46,
             false
         ],
         "activity": [
@@ -91,39 +110,39 @@
             false
         ],
         "co2": [
-            440,
-            false
+            1382,
+            true
         ],
         "tvoc": [
-            74,
+            97,
             false
         ],
         "illumination": [
-            157,
+            1,
             false
         ],
         "infrared": [
-            41,
-            true
+            1,
+            false
         ],
         "infrared_and_visible": [
-            153,
-            true
+            1,
+            false
         ],
         "pressure": [
-            998.9,
+            998.2,
             false
         ],
         "deviceName": [
-            "AM107-42",
+            "AM107-22",
             false
         ],
         "devEUI": [
-            "24e124128c016549",
+            "24e124128c016872",
             false
         ],
         "room": [
-            "E210",
+            "B234",
             false
         ],
         "floor": [
@@ -131,9 +150,9 @@
             false
         ],
         "Building": [
-            "E",
+            "B",
             false
         ],
-        "heure_reception": "2024-11-13 12:18:08"
+        "heure_reception": "2024-11-13 15:23:02"
     }
 ]
