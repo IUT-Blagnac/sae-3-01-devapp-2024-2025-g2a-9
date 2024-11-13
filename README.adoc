@@ -79,9 +79,10 @@ toc::[]
 == Equipe
 
 Projet est réalisé par::
-- https://github.com/RayanSellou[Rayan Sellou]
-- https://github.com/YannisGibert[Yannis Gibert]
-- https://github.com/Marshall331[Ahmad Khalil]
+- https://github.com/Achraf-Ameri[AMERI Mohammed]
+- https://github.com/obsqha[CARDOUAT Alexi]
+- https://github.com/Perceval00731[FUZI-BELAID Thomas]
+- https://github.com/MASTTTTT[GUILLUY Matt]
 
 Tuteur/tutrice enseignant(e) de l'équipe:: mailto:jean-michel.bruel@univ-tlse2.fr[JMB]
 
