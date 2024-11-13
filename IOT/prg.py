@@ -6,6 +6,7 @@
 # mettre le timestamp
 # dans fichier config frequence a laquelle on ecrit
 # choisir les types de donnes, salles ou panneaux dont on recupere les données
+# valeurs minimale de production pour les panneaux solaires
 #
 
 import paho.mqtt.client as mqtt
