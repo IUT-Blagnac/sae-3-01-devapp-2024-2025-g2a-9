@@ -1,91 +1,70 @@
 [
     {
-        "lastUpdateTime": "2024-11-13 11:40:32",
+        "lastUpdateTime": "2024-11-13 12:10:32",
         "lifeTimeData": {
             "energy": 3244173
         },
         "lastYearData": {
-            "energy": 2763455
+            "energy": 2763848
         },
         "lastMonthData": {
-            "energy": 128583
+            "energy": 128976
         },
         "lastDayData": {
-            "energy": 2385
+            "energy": 2778
         },
         "currentPower": {
             "power": 1191.503
         },
-        "measuredBy": "INVERTER",
-        "timestamp": "2024-11-13 11:40:32"
-    },
-    {
-        "lastUpdateTime": "2024-11-13 11:40:32",
-        "lifeTimeData": {
-            "energy": 3244173
-        },
-        "lastYearData": {
-            "energy": 2763455
-        },
-        "lastMonthData": {
-            "energy": 128583
-        },
-        "lastDayData": {
-            "energy": 2385
-        },
-        "currentPower": {
-            "power": 1191.503
-        },
-        "measuredBy": "INVERTER",
-        "timestamp": "2024-11-13 11:40:32"
+        "measuredBy": "INVERTER"
     },
     {
         "temperature": [
-            19.5,
+            19.3,
             false
         ],
         "humidity": [
-            55,
-            true
+            46.5,
+            false
         ],
         "activity": [
             0,
             false
         ],
         "co2": [
-            1467,
-            true
+            440,
+            false
         ],
         "tvoc": [
-            338,
+            74,
             false
         ],
         "illumination": [
-            18,
+            157,
             false
         ],
         "infrared": [
-            6,
-            false
+            41,
+            true
         ],
         "infrared_and_visible": [
-            20,
-            false
+            153,
+            true
         ],
         "pressure": [
-            999.5,
+            998.9,
             false
         ],
         "deviceName": [
-            "AM107-46",
+            "AM107-42",
             false
         ],
         "devEUI": [
-            "24e124128c019661",
+            "24e124128c016549",
             false
         ],
         "room": [
-            "Foyer-personnels",
+            "E210",
             false
         ],
         "floor": [
@@ -93,57 +72,58 @@
             false
         ],
         "Building": [
-            "B",
+            "E",
             false
-        ]
+        ],
+        "heure_reception": "2024-11-13 12:18:08"
     },
     {
         "temperature": [
-            19.5,
+            19.3,
             false
         ],
         "humidity": [
-            55,
-            true
+            46.5,
+            false
         ],
         "activity": [
             0,
             false
         ],
         "co2": [
-            1467,
-            true
+            440,
+            false
         ],
         "tvoc": [
-            338,
+            74,
             false
         ],
         "illumination": [
-            18,
+            157,
             false
         ],
         "infrared": [
-            6,
-            false
+            41,
+            true
         ],
         "infrared_and_visible": [
-            20,
-            false
+            153,
+            true
         ],
         "pressure": [
-            999.5,
+            998.9,
             false
         ],
         "deviceName": [
-            "AM107-46",
+            "AM107-42",
             false
         ],
         "devEUI": [
-            "24e124128c019661",
+            "24e124128c016549",
             false
         ],
         "room": [
-            "Foyer-personnels",
+            "E210",
             false
         ],
         "floor": [
@@ -151,124 +131,9 @@
             false
         ],
         "Building": [
-            "B",
-            false
-        ]
-    },
-    {
-        "temperature": [
-            13,
+            "E",
             false
         ],
-        "humidity": [
-            71.5,
-            true
-        ],
-        "activity": [
-            0,
-            false
-        ],
-        "co2": [
-            458,
-            false
-        ],
-        "tvoc": [
-            4250,
-            true
-        ],
-        "illumination": [
-            493,
-            false
-        ],
-        "infrared": [
-            307,
-            true
-        ],
-        "infrared_and_visible": [
-            814,
-            true
-        ],
-        "pressure": [
-            999.6,
-            false
-        ],
-        "deviceName": [
-            "AM107-45",
-            false
-        ],
-        "devEUI": [
-            "24e124128c016461",
-            false
-        ],
-        "room": [
-            "Local-velo",
-            false
-        ],
-        "floor": [
-            0,
-            false
-        ],
-        "Building": [
-            "Outside",
-            false
-        ]
-    },
-    {
-        "temperature": [
-            13,
-            false
-        ],
-        "humidity": [
-            71.5,
-            true
-        ],
-        "activity": [
-            0,
-            false
-        ],
-        "co2": [
-            458,
-            false
-        ],
-        "tvoc": [
-            4250,
-            true
-        ],
-        "illumination": [
-            493,
-            false
-        ],
-        "infrared": [
-            307,
-            true
-        ],
-        "infrared_and_visible": [
-            814,
-            true
-        ],
-        "pressure": [
-            999.6,
-            false
-        ],
-        "deviceName": [
-            "AM107-45",
-            false
-        ],
-        "devEUI": [
-            "24e124128c016461",
-            false
-        ],
-        "room": [
-            "Local-velo",
-            false
-        ],
-        "floor": [
-            0,
-            false
-        ],
-        "Building": [
-            "Outside",
-            false
-        ]
+        "heure_reception": "2024-11-13 12:18:08"
     }
 ]

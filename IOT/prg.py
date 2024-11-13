@@ -13,6 +13,7 @@ import json
 import logging
 import configparser
 import os
+from datetime import datetime
 
 #on verifie que config.ini existe
 fichier_config = 'config.ini'
@@ -82,6 +83,9 @@ def on_message(client, userdata, msg):
 
                 # Combiner les données vérifiées
                 donnees_combinees = {**donnees_capteur_verifiees, **infos_appareil_verifiees}
+
+                # Ajouter l'heure de réception du message
+                donnees_combinees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         elif "solaredge" in msg.topic:
             #pas de seuils pour les données des panneaux solaires
