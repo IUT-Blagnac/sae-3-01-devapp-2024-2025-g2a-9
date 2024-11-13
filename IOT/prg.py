@@ -3,6 +3,9 @@
 #
 # ATTENTION le script doit être exécuté dans le même dossier que le fichier config.ini
 # True pour une des valeurs du JSON signifie que le seuil a été dépassé
+# mettre le timestamp
+# dans fichier config frequence a laquelle on ecrit
+# choisir les types de donnes, salles ou panneaux dont on recupere les données
 #
 
 import paho.mqtt.client as mqtt
