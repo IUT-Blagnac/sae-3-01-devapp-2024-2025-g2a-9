@@ -25,9 +25,9 @@ topics = config.get('MQTT', 'topics').split(',')
 fichier_sortie = config.get('OUTPUT', 'file')
 
 #on lit les valeurs de seuil dans le fichier de config et on prends des valeurs par défaut (fallback) si ces données ne sont pas trouvées
-max_temp = float(config.getint('valeurs_max', 'temperature', fallback=25))
+max_temp = float(config.getint('valeurs_max', 'temperature', fallback=35))
 max_humidite = float(config.getint('valeurs_max', 'humidity', fallback=60))
-max_activite = float(config.getint('valeurs_max', 'activity', fallback=10))
+max_activite = float(config.getint('valeurs_max', 'activity', fallback=0))
 max_co2 = float(config.getint('valeurs_max', 'co2', fallback=1000))
 max_tvoc = float(config.getint('valeurs_max', 'tvoc', fallback=500))
 max_illumination = float(config.getint('valeurs_max', 'illumination', fallback=100))
