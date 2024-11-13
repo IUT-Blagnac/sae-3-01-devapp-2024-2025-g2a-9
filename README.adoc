@@ -1,6 +1,6 @@
 image::https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg[link="https://classroom.github.com/online_ide?assignment_repo_id=16926388&assignment_repo_type=AssignmentRepo", alt="Open in Visual Studio Code"]
 
-= SAÉ 3.01 2023-2024
+= SAÉ 3.01 2024-2025
 :icons: font
 :models: models
 :experimental:
@@ -40,81 +40,155 @@ image:{baseURL}/actions/workflows/tests.yml/badge.svg[Tests]
 image:https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg[License: MPL-2.0, link="https://opensource.org/licenses/MPL-2.0"]
 //---------------------------------------------------------------
 
-TIP: Pensez à mettre à jour les infos dans ce fichier pour que les badges pointent sur les résultats effectifs de vos intégrations continue ou sur la bonne licence logicielle.
+toc::[]
 
-WARNING: Ce dépôt présente le projet à développer dans le cadre de la SAÉ 3.01 du BUT1 Informatique de l'IUT de Blagnac.
+= SAÉ 3.01 2024-2025
+:icons: font
+:models: models
+:experimental:
+:incremental:
+:numbered:
+:toc: macro
+:window: _blank
+:correction!:
 
-Ce fichier `README.adoc` (dont vous lisez sûrement le rendu HTML automatiquement effectué par GitHUb), fait partie du dépôt initial cloné à partir du lien GitHub classroom qui vous a été donné en cours (https://classroom.github.com/a/fePVlfpN).
-Vous trouverez le dépôt "template" qui a servi de base ici : https://github.com/IUT-Blagnac/sae3-01-template. En complément du cours Moodle de la SAE 3.01 (cf. <<liensUtiles>>), ce dépôt template vous permet d'accéder à des exemples d'https://github.com/IUT-Blagnac/sae3-01-template/issues[issues], de https://github.com/IUT-Blagnac/sae3-01-template/releases[releases], ou d'autres artefacts à venir.
+// Useful definitions
+:asciidoc: http://www.methods.co.nz/asciidoc[AsciiDoc]
+:icongit: icon:git[]
+:git: http://git-scm.com/[{icongit}]
+:plantuml: https://plantuml.com/fr/[plantUML]
+:vscode: https://code.visualstudio.com/[VS Code]
+
+ifndef::env-github[:icons: font]
+// Specific to GitHub
+ifdef::env-github[]
+:correction:
+:!toc-title:
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+:icongit: Git
+endif::[]
+
+
 
 toc::[]
 
 == Equipe
 
 Projet est réalisé par::
-
-- https://github.com/janeDoe[Jane Doe]
-- https://github.com/johnSmith[John Smith]
-...
+- https://github.com/RayanSellou[Rayan Sellou]
+- https://github.com/YannisGibert[Yannis Gibert]
+- https://github.com/Marshall331[Ahmad Khalil]
 
 Tuteur/tutrice enseignant(e) de l'équipe:: mailto:jean-michel.bruel@univ-tlse2.fr[JMB]
 
 == Contexte général
 
-TIP: Cette partie de votre `README.adoc` peut être supprimée ou mise ailleurs.
-
-=== Dépôt initial
-
-Ce dépôt initial a été créé pour que tous les groupes de 2ème année aient les mêmes informations de départ.
-
-Vous y trouverez des fichiers qui peuvent être supprimés s'ils ne vous sont pas utiles :
-
-- `.gitignore` => un fichier minimaliste des éléments à ne pas pousser en général sur vos dépôts (utiliser la commande `git add -f` pour forcer l'ajout d'un fichier Jar qui ne bougera plus, pour archive par exemple).
-- `.github` => le répertoire qui contient des éléments de gestion de projet :
-** `workflows` => le repertoire qui contient les actions à lancer à chaque push sur votre repo. 
-*** `blank.yml` => un exemple bidon mais dont vous pourrez vérifier l’exécution correcte (1er tag)
-** `ISSUE_TEMPLATE` => le repertoire qui contient quelques templates pour vos issues.
-*** `us.yml` => Exemple de template pour les User Stories
-*** `bug.yml` => Exemple de template pour les issues de bug report
-
-TIP: Adaptez ces fichiers à votre projet et à votre organisation. Et inspirez-vous en pour en ajouter.
-
 [[liensUtiles]]
 === Liens utiles
-
+- http://193.54.227.208/~saephp12/[Notre Site Web]
 - Le https://webetud.iut-blagnac.fr/course/view.php?id=841[cours Moodle] sur la SAE
-- Le dépôt https://github.com/IUT-Blagnac/sae3-01-template[template] qui sert de base à tous les dépôts étudiants.
-- Le lien https://classroom.github.com/a/OUF7gxEa[classroom] si besoin.
-
-TIP: Pensez à utiliser les salons Discord dédiés pour poser vos questions.
 
 == Réalisations 
 
-TIP: Mettez ici toutes les informations nécessaire à l'utilisation de votre dépôt (comment on installe votre application, où sont les docs, etc.)
+=== Partie IoT
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/code/IOT/Application%20finale[Application finale] (JAR + Fichiers Python + Fichier de configuration)
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Utilisateur_IOT.adoc[Documentation Utilisateur]
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Technique_IOT.adoc[Documentation Technique] 
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Recette%20IOT.adoc[Cahier de Recettes (Tests)]
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Notre%20client/Diagrammes/Use%20Case/US_IOT.png[Cas d'utilisations (Uses cases)]
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/doc/Notre%20client/Diagrammes/Diagramme%20de%20S%C3%A9quence%20Syst%C3%A8me/IOT_DSS_D%C3%A9taill%C3%A9[Diagrammes de séquences système]
+
+**Partie Python**
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/code/IOT/Python[Fichiers sources] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Python.pdf[Docs] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Recette%20IOT.adoc#1-partie-python[Tests] 
+
+**Partie Javafx**
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/code/IOT/Java/sae_iot_la_bonne_note/src[Fichiers sources] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Java.pdf[Docs] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/code/IOT/Java/Javadoc[JavaDoc] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Recette%20IOT.adoc#2-partie-java[Tests]
+
+=== Partie WEB
+
+-> http://193.54.227.208/~saephp12/[Site Web]
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Utilisateur_WEB.adoc[Documentation Utilisateur]
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Technique_WEB.adoc[Documentation Technique]
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Recette%20WEB.adoc[Cahier de Recettes (Tests)]
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Notre%20client/Diagrammes/Use%20Case/UC_Site_Web.png[Cas d'utilisations (Uses Cases)]
+
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Notre%20client/Diagrammes/Diagramme%20de%20S%C3%A9quence%20Syst%C3%A8me/DSS_exemple_WEB.png[Diagramme de séquence système]
+
+**Partie PHP**
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/code/Web/HTML-PHP[Fichiers sources] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Technique_WEB.adoc#fonctionnalit%C3%A9s-d%C3%A9velopp%C3%A9es[Docs] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Recette%20WEB.adoc#2-2-partie-php[Tests]
+
+**Partie BD**
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/code/Web/BD[Fichiers sources] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/code/Web/BD/Documentation[Docs] 
+
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Recette%20WEB.adoc#1-1-partie-base-de-donn%C3%A9es[Tests]
 
 == Gestion de projet & Qualité
 
-Chaque sprint (semaine) vous devrez livrer une nouvelle version de votre application (release).
-Utilisez pour cela les fonctionnalités de GitHub pour les https://docs.github.com/en/repositories/releasing-projects-on-github[Releases].
-
-De plus ce fichier `README.adoc` devra être à jour des informations suivantes :
-
-- Version courante : https://github.com/IUT-Blagnac/sae3-01-template/releases/tag/v0.1.2[v0.1.2]
-- Lien vers la doc technique
-- Lien vers la doc utilisateur
-- Liste des (ou lien vers les) User Stories (ToDo/Ongoing/Done) et % restant
-- Tests unitaires et plans de test
+- Version courante : https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/releases/tag/Sprint7[v1.7]
+- Backlog général : https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Backlogs/Backlog%20Général.pdf[BL Général]
+- Backlog du sprint actuel : https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Backlogs/Backlog%20Sprint%207.pdf[BL Sprint]
+- Ordres du jour et les CR des réunions : https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/tree/master/doc/Réunions[Réunions]
+- https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Utilisateur_IOT.adoc[Documentation Utilisateur IOT]
+- https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Technique_IOT.adoc[Documentation Technique IOT] 
+- https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Recette%20IOT.adoc[Cahier de Recettes IOT (Tests)]
+- http://193.54.227.208/~saephp12/[Site Web]
+- https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Utilisateur_WEB.adoc[Documentation Utilisateur WEB]
+- https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Doc_Technique_WEB.adoc[Documentation Technique WEB]
+- https://github.com/IUT-Blagnac/sae-3-01-devapp-Groupe-12/blob/master/doc/Recette%20WEB.adoc[Cahier de Recettes WEB (Tests)]
+- Liste des (ou lien vers les) User Stories (ToDo/Ongoing/Done) et % restant IOT : https://github.com/orgs/IUT-Blagnac/projects/142[US]
+- Liste des (ou lien vers les) User Stories (ToDo/Ongoing/Done) et % restant WEB : https://github.com/orgs/IUT-Blagnac/projects/127[US]
 - Indicateurs de qualité du code (dette technique)
-- ... tout autre élément que vous jugerez utiles pour démontrer la qualité de votre application
 
-Voici un exemple d'évaluation :
+Suivi de l'évaluation :
 
 ifdef::env-github[]
-image:https://docs.google.com/spreadsheets/d/e/2PACX-1vTc3HJJ9iSI4aa2I9a567wX1AUEmgGrQsPl7tHGSAJ_Z-lzWXwYhlhcVIhh5vCJxoxHXYKjSLetP6NS/pubchart?oid=1850914734&amp;format=image[link=https://docs.google.com/spreadsheets/d/e/2PACX-1vTc3HJJ9iSI4aa2I9a567wX1AUEmgGrQsPl7tHGSAJ_Z-lzWXwYhlhcVIhh5vCJxoxHXYKjSLetP6NS/pubchart?oid=1850914734&amp;format=image]
+image:https://docs.google.com/spreadsheets/d/e/2PACX-1vSACcYeKaH_ims3faegSLAFJ9s5_Kd9Fbyi4ODEb8BTN5OnUXWenVGhlVPo84yQDhTkTj3f9nXiluh1/pubchart?oid=935875429&format=image[link=https://docs.google.com/spreadsheets/d/e/2PACX-1vSACcYeKaH_ims3faegSLAFJ9s5_Kd9Fbyi4ODEb8BTN5OnUXWenVGhlVPo84yQDhTkTj3f9nXiluh1/pubchart?oid=935875429&format=image]
 endif::[]
+
+S2 : Readme mis à jour TB.  Release OK préciser si il s'agit d'une release en IOT ou dev, préciser l'avancement (fait , à faire).Documentation : revoir entête/page de garde dans certains doc, faire sommaire, harmoniser les présentations. cf SAE S2. Attention pour le WEB j'ai les doc IOT !!!  Tests partie WEB à construire. J'ai des tâches qui ne sont pas rattachées à des US. Garder la trace des sprint dans votre scrumboard. 
+
+S3 : Pas de nouvelle release cette semaine. Toujours rien en Web ! Il faut commencer à implémenter les docs ! Je dois retrouver les différents services dans la doc user Web.  Test Web : juste le sommaire !! Il faut avancer là aussi. Les scrumboard ne mentionnent pas le sprint en cours ... Confusion tâches dans les US et règles de gestion. Rattacher les tâches aux US. PRENDRE EN COMPTE LES REMARQUES PRECEDENTES !
+
+S4 : Dans les Asset de la release différencier l'IOT du Web. Mettre un lien vers votre sirt web dans le readme. Je ne comprend pas pourquoi j'ai 2 fois le lien vers les docs Web ? Les docs sont encore peu avancées. Le scrumboard du projet n'indique pas le sprint en court. Les tâches doivent être rattachées à une US. Les US doivent avoir un milestone qui précise le sprint si elles sont en cours de dév.
+
+S5: Release détaillée, il manque encore le lien vers le site dans le readme. Le lien vers la doc user Web ne marche pas. Doc tech peu avancée, le sommaire doit être complet même si les paragraphes sont encore vides cf. SAE S2.  Tests ok par contre la version n'est pas indiquée ... Il me manque le Backlog du prochain sprint. J'ai des tâches qui correspondent à des critères d'acceptabilité de US c'est confus. C'est le dernier retour de sprint avant l'évaluation finale.
 
 ifndef::env-github[]
 ++++
-<iframe width="786" height="430" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTc3HJJ9iSI4aa2I9a567wX1AUEmgGrQsPl7tHGSAJ_Z-lzWXwYhlhcVIhh5vCJxoxHXYKjSLetP6NS/pubchart?oid=1850914734&amp;format=image"></iframe>
+<iframe width="786" height="430" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR653IOTEDovCXjU49qczSZDmK5SBuM43GbpvTrhGCCSAqzpwCdRXU3ey5Y_IRRac1qUnt-iFlPxS5k/pubchart?oid=1287010292&format=interactive"></iframe>
 ++++
 endif::[]
