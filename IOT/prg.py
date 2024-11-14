@@ -31,15 +31,25 @@ fichier_sortie = config.get('OUTPUT', 'file')
 frequence_ecriture = config.getint('OUTPUT', 'frequence', fallback=0)  # Fréquence d'écriture en secondes
 
 #on lit les valeurs de seuil dans le fichier de config et on prends des valeurs par défaut (fallback) si ces données ne sont pas trouvées
-max_temp = float(config.getint('valeurs_max', 'temperature', fallback=35))
-max_humidite = float(config.getint('valeurs_max', 'humidity', fallback=60))
-max_activite = float(config.getint('valeurs_max', 'activity', fallback=0))
-max_co2 = float(config.getint('valeurs_max', 'co2', fallback=1000))
-max_tvoc = float(config.getint('valeurs_max', 'tvoc', fallback=500))
-max_illumination = float(config.getint('valeurs_max', 'illumination', fallback=100))
-max_infrarouge = float(config.getint('valeurs_max', 'infrared', fallback=10))
-max_infrarouge_visible = float(config.getint('valeurs_max', 'infrared_and_visible', fallback=20))
-max_pression = float(config.getint('valeurs_max', 'pressure', fallback=1013))
+max_temp = float(config.getint('seuils_capteur', 'temperature', fallback=35))
+max_humidite = float(config.getint('seuils_capteur', 'humidity', fallback=60))
+max_activite = float(config.getint('seuils_capteur', 'activity', fallback=0))
+max_co2 = float(config.getint('seuils_capteur', 'co2', fallback=1000))
+max_tvoc = float(config.getint('seuils_capteur', 'tvoc', fallback=500))
+max_illumination = float(config.getint('seuils_capteur', 'illumination', fallback=100))
+max_infrarouge = float(config.getint('seuils_capteur', 'infrared', fallback=10))
+max_infrarouge_visible = float(config.getint('seuils_capteur', 'infrared_and_visible', fallback=20))
+max_pression = float(config.getint('seuils_capteur', 'pressure', fallback=1013))
+
+#recuperation variables capteur et solaredge
+variables_capteur = config.get('variables', 'variable_capteur').split(',')
+if "global" in variables_capteur:
+    variables_capteur = ["temperature", "humidity", "activity", "co2", "tvoc", "illumination", "infrared", "infrared_and_visible", "pressure", "deviceName", "devEUI", "room", "floor", "Building"]
+
+variables_solaredge = config.get('variables', 'variable_solaredge').split(',')
+if "global" in variables_solaredge:
+    variables_solaredge = ["lastUpdateTime", "lifeTimeData", "lastYearData", "lastMonthData", "lastDayData", "currentPower", "measuredBy"]
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -48,7 +58,6 @@ donnees_en_attente = []
 dernier_ecriture = datetime.now()
 
 def verifier_donnees(donnees):
-    #on utilise des dictionnaires comme quoi on écoute en cours
     seuils = {
         'temperature': max_temp,
         'humidity': max_humidite,
@@ -63,10 +72,11 @@ def verifier_donnees(donnees):
 
     resultat = {}
     for cle, valeur in donnees.items():
-        if cle in seuils:
-            resultat[cle] = (valeur, valeur > seuils[cle])
-        else:
-            resultat[cle] = (valeur, False)
+        if cle in variables_capteur:
+            if cle in seuils:
+                resultat[cle] = (valeur, valeur > seuils[cle])
+            else:
+                resultat[cle] = (valeur, False)
     return resultat
 
 def ecrire_donnees():
@@ -92,44 +102,31 @@ def ecrire_donnees():
     donnees_en_attente.clear()
     dernier_ecriture = datetime.now()
 
+
 def on_message(client, userdata, msg):
     global dernier_ecriture
     print(f"Message reçu sur le sujet {msg.topic}: OK")
     try:
-        #on désérialise le message
         payload_str = msg.payload.decode()
         jsonMsg = json.loads(payload_str)
-
         donnees_combinees = {}
-
         if "AM107" in msg.topic:
-            if isinstance(jsonMsg, list) and len(jsonMsg) >= 2: #on vérifie que le message est une liste d'au moins 2 éléments
+            if isinstance(jsonMsg, list) and len(jsonMsg) >= 2:
                 donnees_capteur = jsonMsg[0]
                 infos_appareil = jsonMsg[1]
-
-                #on vérifie si les seuils n'ont pas été dépassés
                 donnees_capteur_verifiees = verifier_donnees(donnees_capteur)
-                infos_appareil_verifiees = {k: (v, False) for k, v in infos_appareil.items()}  #on mets les valeurs de l'appareil à False
-
-                # Combiner les données vérifiées
+                infos_appareil_verifiees = {k: (v, False) for k, v in infos_appareil.items() if k in variables_capteur}
                 donnees_combinees = {**donnees_capteur_verifiees, **infos_appareil_verifiees}
-
-                # Ajouter l'heure de réception du message
-                donnees_combinees["heure_reception"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+                donnees_combinees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         elif "solaredge" in msg.topic:
-            #pas de seuils pour les données des panneaux solaires
-            donnees_combinees = jsonMsg
-
-        # Ajouter les données combinées à la liste en attente d'écriture
+            donnees_combinees = {k: v for k, v in jsonMsg.items() if k in variables_solaredge}
         donnees_en_attente.append(donnees_combinees)
-
-        # Vérifier si le temps écoulé depuis la dernière écriture dépasse la fréquence d'écriture
         if frequence_ecriture == 0 or (datetime.now() - dernier_ecriture).total_seconds() >= frequence_ecriture:
             ecrire_donnees()
-
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)
+
+
 
 #connexion au serveur MQTT
 client = mqtt.Client()
