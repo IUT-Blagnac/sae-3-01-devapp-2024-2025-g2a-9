@@ -28,7 +28,7 @@ config.read(fichier_config)
 serveur_mqtt = config.get('MQTT', 'server')
 topics = config.get('MQTT', 'topics').split(',')
 fichier_sortie = config.get('OUTPUT', 'file')
-frequence_ecriture = config.getint('OUTPUT', 'frequence', fallback=60)  # Fréquence d'écriture en secondes
+frequence_ecriture = config.getint('OUTPUT', 'frequence', fallback=0)  # Fréquence d'écriture en secondes
 
 #on lit les valeurs de seuil dans le fichier de config et on prends des valeurs par défaut (fallback) si ces données ne sont pas trouvées
 max_temp = float(config.getint('valeurs_max', 'temperature', fallback=35))
