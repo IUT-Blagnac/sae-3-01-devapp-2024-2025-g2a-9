@@ -159,6 +159,18 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 == Gestion de projet & Qualité
 
+Planning des séances (demi-journée en télétravail) :
+
+[cols="2,4,4,4,4,4", options="header"]
+|===
+| Sprint | Lundi | Mardi | Mercredi | Jeudi | Vendredi 
+| Sprint 1 |  |  |  |  |
+| Sprint 2 |  |  |  |  | 
+| Sprint 3 |  |  |  |  | 
+| Sprint 4 |  |  |  |  | 
+| Sprint 5 |  |  |  |  | 
+|===
+
 - Version courante : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[v0]
 - Backlog général : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[BL Général]
 - Backlog du sprint actuel : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[BL Sprint]
