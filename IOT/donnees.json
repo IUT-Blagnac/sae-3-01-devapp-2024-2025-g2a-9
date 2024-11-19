@@ -135,5 +135,43 @@
             false
         ],
         "date": "2024-11-14 10:44:44"
+    },
+    {
+        "lastUpdateTime": "2024-11-15 01:07:49",
+        "lifeTimeData": {
+            "energy": 3261761
+        },
+        "lastYearData": {
+            "energy": 2780731
+        },
+        "lastMonthData": {
+            "energy": 145859
+        },
+        "lastDayData": {
+            "energy": 0
+        },
+        "currentPower": {
+            "power": 0
+        },
+        "measuredBy": "INVERTER"
+    },
+    {
+        "lastUpdateTime": "2024-11-15 01:24:49",
+        "lifeTimeData": {
+            "energy": 3261761
+        },
+        "lastYearData": {
+            "energy": 2780731
+        },
+        "lastMonthData": {
+            "energy": 145859
+        },
+        "lastDayData": {
+            "energy": 0
+        },
+        "currentPower": {
+            "power": 0
+        },
+        "measuredBy": "INVERTER"
     }
 ]

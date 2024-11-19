@@ -7,6 +7,7 @@
 # dans fichier config frequence a laquelle on ecrit
 # choisir les types de donnes, salles ou panneaux dont on recupere les données
 # valeurs minimale de production pour les panneaux solaires
+# fichier à part pour les depassements de seuils
 #
 
 import paho.mqtt.client as mqtt
