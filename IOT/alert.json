@@ -1,79 +1,36 @@
 [
     {
-        "temperature": 19.3,
-        "humidity": 52.5,
-        "date": "2024-11-21 12:03:10",
+        "currentPower": 680.32886,
+        "date": "2024-11-21 12:25:08",
+        "room": ""
+    },
+    {
+        "temperature": 20.7,
+        "activity": 283,
+        "co2": 1308,
+        "infrared": 13,
+        "infrared_and_visible": 54,
+        "date": "2024-11-21 12:25:40",
         "room": [
-            "B111",
+            "B112",
             false
         ]
     },
     {
-        "temperature": 23.2,
-        "humidity": 51,
-        "co2": 1760,
-        "date": "2024-11-21 12:03:19",
+        "temperature": 20.4,
+        "activity": 47,
+        "co2": 1382,
+        "date": "2024-11-21 12:25:41",
         "room": [
-            "B234",
+            "B217",
             false
         ]
     },
     {
-        "temperature": 18.8,
-        "humidity": 64.5,
-        "co2": 1603,
-        "date": "2024-11-21 12:03:49",
+        "temperature": 20.1,
+        "date": "2024-11-21 12:25:50",
         "room": [
-            "B113",
-            false
-        ]
-    },
-    {
-        "temperature": 22.3,
-        "humidity": 51,
-        "activity": 260,
-        "co2": 1181,
-        "date": "2024-11-21 12:03:50",
-        "room": [
-            "E104",
-            false
-        ]
-    },
-    {
-        "temperature": 22.2,
-        "humidity": 52.5,
-        "activity": 67,
-        "co2": 1092,
-        "infrared": 32,
-        "infrared_and_visible": 117,
-        "date": "2024-11-21 12:03:50",
-        "room": [
-            "E006",
-            false
-        ]
-    },
-    {
-        "temperature": 22.7,
-        "activity": 316,
-        "co2": 956,
-        "infrared": 15,
-        "infrared_and_visible": 63,
-        "date": "2024-11-21 12:04:12",
-        "room": [
-            "E209",
-            false
-        ]
-    },
-    {
-        "temperature": 20.8,
-        "humidity": 52.5,
-        "activity": 186,
-        "co2": 848,
-        "infrared": 39,
-        "infrared_and_visible": 116,
-        "date": "2024-11-21 12:04:50",
-        "room": [
-            "E003",
+            "C002",
             false
         ]
     }

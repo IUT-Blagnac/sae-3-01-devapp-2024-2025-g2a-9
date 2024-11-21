@@ -8,6 +8,7 @@
 # valeurs minimale de production pour les panneaux solaires
 # fichier à part pour les depassements de seuils, uniquement les valeurs dont les seuils ont été depassés
 # variable global pour les salles
+# seuils solaredge
 #
 
 import paho.mqtt.client as mqtt
@@ -42,6 +43,7 @@ max_illumination = float(config.getint('seuils_capteur', 'illumination', fallbac
 max_infrarouge = float(config.getint('seuils_capteur', 'infrared', fallback=10))
 max_infrarouge_visible = float(config.getint('seuils_capteur', 'infrared_and_visible', fallback=20))
 max_pression = float(config.getint('seuils_capteur', 'pressure', fallback=1013))
+puissance_min = float(config.get('seuils_solaredge', 'puissance_min', fallback=500))
 
 #recuperation variables capteur et solaredge
 variables_capteur = config.get('variables', 'variable_capteur').split(',')
@@ -61,7 +63,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Variable pour stocker les données en attente d'écriture
 donnees_en_attente = []
-dernier_ecriture = datetime.now()
+derniere_ecriture = datetime.now()
 
 def verifier_donnees(donnees):
     seuils = {
@@ -86,7 +88,7 @@ def verifier_donnees(donnees):
     return resultat
 
 def ecrire_donnees():
-    global dernier_ecriture
+    global derniere_ecriture
     # Lire les données existantes du fichier principal
     if os.path.exists(fichier_sortie):
         with open(fichier_sortie, 'r') as f:
@@ -146,10 +148,10 @@ def ecrire_donnees():
 
     # Réinitialiser la liste des données en attente et mettre à jour le dernier temps d'écriture
     donnees_en_attente.clear()
-    dernier_ecriture = datetime.now()
+    derniere_ecriture = datetime.now()
 
 def on_message(client, userdata, msg):
-    global dernier_ecriture
+    global derniere_ecriture
     print(f"Message reçu sur le sujet {msg.topic}: OK")
     try:
         payload_str = msg.payload.decode()
@@ -167,9 +169,17 @@ def on_message(client, userdata, msg):
                     donnees_combinees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     donnees_en_attente.append(donnees_combinees)
         elif "solaredge" in msg.topic:
-            donnees_combinees = {k: v for k, v in jsonMsg.items() if k in variables_solaredge}
-            donnees_en_attente.append(donnees_combinees)
-        if frequence_ecriture == 0 or (datetime.now() - dernier_ecriture).total_seconds() >= frequence_ecriture:
+            donnees_filtrees = {k: v for k, v in jsonMsg.items() if k in variables_solaredge}
+            # Vérifier le seuil de puissance minimale
+            current_power = jsonMsg.get('currentPower', {}).get('power', None)
+            if current_power is not None:
+                depassement_seuil = current_power < puissance_min
+                donnees_filtrees['currentPower'] = (current_power, depassement_seuil)
+            else:
+                donnees_filtrees['currentPower'] = (None, False)
+            donnees_filtrees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            donnees_en_attente.append(donnees_filtrees)
+        if frequence_ecriture == 0 or (datetime.now() - derniere_ecriture).total_seconds() >= frequence_ecriture:
             ecrire_donnees()
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)
