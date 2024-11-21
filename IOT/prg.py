@@ -51,6 +51,10 @@ variables_solaredge = config.get('variables', 'variable_solaredge').split(',')
 if "global" in variables_solaredge:
     variables_solaredge = ["lastUpdateTime", "lifeTimeData", "lastYearData", "lastMonthData", "lastDayData", "currentPower", "measuredBy"]
 
+# Lire les numéros de salle depuis le fichier de configuration
+salles = [salle.strip() for salle in config.get('salles', 'rooms', fallback='').split(',')]
+if not salles or salles == ['']:
+    salles = None  # Si 'rooms' est vide, récupérer toutes les données
 
 logging.basicConfig(level=logging.INFO)
 
@@ -103,7 +107,6 @@ def ecrire_donnees():
     donnees_en_attente.clear()
     dernier_ecriture = datetime.now()
 
-
 def on_message(client, userdata, msg):
     global dernier_ecriture
     print(f"Message reçu sur le sujet {msg.topic}: OK")
@@ -115,19 +118,20 @@ def on_message(client, userdata, msg):
             if isinstance(jsonMsg, list) and len(jsonMsg) >= 2:
                 donnees_capteur = jsonMsg[0]
                 infos_appareil = jsonMsg[1]
-                donnees_capteur_verifiees = verifier_donnees(donnees_capteur)
-                infos_appareil_verifiees = {k: (v, False) for k, v in infos_appareil.items() if k in variables_capteur}
-                donnees_combinees = {**donnees_capteur_verifiees, **infos_appareil_verifiees}
-                donnees_combinees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                room = infos_appareil.get('room')
+                if salles is None or room in salles:
+                    donnees_capteur_verifiees = verifier_donnees(donnees_capteur)
+                    infos_appareil_verifiees = {k: (v, False) for k, v in infos_appareil.items() if k in variables_capteur}
+                    donnees_combinees = {**donnees_capteur_verifiees, **infos_appareil_verifiees}
+                    donnees_combinees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    donnees_en_attente.append(donnees_combinees)
         elif "solaredge" in msg.topic:
             donnees_combinees = {k: v for k, v in jsonMsg.items() if k in variables_solaredge}
-        donnees_en_attente.append(donnees_combinees)
+            donnees_en_attente.append(donnees_combinees)
         if frequence_ecriture == 0 or (datetime.now() - dernier_ecriture).total_seconds() >= frequence_ecriture:
             ecrire_donnees()
     except json.JSONDecodeError as e:
         logging.error("Erreur de décodage JSON : %s", e)
-
-
 
 #connexion au serveur MQTT
 client = mqtt.Client()
@@ -137,5 +141,6 @@ client.connect(serveur_mqtt, port=1883, keepalive=60)
 #on s'abonne aux topics
 for topic in topics:
     client.subscribe(topic.strip(), qos=0)
+
 
 client.loop_forever()
