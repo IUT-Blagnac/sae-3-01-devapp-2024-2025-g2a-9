@@ -54,14 +54,14 @@ variables_solaredge = config.get('variables', 'variable_solaredge').split(',')
 if "global" in variables_solaredge:
     variables_solaredge = ["lastUpdateTime", "lifeTimeData", "lastYearData", "lastMonthData", "lastDayData", "currentPower", "measuredBy"]
 
-# Lire les numéros de salle depuis le fichier de configuration
+#lecture numeros de salle
 salles = [salle.strip() for salle in config.get('salles', 'rooms', fallback='').split(',')]
 if not salles or salles == [''] or salles==['global']:
     salles = None  # Si 'rooms' est vide, récupérer toutes les données
 
 logging.basicConfig(level=logging.INFO)
 
-# Variable pour stocker les données en attente d'écriture
+#stockage données en attente
 donnees_en_attente = []
 derniere_ecriture = datetime.now()
 
@@ -89,7 +89,7 @@ def verifier_donnees(donnees):
 
 def ecrire_donnees():
     global derniere_ecriture
-    # Lire les données existantes du fichier principal
+    #lecture données existantes
     if os.path.exists(fichier_sortie):
         with open(fichier_sortie, 'r') as f:
             try:
@@ -99,7 +99,7 @@ def ecrire_donnees():
     else:
         liste_donnees = []
 
-    # Lire les alertes existantes
+    #lecture alertes existantes
     if os.path.exists(fichier_alertes):
         with open(fichier_alertes, 'r') as f:
             try:
@@ -109,16 +109,16 @@ def ecrire_donnees():
     else:
         liste_alertes = []
 
-    # Traiter les nouvelles données
+    #traitement nouvelles données
     nouvelles_donnees = []
     nouvelles_alertes = []
 
     for donnees in donnees_en_attente:
         alertes = {}
-        # Parcourir chaque clé et valeur dans les données
+        #parcours du dico
         for cle, valeur in donnees.items():
             if isinstance(valeur, tuple):
-                # La valeur est un tuple (valeur, dépassement_seuil)
+                # valeur = tuple (valeur, dépassement_seuil)
                 # Nous conservons le tuple dans les données pour le fichier principal
                 # Si le seuil est dépassé, on l'ajoute aux alertes
                 if valeur[1]:  # Si dépassement de seuil
