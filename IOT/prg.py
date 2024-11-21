@@ -2,12 +2,12 @@
 
 #
 # ATTENTION le script doit être exécuté dans le même dossier que le fichier config.ini
-# True pour une des valeurs du JSON signifie que le seuil a été dépassé
-# mettre le timestamp
-# dans fichier config frequence a laquelle on ecrit
+# True pour une des valeurs du JSON signifie que le seuil a été dépassé false sinon
+# dans fichier config frequence a laquelle on ecrit en secondes
 # choisir les types de donnes, salles ou panneaux dont on recupere les données
 # valeurs minimale de production pour les panneaux solaires
-# fichier à part pour les depassements de seuils
+# fichier à part pour les depassements de seuils, uniquement les valeurs dont les seuils ont été depassés
+# variable global pour les salles
 #
 
 import paho.mqtt.client as mqtt
@@ -29,6 +29,7 @@ config.read(fichier_config)
 serveur_mqtt = config.get('MQTT', 'server')
 topics = config.get('MQTT', 'topics').split(',')
 fichier_sortie = config.get('OUTPUT', 'file')
+fichier_alertes = config.get('OUTPUT', 'alert')
 frequence_ecriture = config.getint('OUTPUT', 'frequence', fallback=0)  # Fréquence d'écriture en secondes
 
 #on lit les valeurs de seuil dans le fichier de config et on prends des valeurs par défaut (fallback) si ces données ne sont pas trouvées
@@ -53,7 +54,7 @@ if "global" in variables_solaredge:
 
 # Lire les numéros de salle depuis le fichier de configuration
 salles = [salle.strip() for salle in config.get('salles', 'rooms', fallback='').split(',')]
-if not salles or salles == ['']:
+if not salles or salles == [''] or salles==['global']:
     salles = None  # Si 'rooms' est vide, récupérer toutes les données
 
 logging.basicConfig(level=logging.INFO)
@@ -86,7 +87,7 @@ def verifier_donnees(donnees):
 
 def ecrire_donnees():
     global dernier_ecriture
-    # Lire les données existantes
+    # Lire les données existantes du fichier principal
     if os.path.exists(fichier_sortie):
         with open(fichier_sortie, 'r') as f:
             try:
@@ -96,12 +97,52 @@ def ecrire_donnees():
     else:
         liste_donnees = []
 
-    # Ajouter les nouvelles données
-    liste_donnees.extend(donnees_en_attente)
+    # Lire les alertes existantes
+    if os.path.exists(fichier_alertes):
+        with open(fichier_alertes, 'r') as f:
+            try:
+                liste_alertes = json.load(f)
+            except json.JSONDecodeError:
+                liste_alertes = []
+    else:
+        liste_alertes = []
 
-    # Écrire les données mises à jour dans le fichier JSON
+    # Traiter les nouvelles données
+    nouvelles_donnees = []
+    nouvelles_alertes = []
+
+    for donnees in donnees_en_attente:
+        alertes = {}
+        # Parcourir chaque clé et valeur dans les données
+        for cle, valeur in donnees.items():
+            if isinstance(valeur, tuple):
+                # La valeur est un tuple (valeur, dépassement_seuil)
+                # Nous conservons le tuple dans les données pour le fichier principal
+                # Si le seuil est dépassé, on l'ajoute aux alertes
+                if valeur[1]:  # Si dépassement de seuil
+                    alertes[cle] = valeur[0]
+                # Pas besoin de modifier la valeur dans 'donnees', on la garde telle quelle
+            else:
+                # Les valeurs sans seuil restent inchangées
+                pass
+        if alertes:
+            # Ajouter des informations supplémentaires si nécessaire
+            alertes["date"] = donnees.get("date", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            alertes["room"] = donnees.get("room", "")
+            nouvelles_alertes.append(alertes)
+        nouvelles_donnees.append(donnees)
+
+    # Ajouter les nouvelles données aux listes existantes
+    liste_donnees.extend(nouvelles_donnees)
+    liste_alertes.extend(nouvelles_alertes)
+
+    # Écrire les données mises à jour dans le fichier principal (en gardant les True/False)
     with open(fichier_sortie, 'w') as f:
         json.dump(liste_donnees, f, indent=4)
+
+    # Écrire les alertes dans le fichier d'alertes
+    with open(fichier_alertes, 'w') as f:
+        json.dump(liste_alertes, f, indent=4)
 
     # Réinitialiser la liste des données en attente et mettre à jour le dernier temps d'écriture
     donnees_en_attente.clear()
