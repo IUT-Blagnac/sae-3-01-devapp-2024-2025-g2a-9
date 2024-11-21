@@ -187,12 +187,4 @@ Planning des séances (demi-journée en télétravail) :
 
 Suivi de l'évaluation :
 
-ifdef::env-github[]
-image:https://docs.google.com/spreadsheets/d/e/2PACX-1vSACcYeKaH_ims3faegSLAFJ9s5_Kd9Fbyi4ODEb8BTN5OnUXWenVGhlVPo84yQDhTkTj3f9nXiluh1/pubchart?oid=935875429&format=image[link=https://docs.google.com/spreadsheets/d/e/2PACX-1vSACcYeKaH_ims3faegSLAFJ9s5_Kd9Fbyi4ODEb8BTN5OnUXWenVGhlVPo84yQDhTkTj3f9nXiluh1/pubchart?oid=935875429&format=image]
-endif::[]
 
-ifndef::env-github[]
-++++
-<iframe width="786" height="430" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR653IOTEDovCXjU49qczSZDmK5SBuM43GbpvTrhGCCSAqzpwCdRXU3ey5Y_IRRac1qUnt-iFlPxS5k/pubchart?oid=1287010292&format=interactive"></iframe>
-++++
-endif::[]
