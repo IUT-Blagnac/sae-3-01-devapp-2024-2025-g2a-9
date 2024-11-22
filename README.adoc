@@ -81,7 +81,7 @@ toc::[]
 Projet est réalisé par::
 - https://github.com/Achraf-Ameri[AMERI Mohammed]
 - https://github.com/obsqha[CARDOUAT Alexi]
-- https://github.com/Perceval00731[FUZI-BELAID Thomas]
+- https://github.com/Perceval00731[FUSI-BELAID Thomas]
 - https://github.com/MASTTTTT[GUILLUY Matt]
 
 Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
