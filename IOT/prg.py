@@ -118,37 +118,41 @@ def ecrire_donnees():
         #parcours du dico
         for cle, valeur in donnees.items():
             if isinstance(valeur, tuple):
-                # valeur = tuple (valeur, dépassement_seuil)
-                # Nous conservons le tuple dans les données pour le fichier principal
-                # Si le seuil est dépassé, on l'ajoute aux alertes
-                if valeur[1]:  # Si dépassement de seuil
+                # valeur = tuple (valeur, booleen dépassement_seuil)
+                # si le booleen de seuil est True on ajoute aux alertes
+                if valeur[1]:
                     alertes[cle] = valeur[0]
-                # Pas besoin de modifier la valeur dans 'donnees', on la garde telle quelle
             else:
-                # Les valeurs sans seuil restent inchangées
+                #si valeur n'est pas un tuple alors c'est une valeur sans seuil donc on ne verifie pas
                 pass
         if alertes:
-            # Ajouter des informations supplémentaires si nécessaire
+            #si il y a des alertes à ajouter
             alertes["date"] = donnees.get("date", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             alertes["room"] = donnees.get("room", "")
             nouvelles_alertes.append(alertes)
+
         nouvelles_donnees.append(donnees)
 
-    # Ajouter les nouvelles données aux listes existantes
+
+
+    #on a deja une liste contenant les données existantes, on ajoute les nouvelles données
     liste_donnees.extend(nouvelles_donnees)
     liste_alertes.extend(nouvelles_alertes)
 
-    # Écrire les données mises à jour dans le fichier principal (en gardant les True/False)
+    #ecriture dans le fichier principal
     with open(fichier_sortie, 'w') as f:
         json.dump(liste_donnees, f, indent=4)
 
-    # Écrire les alertes dans le fichier d'alertes
+
+    #ecriture dans le fichers d'alertes
     with open(fichier_alertes, 'w') as f:
         json.dump(liste_alertes, f, indent=4)
 
-    # Réinitialiser la liste des données en attente et mettre à jour le dernier temps d'écriture
+
+    #on efface les données en attente (puisqu'on vient de les écrire) et on mets à jour l'heure de dernière écriture
     donnees_en_attente.clear()
     derniere_ecriture = datetime.now()
+
 
 def on_message(client, userdata, msg):
     global derniere_ecriture
@@ -162,15 +166,24 @@ def on_message(client, userdata, msg):
                 donnees_capteur = jsonMsg[0]
                 infos_appareil = jsonMsg[1]
                 room = infos_appareil.get('room')
-                if salles is None or room in salles:
+                if salles is None or room in salles: #verif si no doit recup les données
                     donnees_capteur_verifiees = verifier_donnees(donnees_capteur)
-                    infos_appareil_verifiees = {k: (v, False) for k, v in infos_appareil.items() if k in variables_capteur}
-                    donnees_combinees = {**donnees_capteur_verifiees, **infos_appareil_verifiees}
+                    infos_appareil_verifiees = {}
+
+                    for k, v in infos_appareil.items():
+                        if k in variables_capteur:
+                            infos_appareil_verifiees[k] = (v, False)
+
+                    donnees_combinees = {**donnees_capteur_verifiees, **infos_appareil_verifiees} #** sert à decompresser les dictionnaires pour pouvoir les combiner
                     donnees_combinees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     donnees_en_attente.append(donnees_combinees)
+
         elif "solaredge" in msg.topic:
-            donnees_filtrees = {k: v for k, v in jsonMsg.items() if k in variables_solaredge}
-            # Vérifier le seuil de puissance minimale
+            donnees_filtrees = {}
+            for k, v in jsonMsg.items():
+                if k in variables_solaredge:
+                    donnees_filtrees[k] = v
+            #verif seuil puissance minimale
             current_power = jsonMsg.get('currentPower', {}).get('power', None)
             if current_power is not None:
                 depassement_seuil = current_power < puissance_min
