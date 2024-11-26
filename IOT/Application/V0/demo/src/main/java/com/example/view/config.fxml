@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+
+<VBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.ConfigController">
+    <children>
+        <Label text="MQTT Server" />
+        <TextField fx:id="mqttServerField" />
+        <Label text="MQTT Topics" />
+        <TextField fx:id="mqttTopicsField" />
+        <Label text="Output File" />
+        <TextField fx:id="outputFileField" />
+        <Label text="Output Alert" />
+        <TextField fx:id="outputAlertField" />
+        <Label text="Output Frequence" />
+        <TextField fx:id="outputFrequenceField" />
+        <Button text="Save" onAction="#saveConfig" />
+    </children>
+</VBox>
