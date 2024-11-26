@@ -2,10 +2,8 @@ package com.example;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class App extends Application {
@@ -15,8 +13,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            scene = new Scene(loadFXML("view/config"), 640, 480);
+            scene = new Scene(loadFXML("view/config"), 600, 800);
             stage.setScene(scene);
+            stage.setTitle("Configuration");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -27,7 +26,7 @@ public class App extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    private static javafx.scene.Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }

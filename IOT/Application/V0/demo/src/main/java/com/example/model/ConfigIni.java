@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Classe pour gérer la configuration à partir d'un fichier INI.
+ * classe pour gerer la config du fichier config.ini
  */
 public class ConfigIni {
     private Map<String, Map<String, String>> config = new HashMap<>();
@@ -82,5 +82,13 @@ public class ConfigIni {
                 writer.write("\n");
             }
         }
+    }
+
+    public Map<String, String> getSectionConfig(String section) {
+        return new HashMap<>(config.getOrDefault(section, new HashMap<>()));
+    }
+    
+    public void setSectionConfig(String section, Map<String, String> sectionConfig) {
+        config.put(section, sectionConfig);
     }
 }
