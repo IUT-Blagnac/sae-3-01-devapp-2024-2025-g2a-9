@@ -14,11 +14,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class ConfigController {
 
     @FXML
-    private TextField mqttServerField, mqttTopicsField, outputFrequenceField;
+    private TextField mqttServerField, outputFrequenceField;
     @FXML
-    private RadioButton variableSolaredgeButton, variableCapteurButton;
+    private CheckBox capteursCheckBox, solaredgeCheckBox;
     @FXML
-    private ToggleGroup variablesGroup;
+    private CheckBox temperatureCheckBox, humidityCheckBox, activityCheckBox, co2CheckBox, tvocCheckBox, illuminationCheckBox, infraredCheckBox, infraredVisibleCheckBox, pressureCheckBox;
     @FXML
     private TableView<Seuil> seuilsTableView;
     @FXML
@@ -34,24 +34,37 @@ public class ConfigController {
     @FXML
     public void initialize() {
         try {
-            String configFilePath = "../../config.ini"; // Remplacez par le chemin réel
+            System.out.println("Emplacement actuel : " + System.getProperty("user.dir"));
+            String configFilePath = "IOT/config.ini";
 
             configIni.loadConfig(configFilePath);
 
             // Section MQTT
             mqttServerField.setText(configIni.getConfigValue("MQTT", "server"));
-            mqttTopicsField.setText(configIni.getConfigValue("MQTT", "topics"));
 
-            // Variables à récupérer
-            variablesGroup = new ToggleGroup();
-            variableSolaredgeButton.setToggleGroup(variablesGroup);
-            variableCapteurButton.setToggleGroup(variablesGroup);
-            String variableChoisie = configIni.getConfigValue("variables", "variable_choisie");
-            if ("solaredge".equalsIgnoreCase(variableChoisie)) {
-                variableSolaredgeButton.setSelected(true);
-            } else if ("capteur".equalsIgnoreCase(variableChoisie)) {
-                variableCapteurButton.setSelected(true);
+            // Sélection des topics
+            String topics = configIni.getConfigValue("MQTT", "topics");
+            if (topics != null) {
+                capteursCheckBox.setSelected(topics.contains("AM107/#"));
+                solaredgeCheckBox.setSelected(topics.contains("solaredge/#"));
             }
+
+            // Sélection des valeurs à récupérer
+            String variablesCapteur = configIni.getConfigValue("variables", "variable_capteur");
+            if (variablesCapteur != null) {
+                temperatureCheckBox.setSelected(variablesCapteur.contains("temperature"));
+                humidityCheckBox.setSelected(variablesCapteur.contains("humidity"));
+                activityCheckBox.setSelected(variablesCapteur.contains("activity"));
+                co2CheckBox.setSelected(variablesCapteur.contains("co2"));
+                tvocCheckBox.setSelected(variablesCapteur.contains("tvoc"));
+                illuminationCheckBox.setSelected(variablesCapteur.contains("illumination"));
+                infraredCheckBox.setSelected(variablesCapteur.contains("infrared"));
+                infraredVisibleCheckBox.setSelected(variablesCapteur.contains("infrared_and_visible"));
+                pressureCheckBox.setSelected(variablesCapteur.contains("pressure"));
+            }
+
+            // Gérer l'état des CheckBox des valeurs à récupérer
+            handleCapteursCheckBox();
 
             // Seuils Capteur
             seuilNomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -69,6 +82,80 @@ public class ConfigController {
 
             // Fréquence
             outputFrequenceField.setText(configIni.getConfigValue("OUTPUT", "frequence"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleCapteursCheckBox() {
+        boolean isSelected = capteursCheckBox.isSelected();
+        temperatureCheckBox.setDisable(!isSelected);
+        humidityCheckBox.setDisable(!isSelected);
+        activityCheckBox.setDisable(!isSelected);
+        co2CheckBox.setDisable(!isSelected);
+        tvocCheckBox.setDisable(!isSelected);
+        illuminationCheckBox.setDisable(!isSelected);
+        infraredCheckBox.setDisable(!isSelected);
+        infraredVisibleCheckBox.setDisable(!isSelected);
+        pressureCheckBox.setDisable(!isSelected);
+    }
+
+    @FXML
+    private void saveConfig() {
+        try {
+            String configFilePath = "IOT/config.ini"; // Utilisez le même chemin qu'au chargement
+
+            // Section MQTT
+            configIni.setConfigValue("MQTT", "server", mqttServerField.getText());
+
+            // Sélection des topics
+            List<String> topics = new ArrayList<>();
+            if (capteursCheckBox.isSelected()) {
+                topics.add("AM107/by-room/#");
+            }
+            if (solaredgeCheckBox.isSelected()) {
+                topics.add("solaredge/#");
+            }
+            configIni.setConfigValue("MQTT", "topics", String.join(",", topics));
+
+            // Sélection des valeurs à récupérer
+            List<String> variablesCapteur = new ArrayList<>();
+            if (temperatureCheckBox.isSelected()) variablesCapteur.add("temperature");
+            if (humidityCheckBox.isSelected()) variablesCapteur.add("humidity");
+            if (activityCheckBox.isSelected()) variablesCapteur.add("activity");
+            if (co2CheckBox.isSelected()) variablesCapteur.add("co2");
+            if (tvocCheckBox.isSelected()) variablesCapteur.add("tvoc");
+            if (illuminationCheckBox.isSelected()) variablesCapteur.add("illumination");
+            if (infraredCheckBox.isSelected()) variablesCapteur.add("infrared");
+            if (infraredVisibleCheckBox.isSelected()) variablesCapteur.add("infrared_and_visible");
+            if (pressureCheckBox.isSelected()) variablesCapteur.add("pressure");
+            configIni.setConfigValue("variables", "variable_capteur", String.join(",", variablesCapteur));
+
+            // Seuils Capteur
+            Map<String, String> seuilsCapteur = new HashMap<>();
+            for (Seuil seuil : seuilsList) {
+                seuilsCapteur.put(seuil.getNom(), seuil.getValeur());
+            }
+            configIni.setSectionConfig("seuils_capteur", seuilsCapteur);
+
+            // Salles
+            String rooms = String.join(",", roomsList);
+            configIni.setConfigValue("salles", "rooms", rooms);
+
+            // Fréquence
+            configIni.setConfigValue("OUTPUT", "frequence", outputFrequenceField.getText());
+
+            // Sauvegarde
+            configIni.saveConfig(configFilePath);
+
+            // Confirmation
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Succès");
+            alert.setHeaderText(null);
+            alert.setContentText("La configuration a été sauvegardée avec succès.");
+            alert.showAndWait();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -129,49 +216,6 @@ public class ConfigController {
         String selectedSalle = roomsListView.getSelectionModel().getSelectedItem();
         if (selectedSalle != null) {
             roomsList.remove(selectedSalle);
-        }
-    }
-
-    @FXML
-    private void saveConfig() {
-        try {
-            String configFilePath = "path/to/config.ini"; // Remplacez par le chemin réel
-
-            // Section MQTT
-            configIni.setConfigValue("MQTT", "server", mqttServerField.getText());
-            configIni.setConfigValue("MQTT", "topics", mqttTopicsField.getText());
-
-            // Variables à récupérer
-            RadioButton selectedRadioButton = (RadioButton) variablesGroup.getSelectedToggle();
-            String variableChoisie = selectedRadioButton.getText().toLowerCase();
-            configIni.setConfigValue("variables", "variable_choisie", variableChoisie);
-
-            // Seuils Capteur
-            Map<String, String> seuilsCapteur = new HashMap<>();
-            for (Seuil seuil : seuilsList) {
-                seuilsCapteur.put(seuil.getNom(), seuil.getValeur());
-            }
-            configIni.setSectionConfig("seuils_capteur", seuilsCapteur);
-
-            // Salles
-            String rooms = String.join(",", roomsList);
-            configIni.setConfigValue("salles", "rooms", rooms);
-
-            // Fréquence
-            configIni.setConfigValue("OUTPUT", "frequence", outputFrequenceField.getText());
-
-            // Sauvegarde
-            configIni.saveConfig(configFilePath);
-
-            // Confirmation
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText(null);
-            alert.setContentText("La configuration a été sauvegardée avec succès.");
-            alert.showAndWait();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
