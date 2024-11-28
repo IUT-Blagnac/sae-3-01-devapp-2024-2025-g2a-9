@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand-lg navbar-light bg-light">
+<header class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
         
         <button id="menu-btn">
@@ -7,6 +7,8 @@
 
         <!-- Inclure le menu -->
         <?php include 'menu.php'; ?>
+
+        <div class="overlay"></div>
         
         <!-- Recherche -->
         <form class="d-flex search-form w-50">
@@ -15,26 +17,25 @@
 
         <!-- Logo -->
         <a href="" class="navbar-brand">
-            <img src="logo.png" alt="Logo de l'entreprise" class="logo">
+            <img src="image/logo_nautic.png" alt="Logo de l'entreprise" class="logo">
         </a>
+        <div class="navbar-text ms-auto">
+            NAUTIC HORIZON
+        </div>
 
         <!-- Liens -->
         <div class="d-flex">
-            <a href="#" class="header-item">Magasin</a>
-            <a href="#" class="header-item">Compte</a>
+            <a href="#" class="header-item header-link">Magasin</a>
+            <a href="#" class="header-item header-link">Compte</a>
 
             <!-- Bouton de langue (avec globe simpliste) -->
-            <button class="btn btn-link header-item no-border" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="globe-icon">&#127758;</span> <!-- Globe simpliste en HTML (Unicode) -->
+            <button class="btn btn-link header-item">
+                <img src="image/globe.png" alt="Langue" id="globe-icon">
             </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="?lang=fr">Français</a>
-                <a class="dropdown-item" href="?lang=en">English</a>
-            </div>
 
             <!-- Bouton Paramètres -->
             <button class="btn btn-link header-item no-border">
-                <i class="bi bi-gear"></i> <!-- Icône des paramètres -->
+                <img src="image/parametre.png" alt="Paramètres" id="parametre-icon">
             </button>
         </div>
     </div>

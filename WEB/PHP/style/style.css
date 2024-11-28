@@ -1,136 +1,200 @@
 /* Style général pour l'en-tête */
 header {
-    background-color: #f8f9fa; /* Couleur de fond clair */
+    background-color: #FEF7FF; /* Couleur de fond clair */
     padding: 10px 0;
 }
 
-.logo {
-    height: 40px; /* Ajuste la hauteur du logo */
-    margin-left: 20px; /* Ajoute une marge à gauche */
+body {
+    background-color: #FEF7FF; /* Couleur de fond clair */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Assure que la taille des éléments inclut les bordures et marges */
 }
 
+/* Logo */
+.logo {
+    height: 60px;
+    margin-left: 20px;
+    display: block; /* Évite tout comportement inattendu */
+}
+
+/* Texte de la navbar */
+.navbar-text {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Éléments de la barre de navigation */
 .header-item {
     margin: 20px;
+    padding-top: 10px;
 }
 
-/* Design du bouton de menu (3 points) */
-.navbar-toggler {
-    border: none; /* Enlève la bordure */
+/* Personnalisation du lien */
+.header-link {
+    padding-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease;
+    display: inline-block; /* Pour éviter un changement de mise en page */
 }
 
-/* Ajout de marges aux éléments du header */
+/* Effet au survol - zoom */
+.header-link:hover {
+    transform: scale(1.1);
+    text-decoration: none;
+    color: #333;
+}
+
+/* Marges et disposition des éléments */
 .navbar .container-fluid {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    position: relative;
+}
+
+.navbar-brand {
+    position: absolute;
+    left: 45%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.navbar-text {
+    position: absolute;
+    left: 55%;
+    transform: translateX(-50%);
+    text-align: center;
 }
 
 form.d-flex {
-    margin-left: auto;
+    margin-left: 100px;
     margin-right: auto;
     max-width: 400px;
 }
 
-/* Icônes de la barre de navigation */
-.navbar .btn-outline-secondary i {
-    font-size: 20px;
+/* Pour les boutons contenant les icônes (globe et paramètres) */
+button:focus, 
+button:active, 
+button:focus-visible {
+    outline: none !important; /* Enlève le contour bleu */
+    border: none !important;  /* Enlève la bordure */
+    box-shadow: none !important; /* Enlève l'ombre générée par le focus */
 }
 
-/* Option d'affichage pour les éléments du menu déroulant */
-.dropdown-menu {
-    right: 0;
-    left: auto;
+/* Pour les icônes globe et paramètres */
+#globe-icon,
+#parametre-icon {
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 30px; /* Ajuste la taille de l'image */
+    height: auto; /* Empêche l'image de se déformer */
+    outline: none; /* Enlève le contour bleu */
+    border: none; /* Enlève la bordure */
 }
 
-/* Pour le globe simpliste */
-.globe-icon {
-    font-size: 30px; /* Taille de l'icône */
-    margin-right: 20px;
-    margin-left: 20px;
+/* Pour éviter tout changement de mise en page sur focus ou clic */
+button {
+    padding: 0;
+    border: none;
+    background: transparent;
+    outline: none;
 }
 
-/* Rendre les éléments responsive sur mobile */
+/* Rendre les éléments responsive uniquement sous certaines tailles */
 @media (max-width: 768px) {
     .navbar .d-flex {
-        display: none; /* Cache les liens de navigation en dessous de la taille "lg" */
+        display: none;
     }
 }
 
-.bi {
-    font-size: 30px;  /* Ajuster la taille de l'icône si nécessaire */
-}
-
-/* Style pour les boutons sans bordure et sans fond */
-.no-border {
-    border: none;  /* Retirer la bordure */
-    background: transparent; /* Retirer le fond */
-    padding: 0;  /* Retirer les espacements internes */
-    margin: 0;   /* Retirer les marges autour des boutons */
-}
-
-/* Style du menu qui sera caché par défaut */
+/* Style du menu caché par défaut */
 .sidebar {
-    height: 100%; /* Prend toute la hauteur de la page */
-    width: 250px; /* Largeur du menu */
-    position: fixed; /* Le menu est fixé sur le côté gauche de l'écran */
+    height: 100%;
+    width: 250px;
+    position: fixed;
     top: 0;
-    left: -250px; /* Le menu est initialement caché à gauche */
-    background-color: #333; /* Couleur de fond du menu */
-    overflow-x: hidden; /* Empêche le défilement horizontal */
-    padding-top: 60px; /* Espacement au sommet */
-    transition: left 0.3s ease; /* Animation pour faire glisser le menu depuis la gauche */
+    left: -250px;
+    background-color: #FEF7FF;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 2;
 }
 
-/* Style des liens dans le menu */
+/* Liens du menu */
 .sidebar a {
-    margin-top: 10px; /* Espacement entre les éléments */
+    margin-top: 10px;
     padding: 8px 16px;
     text-decoration: none;
     font-size: 18px;
-    color: white;
+    color: black;
     display: block;
     transition: background-color 0.3s ease;
 }
 
 .sidebar a:hover {
-    background-color: #ddd; /* Couleur au survol des éléments */
-    color: black; /* Changer la couleur du texte au survol */
+    background-color: #ddd;
 }
 
-/* Cibler spécifiquement le premier élément du menu */
+/* Décalage du premier élément */
 .sidebar a:first-child {
-    margin-top: 50px; /* Décale le premier élément plus bas */
+    margin-top: 50px;
 }
 
-/* Lorsqu'on active la classe 'active', le menu s'affiche */
+/* Menu actif (visible) */
 .sidebar.active {
-    left: 0; /* Affiche le menu en déplaçant le menu à gauche */
+    left: 0;
 }
 
+/* Bouton du menu */
 #menu-btn {
     cursor: pointer;
     background: transparent;
     border: 2px solid transparent;
+    border-radius: 5px;
     padding: 8px;
     color: #000;
     position: absolute;
     top: 10px;
-    left: 20px;
+    left: 10px;
     z-index: 1000;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
     outline: none;
 }
-
 
 #menu-btn img {
     width: 40px;
     height: auto;
 }
 
+/* Effet de survol du bouton du menu */
 #menu-btn:hover {
-    border-color: #bbb;
+    background-color: #bbb;
 }
 
 #menu-btn:active {
     border-color: #999;
+}
+
+/* Style pour l'overlay sombre */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1;
+}
+
+.overlay.active {
+    visibility: visible;
+    opacity: 1;
 }
