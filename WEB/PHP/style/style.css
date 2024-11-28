@@ -1,0 +1,136 @@
+/* Style général pour l'en-tête */
+header {
+    background-color: #f8f9fa; /* Couleur de fond clair */
+    padding: 10px 0;
+}
+
+.logo {
+    height: 40px; /* Ajuste la hauteur du logo */
+    margin-left: 20px; /* Ajoute une marge à gauche */
+}
+
+.header-item {
+    margin: 20px;
+}
+
+/* Design du bouton de menu (3 points) */
+.navbar-toggler {
+    border: none; /* Enlève la bordure */
+}
+
+/* Ajout de marges aux éléments du header */
+.navbar .container-fluid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+form.d-flex {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+}
+
+/* Icônes de la barre de navigation */
+.navbar .btn-outline-secondary i {
+    font-size: 20px;
+}
+
+/* Option d'affichage pour les éléments du menu déroulant */
+.dropdown-menu {
+    right: 0;
+    left: auto;
+}
+
+/* Pour le globe simpliste */
+.globe-icon {
+    font-size: 30px; /* Taille de l'icône */
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+/* Rendre les éléments responsive sur mobile */
+@media (max-width: 768px) {
+    .navbar .d-flex {
+        display: none; /* Cache les liens de navigation en dessous de la taille "lg" */
+    }
+}
+
+.bi {
+    font-size: 30px;  /* Ajuster la taille de l'icône si nécessaire */
+}
+
+/* Style pour les boutons sans bordure et sans fond */
+.no-border {
+    border: none;  /* Retirer la bordure */
+    background: transparent; /* Retirer le fond */
+    padding: 0;  /* Retirer les espacements internes */
+    margin: 0;   /* Retirer les marges autour des boutons */
+}
+
+/* Style du menu qui sera caché par défaut */
+.sidebar {
+    height: 100%; /* Prend toute la hauteur de la page */
+    width: 250px; /* Largeur du menu */
+    position: fixed; /* Le menu est fixé sur le côté gauche de l'écran */
+    top: 0;
+    left: -250px; /* Le menu est initialement caché à gauche */
+    background-color: #333; /* Couleur de fond du menu */
+    overflow-x: hidden; /* Empêche le défilement horizontal */
+    padding-top: 60px; /* Espacement au sommet */
+    transition: left 0.3s ease; /* Animation pour faire glisser le menu depuis la gauche */
+}
+
+/* Style des liens dans le menu */
+.sidebar a {
+    margin-top: 10px; /* Espacement entre les éléments */
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #ddd; /* Couleur au survol des éléments */
+    color: black; /* Changer la couleur du texte au survol */
+}
+
+/* Cibler spécifiquement le premier élément du menu */
+.sidebar a:first-child {
+    margin-top: 50px; /* Décale le premier élément plus bas */
+}
+
+/* Lorsqu'on active la classe 'active', le menu s'affiche */
+.sidebar.active {
+    left: 0; /* Affiche le menu en déplaçant le menu à gauche */
+}
+
+#menu-btn {
+    cursor: pointer;
+    background: transparent;
+    border: 2px solid transparent;
+    padding: 8px;
+    color: #000;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    z-index: 1000;
+    transition: border-color 0.3s ease;
+    outline: none;
+}
+
+
+#menu-btn img {
+    width: 40px;
+    height: auto;
+}
+
+#menu-btn:hover {
+    border-color: #bbb;
+}
+
+#menu-btn:active {
+    border-color: #999;
+}
