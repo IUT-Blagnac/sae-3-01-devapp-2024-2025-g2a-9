@@ -1,42 +1,57 @@
-<header class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
-        
-        <button id="menu-btn">
-            <img src="image/menu.png" alt="Menu" />
-        </button>
+<header class="mb-4 fixed-top">
+    <div class="p-3 text-center">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Left elements -->
 
-        <!-- Inclure le menu -->
-        <?php include 'menu.php'; ?>
+                <div class="col-md-5 d-flex justify-content-center justify-content-md-start align-items-center d-none d-lg-flex">
+                    <button id="menu-btn">
+                        <img src="image/menu.png" alt="Menu" />
+                    </button>
 
-        <div class="overlay"></div>
-        
-        <!-- Recherche -->
-        <form class="d-flex search-form w-50">
-            <input class="form-control" type="search" placeholder="Recherche" aria-label="Search">
-        </form>
+                    <?php include 'menu.php'; ?>
 
-        <!-- Logo -->
-        <a href="" class="navbar-brand">
-            <img src="image/logo_nautic.png" alt="Logo de l'entreprise" class="logo">
-        </a>
-        <div class="navbar-text ms-auto">
-            NAUTIC HORIZON
-        </div>
+                    <div class="overlay"></div>
 
-        <!-- Liens -->
-        <div class="d-flex">
-            <a href="#" class="header-item header-link">Magasin</a>
-            <a href="#" class="header-item header-link">Compte</a>
+                    <form class="d-flex input-group w-50 mt-1 mb-3 mb-md-0">
+                        <input type="search" class="search-bar form-control rounded" placeholder="Search" />
+                    </form>
+                </div>       
 
-            <!-- Bouton de langue (avec globe simpliste) -->
-            <button class="btn btn-link header-item">
-                <img src="image/globe.png" alt="Langue" id="globe-icon">
-            </button>
+                <!-- Left elements -->
 
-            <!-- Bouton Paramètres -->
-            <button class="btn btn-link header-item no-border">
-                <img src="image/parametre.png" alt="Paramètres" id="parametre-icon">
-            </button>
+
+                <!-- Center elements -->
+
+                <!-- Logo -->
+                <div class="col-md-2 d-none d-lg-block">
+                    <a href="#!" class="ms-md-2">
+                        <img src="image/logo_nautic.png" alt="Logo de l'entreprise" class="img-fluid" />
+                    </a>
+                </div>
+
+                <!-- Center elements -->
+
+
+                <!-- Right elements -->
+
+                <div class="col-lg-5 d-flex justify-content-center justify-content-md-end align-items-center">
+                    <a href="#" class="nav-link">Magasin</a>
+                    <a href="#" class="nav-link">Compte</a>
+
+                    <!-- Bouton de langue -->
+                    <button class="btn nav-link">
+                        <img src="image/globe.png" alt="Langue" id="globe-icon" />
+                    </button>
+
+                    <!-- Bouton Paramètres -->
+                    <button class="btn nav-link">
+                        <img src="image/panier.png" alt="Panier" id="panier-icon" />
+                    </button>
+                </div>
+
+                <!-- Right elements -->
+            </div>
         </div>
     </div>
 </header>

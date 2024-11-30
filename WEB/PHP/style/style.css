@@ -1,88 +1,9 @@
-/* Style général pour l'en-tête */
 header {
     background-color: #FEF7FF; /* Couleur de fond clair */
-    padding: 10px 0;
 }
 
 body {
     background-color: #FEF7FF; /* Couleur de fond clair */
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; /* Assure que la taille des éléments inclut les bordures et marges */
-}
-
-/* Logo */
-.logo {
-    height: 60px;
-    margin-left: 20px;
-    display: block; /* Évite tout comportement inattendu */
-}
-
-/* Texte de la navbar */
-.navbar-text {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-/* Éléments de la barre de navigation */
-.header-item {
-    margin: 20px;
-    padding-top: 10px;
-}
-
-/* Personnalisation du lien */
-.header-link {
-    padding-top: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    text-decoration: none;
-    transition: transform 0.3s ease, color 0.3s ease;
-    display: inline-block; /* Pour éviter un changement de mise en page */
-}
-
-/* Effet au survol - zoom */
-.header-link:hover {
-    transform: scale(1.1);
-    text-decoration: none;
-    color: #333;
-}
-
-/* Marges et disposition des éléments */
-.navbar .container-fluid {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.navbar-brand {
-    position: absolute;
-    left: 45%;
-    transform: translateX(-50%);
-    text-align: center;
-}
-
-.navbar-text {
-    position: absolute;
-    left: 55%;
-    transform: translateX(-50%);
-    text-align: center;
-}
-
-form.d-flex {
-    margin-left: 100px;
-    margin-right: auto;
-    max-width: 400px;
-}
-
-/* Pour les boutons contenant les icônes (globe et paramètres) */
-button:focus, 
-button:active, 
-button:focus-visible {
-    outline: none !important; /* Enlève le contour bleu */
-    border: none !important;  /* Enlève la bordure */
-    box-shadow: none !important; /* Enlève l'ombre générée par le focus */
 }
 
 /* Pour les icônes globe et paramètres */
@@ -92,23 +13,28 @@ button:focus-visible {
     margin-left: 10px;
     width: 30px; /* Ajuste la taille de l'image */
     height: auto; /* Empêche l'image de se déformer */
-    outline: none; /* Enlève le contour bleu */
-    border: none; /* Enlève la bordure */
+}
+
+/* Pour les boutons contenant les icônes (globe et paramètres) */
+button:focus, 
+button:active, 
+button:focus-visible {
+    box-shadow: none !important; /* Enlève l'ombre générée par le focus */
 }
 
 /* Pour éviter tout changement de mise en page sur focus ou clic */
-button {
-    padding: 0;
-    border: none;
-    background: transparent;
-    outline: none;
+.nav-link {
+    margin-right: 20px;
+    color: #333;
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Rendre les éléments responsive uniquement sous certaines tailles */
-@media (max-width: 768px) {
-    .navbar .d-flex {
-        display: none;
-    }
+/* Effet au survol - zoom */
+.nav-link:hover {
+    transform: scale(1.1);
+    text-decoration: none;
+    color: #333;
 }
 
 /* Style du menu caché par défaut */
@@ -152,13 +78,13 @@ button {
 
 /* Bouton du menu */
 #menu-btn {
+    margin-right: 25px;
     cursor: pointer;
     background: transparent;
     border: 2px solid transparent;
     border-radius: 5px;
     padding: 8px;
     color: #000;
-    position: absolute;
     top: 10px;
     left: 10px;
     z-index: 1000;
