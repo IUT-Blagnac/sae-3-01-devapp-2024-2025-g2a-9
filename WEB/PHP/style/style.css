@@ -1,83 +1,35 @@
-header {
-    background-color: #FEF7FF; /* Couleur de fond clair */
+/* Général */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Évite le défilement horizontal */
 }
 
 body {
-    background-color: #FEF7FF; /* Couleur de fond clair */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Pour les icônes globe et paramètres */
-#globe-icon,
-#parametre-icon {
-    margin-right: 10px;
-    margin-left: 10px;
-    width: 30px; /* Ajuste la taille de l'image */
-    height: auto; /* Empêche l'image de se déformer */
+main {
+    flex: 1;
 }
 
-/* Pour les boutons contenant les icônes (globe et paramètres) */
-button:focus, 
-button:active, 
-button:focus-visible {
-    box-shadow: none !important; /* Enlève l'ombre générée par le focus */
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 20px;
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-/* Pour éviter tout changement de mise en page sur focus ou clic */
-.nav-link {
-    margin-right: 20px;
-    color: #333;
-    text-decoration: none;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-/* Effet au survol - zoom */
-.nav-link:hover {
-    transform: scale(1.1);
-    text-decoration: none;
-    color: #333;
-}
-
-/* Style du menu caché par défaut */
-.sidebar {
-    height: 100%;
-    width: 250px;
-    position: fixed;
-    top: 0;
-    left: -250px;
-    background-color: #FEF7FF;
-    overflow-x: hidden;
-    padding-top: 60px;
-    transition: left 0.3s ease;
-    z-index: 2;
-}
-
-/* Liens du menu */
-.sidebar a {
-    margin-top: 10px;
-    padding: 8px 16px;
-    text-decoration: none;
-    font-size: 18px;
-    color: black;
-    display: block;
-    transition: background-color 0.3s ease;
-}
-
-.sidebar a:hover {
-    background-color: #ddd;
-}
-
-/* Décalage du premier élément */
-.sidebar a:first-child {
-    margin-top: 50px;
-}
-
-/* Menu actif (visible) */
-.sidebar.active {
-    left: 0;
-}
-
-/* Bouton du menu */
-#menu-btn {
+/* Bouton menu */
+.menu-btn {
     margin-right: 25px;
     cursor: pointer;
     background: transparent;
@@ -91,53 +43,180 @@ button:focus-visible {
     transition: border-color 0.3s ease, background-color 0.3s ease;
     outline: none;
 }
-
-#menu-btn img {
-    width: 40px;
-    height: auto;
-}
-
-
-#menu-btn:hover {
+.menu-btn:hover {
     background-color: #bbb;
 }
 
-#menu-btn:active {
-    border-color: #999;
+/* Barre de recherche */
+.search-form {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+.search-input {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 15px;
+    width: 400px;
 }
 
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    z-index: 1;
+/* Logo et nom d'entreprise */
+.header-brand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1;
+    position: relative;
+    margin-left: 15px;
+}
+.header-brand a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.header-logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
 }
 
-.overlay.active {
-    visibility: visible;
-    opacity: 1;
-}
-
-html, body {
-    height: 100%;
+/* Liens à droite */
+.header-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
     margin: 0;
+    padding: 0;
+    margin-right: 20px;
+}
+.header-links .nav-link {
+    text-decoration: none;
+    color: #333;
+    margin-left: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+.header-links .nav-link:hover {
+    transform: scale(1.1);
+    text-decoration: none;
+    color: #007bff;
+}
+
+/* Responsivité : Header */
+@media (max-width: 768px) {
+    .header {
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+    .menu-btn {
+        margin: 10px 0;
+    }
+
+    .header-brand {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .search-form {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%; /* Barre de recherche s'adapte à la largeur */
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-input {
+        width: 90%; /* Largeur maximale sur mobile */
+    }
+
+    .header-links {
+        margin-top: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .header-links .nav-link {
+        margin: 5px;
+    }
+}
+
+
+/* Offcanvas (Sidebar en bootstrap) */
+.offcanvas {
+    width: 250px;
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+.offcanvas-body {
     padding: 0;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
+.sidebar-nav {
+    padding: 0;
+    list-style: none;
+    margin-top: 20px;
+}
+a.sidebar-link {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #343a40;
+    border-left: 3px solid transparent;
+}
+a.sidebar-link:hover {
+    background-color: #c5c5c5;
+    text-decoration: none;
+    border-left: 3px solid #007bff;
 }
 
-main {
-    flex: 1;
+/* Sous-niveaux avec indentation */
+.sidebar-dropdown {
+    margin-left: 20px;
+}
+
+
+.sidebar-link[data-bs-toggle="collapse"] {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.sidebar-link[data-bs-toggle="collapse"]::after {
+    content: '';
+    border: solid #343a40;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 4px;
+    position: absolute;
+    right: 15px; 
+    top: 50%;
+    transform: translateY(-50%) rotate(-135deg);
+    transition: transform 0.3s ease;
+}
+.sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: translateY(-50%) rotate(45deg);
+}
+.sidebar-link.active {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Responsivité : Sidebar */
+@media (max-width: 768px) {
+    .offcanvas {
+        width: 80%; /* Réduction de la taille sur mobile */
+    }
+
+    .sidebar-dropdown {
+        margin-left: 15px; /* Moins d'indentation sur petits écrans */
+    }
+
+    a.sidebar-link {
+        font-size: 0.9rem; /* Texte plus petit pour économiser de l'espace */
+    }
 }
 
 footer {
