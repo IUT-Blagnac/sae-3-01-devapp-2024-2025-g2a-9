@@ -7,6 +7,7 @@ require_once "./include/head.php";
     $pageH1 = "Mon Site E-Commerce";
     $pageUnderTitle = "";
     require_once "./include/header.php";
+    require_once "./include/menu.php";
     ?>
     <!-- Contenu principal -->
     <main role="main" class="container my-5">
