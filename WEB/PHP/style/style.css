@@ -30,22 +30,32 @@ main {
 
 /* Bouton menu */
 .menu-btn {
+    display: flex;
+    align-items: center; /* Centre verticalement l'icône */
+    justify-content: center; /* Centre horizontalement l'icône */
+    width: 50px;
+    height: 50px;
     margin-right: 25px;
     cursor: pointer;
     background: transparent;
     border: 2px solid transparent;
     border-radius: 5px;
-    padding: 8px;
+    padding: 0px; /* Aucun espace supplémentaire */
     color: #000;
-    top: 10px;
-    left: 10px;
     z-index: 1000;
     transition: border-color 0.3s ease, background-color 0.3s ease;
     outline: none;
 }
+
 .menu-btn:hover {
     background-color: #bbb;
 }
+
+/* Taille de l'icône dans le bouton */
+.menu-btn i {
+    font-size: 40px;
+}
+
 
 /* Barre de recherche */
 .search-form {
@@ -71,7 +81,7 @@ main {
 .header-brand a {
     text-decoration: none;
     color: black;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 .header-logo {
@@ -93,7 +103,7 @@ main {
     text-decoration: none;
     color: #333;
     margin-left: 15px;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -103,6 +113,10 @@ main {
     transform: scale(1.1);
     text-decoration: none;
     color: #007bff;
+}
+
+.nav-link i {
+    font-size: 30px;
 }
 
 /* Responsivité : Header */
