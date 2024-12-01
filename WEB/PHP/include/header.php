@@ -12,7 +12,7 @@
 
         <!-- Logo et nom de l'entreprise -->
         <div class="header-brand ms-3">
-            <a href="#"><img src="../image/logoNautic.png" alt="Logo" class="header-logo"></a>
+            <a href="#"><img src="image/logoNautic.png" alt="Logo" class="header-logo"></a>
             <a href="#" class="d-none d-md-inline text-decoration-none fw-bold">Nautic Horizon</a>
         </div>
 
