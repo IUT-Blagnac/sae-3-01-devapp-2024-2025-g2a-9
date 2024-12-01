@@ -1,38 +1,27 @@
-<header class="mb-4 fixed-top bg-light">
-    <div class="p-3 text-center">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Left elements -->
-                <div class="col-md-5 d-flex justify-content-center justify-content-md-start align-items-center d-none d-lg-flex">
-                    <button id="menu-btn">
-                        <img src="image/menu.png" alt="Menu" />
-                    </button>
-                    <?php include 'menu.php'; ?>
-                    <div class="overlay"></div>
-                    <form class="d-flex input-group w-50 mt-1 mb-3 mb-md-0">
-                        <input type="search" class="search-bar form-control rounded" placeholder="Search" />
-                    </form>
-                </div>
-                <!-- Center elements -->
-                <div class="col-md-2 d-none d-lg-block">
-                    <a href="#!" class="ms-md-2">
-                        <img src="image/logo_nautic.png" alt="Logo de l'entreprise" class="img-fluid" />
-                    </a>
-                </div>
-                <!-- Right elements -->
-                <div class="col-lg-5 d-flex justify-content-center justify-content-md-end align-items-center">
-                    <a href="#" class="nav-link">Magasin</a>
-                    <a href="#" class="nav-link">Compte</a>
-                    <!-- Bouton de langue -->
-                    <button class="btn nav-link">
-                        <img src="image/globe.png" alt="Langue" id="globe-icon" />
-                    </button>
-                    <!-- Bouton Paramètres -->
-                    <button class="btn nav-link">
-                        <img src="image/panier.png" alt="Panier" id="panier-icon" />
-                    </button>
-                </div>
-            </div>
+<header class="header bg-white border-bottom">
+    <div class="container-fluid d-flex align-items-center flex-wrap">
+        <!-- Bouton menu -->
+        <button class="menu-btn me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Barre de recherche -->
+        <form class="search-form flex-grow-1">
+            <input class="search-input form-control" type="search" placeholder="Rechercher" aria-label="Search">
+        </form>
+
+        <!-- Logo et nom de l'entreprise -->
+        <div class="header-brand ms-3">
+            <a href="#"><img src="../image/logoNautic.png" alt="Logo" class="header-logo"></a>
+            <a href="#" class="d-none d-md-inline text-decoration-none fw-bold">Nautic Horizon</a>
         </div>
+
+        <!-- Liens à droite -->
+        <ul class="header-links list-unstyled d-flex align-items-center ms-auto">
+            <li><a class="nav-link" href="#">Magasins</a></li>
+            <li><a class="nav-link" href="#">Compte</a></li>
+            <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
+            <li><a class="nav-link" href="#"><i class="bi bi-cart"></i></a></li>
+        </ul>
     </div>
 </header>
