@@ -97,7 +97,7 @@ button:focus-visible {
     height: auto;
 }
 
-/* Effet de survol du bouton du menu */
+
 #menu-btn:hover {
     background-color: #bbb;
 }
@@ -106,7 +106,7 @@ button:focus-visible {
     border-color: #999;
 }
 
-/* Style pour l'overlay sombre */
+
 .overlay {
     position: fixed;
     top: 0;
@@ -123,4 +123,28 @@ button:focus-visible {
 .overlay.active {
     visibility: visible;
     opacity: 1;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+    margin: 0;
 }
