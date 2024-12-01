@@ -150,6 +150,7 @@ main {
     width: 250px;
     background-color: #f8f9fa;
     color: #343a40;
+    transition: transform 0.5s ease;
 }
 .offcanvas-body {
     padding: 0;
@@ -160,6 +161,7 @@ main {
     list-style: none;
     margin-top: 20px;
 }
+
 a.sidebar-link {
     display: block;
     padding: 10px 15px;
