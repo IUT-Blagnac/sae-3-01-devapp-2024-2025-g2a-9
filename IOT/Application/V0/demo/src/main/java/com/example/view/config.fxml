@@ -46,7 +46,7 @@
         </HBox>
 
         <!-- Gestion des salles -->
-        <Label text="Salles" />
+        <Label text="Salles (tapez global pour sélectionner toutes les salles)" />
         <ListView fx:id="roomsListView" prefHeight="100" />
         <HBox spacing="10">
             <Button text="Ajouter Salle" onAction="#ajouterSalle" />
@@ -54,7 +54,7 @@
         </HBox>
 
         <!-- Fréquence -->
-        <Label text="Fréquence" />
+        <Label text="Fréquence d'écriture (en secondes)" />
         <TextField fx:id="outputFrequenceField" />
 
         <!-- Bouton de sauvegarde -->

@@ -41,6 +41,7 @@ public class ConfigController {
 
             // Section MQTT
             mqttServerField.setText(configIni.getConfigValue("MQTT", "server"));
+            mqttServerField.setDisable(true);
 
             // Sélection des topics
             String topics = configIni.getConfigValue("MQTT", "topics");
