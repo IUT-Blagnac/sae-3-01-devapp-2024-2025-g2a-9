@@ -174,7 +174,7 @@ Planning des séances (demi-journée en télétravail) :
 - Version courante : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[v0]
 - Backlog général : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[BL Général]
 - Backlog du sprint actuel : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[BL Sprint]
-- Ordres du jour et les CR des réunions : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Réunions]
+- Ordres du jour et les CR des réunions : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/tree/master/COM/[Réunions]
 - https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Utilisateur IOT]
 - https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Technique IOT] 
 - https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Cahier de Recettes IOT (Tests)]
