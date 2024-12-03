@@ -29,21 +29,25 @@
                 <form method="post" action="traitConnexion.php">
                     <!-- Mail -->
                     <label for="inputMail" class="form-label">Adresse E-mail</label>
-                    <input type="email" class="form-control" id="inputMail" name="email" value="<?php echo htmlentities($cookie); ?>" require /><br>
+                    <input type="email" class="form-control w-50" id="inputMail" name="email" value="<?php echo htmlentities($cookie); ?>" require /><br>
                     <!-- Mot de passe -->
                     <label for="inputPwd" class="form-label">Mot de passe</label>
-                    <input type="password" class="form-control" id="inputPwd" name="pwd" require/><br>
+                    <input type="password" class="form-control w-50" id="inputPwd" name="pwd" require/><br>
                     <!-- Checkbox -->
-                    <div class="col d-flex justify-content-center">
+                    <div class="col d-flex justify-content-evenly">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="rememberMe" name="cookie"/>
-                            <label class="form-check-label" for="rememberMe">Se souvenir de moi </label><br/><br/>
+                            <label class="form-check-label" for="rememberMe">Se souvenir de moi </label>
                         </div>
+                        <!-- Fonctionnalité will -->
+                        <a href="#">Mot de passe oublié ?</a>
+                    </div><br>
+                    <!-- Bouton confirm -->
+                    <button type="submit" name="submit" class="btn btn-primary">Se connecter</button><br><br>
+                    <!-- Inscription -->
+                    <div>
+                        <p>Pas de compte ? <a href="#">S'inscrire</a></p>
                     </div>
-                    <!-- Oublie mot de passe peut etre plus tard :
-                        
-                    -->
-                    <button type="submit" name="submit" class="btn btn-primary">Se connecter</button>
                 </form>
             </center>
         </main>
