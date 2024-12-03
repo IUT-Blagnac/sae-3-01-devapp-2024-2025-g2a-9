@@ -20,7 +20,10 @@
             <center>
                 <?php
                 if(isset($_GET['msgErreur'])){
-                    echo '<h2>'.htmlentities($_GET['msgErreur']).'</h2>';
+                    echo '<div class="alert alert-danger" role="alert">';
+                    echo '<strong>Un problème est survenu</strong><br>';
+                    echo htmlentities($_GET['msgErreur']);
+                    echo '</div>';
                 }
                 if (!empty($_COOKIE['user_email'])) {
                     $cookie = $_COOKIE['user_email'];
