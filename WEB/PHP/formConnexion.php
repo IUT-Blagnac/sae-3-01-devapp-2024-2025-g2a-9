@@ -1,4 +1,7 @@
-<?php require_once "./include/head.php" ?>
+<?php 
+    $pageTitle = "Connexion";
+    require_once "./include/head.php" 
+?>
 
     <!-- En-tête -->
     <header class="header bg-white border-bottom">
@@ -39,14 +42,14 @@
                             <input class="form-check-input" type="checkbox" value="" id="rememberMe" name="cookie"/>
                             <label class="form-check-label" for="rememberMe">Se souvenir de moi </label>
                         </div>
-                        <!-- Fonctionnalité will -->
+                        <!-- Fonctionnalité could -->
                         <a href="#">Mot de passe oublié ?</a>
                     </div><br>
                     <!-- Bouton confirm -->
                     <button type="submit" name="submit" class="btn btn-primary">Se connecter</button><br><br>
                     <!-- Inscription -->
                     <div>
-                        <p>Pas de compte ? <a href="#">S'inscrire</a></p>
+                        <p>Pas de compte ? <a href="formCreer.php">S'inscrire</a></p>
                     </div>
                 </form>
             </center>
