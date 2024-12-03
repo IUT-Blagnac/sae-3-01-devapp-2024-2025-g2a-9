@@ -1,4 +1,18 @@
 -- ----------------------------------------------------------------------------- 
+--       AUTO_INCREMENT RESET
+-- ----------------------------------------------------------------------------- 
+
+ALTER TABLE CATEGORIE AUTO_INCREMENT = 1
+ALTER TABLE POINTRELAIS AUTO_INCREMENT = 1
+ALTER TABLE CLIENT AUTO_INCREMENT = 1
+ALTER TABLE PRODUIT AUTO_INCREMENT = 1
+ALTER TABLE ENSEMBLE AUTO_INCREMENT = 1
+ALTER TABLE PAIEMENT AUTO_INCREMENT = 1
+ALTER TABLE COMMANDE AUTO_INCREMENT = 1
+ALTER TABLE AVIS AUTO_INCREMENT = 1
+
+
+-- ----------------------------------------------------------------------------- 
 --       TABLE : CATEGORIE
 -- ----------------------------------------------------------------------------- 
 
