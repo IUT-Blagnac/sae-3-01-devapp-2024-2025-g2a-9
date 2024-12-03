@@ -185,6 +185,11 @@ Planning des séances (demi-journée en télétravail) :
 - Liste des (ou lien vers les) User Stories (ToDo/Ongoing/Done) et % restant IOT : https://github.com/orgs/IUT-Blagnac/projects/142[US]
 - Liste des (ou lien vers les) User Stories (ToDo/Ongoing/Done) et % restant WEB : https://github.com/orgs/IUT-Blagnac/projects/127[US]
 
-Suivi de l'évaluation :
+=== Suivi communication par EP
+
+Les liens du readme vers ODJ et CR ne marchent pas ! Le sprint review est la reunion client, votre reunion correspond au Sprint restrospective. ODJ OK, CR : Manque bilan rdv client, manque analyse difficultés-réussites. 
+note : 1,7/3
+
+=== Suivi de l'évaluation :
 
 
