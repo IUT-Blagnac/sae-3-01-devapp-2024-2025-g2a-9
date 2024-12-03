@@ -4,14 +4,14 @@
 
     if (isset($_POST['submit'])) {
         // Récupère données form
-        $email = htmlentities($_POST['mail']);
+        $email = htmlentities($_POST['email']);
         $pwd = htmlentities($_POST['pwd']);
         $cookie = htmlentities($_POST['cookie']);
 
         // Vérifie si les crédentials existents
         $req = $conn->prepare("SELECT nom, prenom FROM Client
                                     WHERE mail = ? AND password = ?") ;
-        $req->execute([$email, password_hash($pwd)]);
+        $req->execute([$email, password_hash($pwd, PASSWORD_DEFAULT)]);
 
         $testEmail = "test@outlook.fr";
         $testPwd = "test";
