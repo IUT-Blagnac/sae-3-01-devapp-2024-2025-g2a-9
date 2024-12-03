@@ -19,7 +19,8 @@
         <!-- Liens à droite -->
         <ul class="header-links list-unstyled d-flex align-items-center ms-auto">
             <li><a class="nav-link" href="#">Magasins</a></li>
-            <li><a class="nav-link" href="#">Compte</a></li>
+            <!-- Si déjà connecté on amène sur la page d'informations du compte -->
+                <li><a class="nav-link" href="formConnexion.php">Compte</a></li>
             <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
             <li><a class="nav-link" href="#"><i class="bi bi-cart"></i></a></li>
         </ul>

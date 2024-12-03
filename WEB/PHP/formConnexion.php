@@ -14,36 +14,38 @@
     <body>
         <!-- Contenu principal -->
         <main role="main" class="container my-5" style='margin-top: 20px;'>
-            <?php
-            if(isset($_GET['msgErreur'])){
-                echo '<h2>'.htmlentities($_GET['msgErreur']).'</h2>';
-            }
-            if (!empty($_COOKIE['mail'])) {
-                $cookie = $_COOKIE['mail'];
-            }
-            else {
-                $cookie = "";
-            }
-            ?>
-            <form method="post" action="traitConnexion.php">
-                <!-- Mail -->
-                <input type="email" name="email" value="<?php echo htmlentities($cookie); ?>" require/>
-                <label class="form-label" for="email">Adresse Email</label><br><br>
-                <!-- Mot de passe -->
-                <input type="password" name="pwd" require/>
-                <label class="form-label" for="pwd">Password</label><br><br>
-                <!-- Checkbox -->
-                <div class="col d-flex justify-content-center">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="rememberMe" name="cookie"/>
-                        <label class="form-check-label" for="rememberMe">Se souvenir de moi </label><br/><br/>
+            <center>
+                <?php
+                if(isset($_GET['msgErreur'])){
+                    echo '<h2>'.htmlentities($_GET['msgErreur']).'</h2>';
+                }
+                if (!empty($_COOKIE['mail'])) {
+                    $cookie = $_COOKIE['mail'];
+                }
+                else {
+                    $cookie = "";
+                }
+                ?>
+                <form method="post" action="traitConnexion.php">
+                    <!-- Mail -->
+                    <label for="inputMail" class="form-label">Adresse E-mail</label>
+                    <input type="email" class="form-control" id="inputMail" name="email" value="<?php echo htmlentities($cookie); ?>" require /><br>
+                    <!-- Mot de passe -->
+                    <label for="inputPwd" class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" id="inputPwd" name="pwd" require/><br>
+                    <!-- Checkbox -->
+                    <div class="col d-flex justify-content-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="rememberMe" name="cookie"/>
+                            <label class="form-check-label" for="rememberMe">Se souvenir de moi </label><br/><br/>
+                        </div>
                     </div>
-                </div>
-                <!-- Oublie mot de passe peut etre plus tard :
-                    
-                -->
-                <input type="submit" name="Se connecter" value="Submit"/>
-            </form> 
+                    <!-- Oublie mot de passe peut etre plus tard :
+                        
+                    -->
+                    <button type="submit" name="submit" class="btn btn-primary">Se connecter</button>
+                </form>
+            </center>
         </main>
     </body>
     <?php require_once "./include/footer.php" ?>
