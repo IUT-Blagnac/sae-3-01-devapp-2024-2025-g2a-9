@@ -1,15 +1,35 @@
 package com.example.controller;
 
-import java.io.IOException;
-import java.util.*;
-
-import com.example.model.ConfigIni;
-
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import com.example.model.ConfigIni;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class ConfigController {
 
@@ -30,6 +50,12 @@ public class ConfigController {
     private ObservableList<String> roomsList = FXCollections.observableArrayList();
 
     private ConfigIni configIni = new ConfigIni();
+
+    // Executor service pour la lecture continue des fichiers JSON
+    private ScheduledExecutorService executorService;
+
+    // Processus pour le script Python
+    private Process pythonProcess;
 
     @FXML
     public void initialize() {
@@ -132,6 +158,10 @@ public class ConfigController {
             if (infraredCheckBox.isSelected()) variablesCapteur.add("infrared");
             if (infraredVisibleCheckBox.isSelected()) variablesCapteur.add("infrared_and_visible");
             if (pressureCheckBox.isSelected()) variablesCapteur.add("pressure");
+
+            // Ajouter systématiquement "room" aux variables capteur
+            variablesCapteur.add("room");
+
             configIni.setConfigValue("variables", "variable_capteur", String.join(",", variablesCapteur));
 
             // Seuils Capteur
@@ -150,6 +180,33 @@ public class ConfigController {
 
             // Sauvegarde
             configIni.saveConfig(configFilePath);
+            Files.deleteIfExists(Paths.get("IOT/donnees.json"));
+            Files.deleteIfExists(Paths.get("IOT/alert.json"));
+
+            // Lancer le script Python de manière asynchrone
+            System.out.println("Python, loc : " + System.getProperty("user.dir"));
+            ProcessBuilder pb = new ProcessBuilder("python3", "prg.py");
+            pb.directory(new File("IOT")); // Définir le répertoire de travail
+            pb.redirectErrorStream(true);
+            pythonProcess = pb.start();
+
+            // Capturer la sortie du script Python dans un thread séparé
+            Executors.newSingleThreadExecutor().submit(() -> {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(pythonProcess.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            // Lire les fichiers JSON en continu
+            startReadingJsonFiles();
+
+            // Afficher la fenêtre des graphiques
+            afficherGraphiques();
 
             // Confirmation
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -158,6 +215,53 @@ public class ConfigController {
             alert.setContentText("La configuration a été sauvegardée avec succès.");
             alert.showAndWait();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startReadingJsonFiles() {
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(() -> {
+            Platform.runLater(() -> {
+                readJsonFile("IOT/donnees.json");
+                readJsonFile("IOT/alert.json");
+            });
+        }, 0, 2, TimeUnit.SECONDS); // Mise à jour toutes les 2 secondes
+    }
+
+    private void readJsonFile(String filePath) {
+        try {
+            Path path = Paths.get(filePath);
+            if (!Files.exists(path)) {
+                return;
+            }
+
+            Reader reader = Files.newBufferedReader(path);
+            JsonArray dataArray = JsonParser.parseReader(reader).getAsJsonArray();
+            reader.close();
+
+            // Traitez les données JSON ici
+            for (int i = 0; i < dataArray.size(); i++) {
+                JsonObject jsonObject = dataArray.get(i).getAsJsonObject();
+                System.out.println(jsonObject);
+                // Exemple: Mettre à jour une TableView ou autre composant UI
+                // Vous pouvez ajouter des méthodes pour actualiser votre UI avec les données
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void afficherGraphiques() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/view/graph.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Données en Temps Réel");
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -244,6 +348,13 @@ public class ConfigController {
 
         public void setValeur(String valeur) {
             this.valeur = valeur;
+        }
+    }
+
+    // Méthode pour arrêter le processus Python
+    public void stopPythonProcess() {
+        if (pythonProcess != null && pythonProcess.isAlive()) {
+            pythonProcess.destroy();
         }
     }
 }
