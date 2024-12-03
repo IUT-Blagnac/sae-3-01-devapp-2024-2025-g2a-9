@@ -22,8 +22,8 @@
                 if(isset($_GET['msgErreur'])){
                     echo '<h2>'.htmlentities($_GET['msgErreur']).'</h2>';
                 }
-                if (!empty($_COOKIE['mail'])) {
-                    $cookie = $_COOKIE['mail'];
+                if (!empty($_COOKIE['user_email'])) {
+                    $cookie = $_COOKIE['user_email'];
                 }
                 else {
                     $cookie = "";
@@ -39,7 +39,7 @@
                     <!-- Checkbox -->
                     <div class="col d-flex justify-content-evenly">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="rememberMe" name="cookie"/>
+                            <input class="form-check-input" type="checkbox" id="rememberMe" name="cookie"/>
                             <label class="form-check-label" for="rememberMe">Se souvenir de moi </label>
                         </div>
                         <!-- Fonctionnalité could -->
