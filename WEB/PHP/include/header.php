@@ -23,9 +23,9 @@
                 session_start();
                 if (!isset($_SESSION['user'])) {
                     $_SESSION['url'] = $_SERVER['REQUEST_URI']; // Enregistre l'URL actuelle
-                    echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Compte</a></li>"
+                    echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Compte</a></li>";
                 } else {
-                    echo "<li><a class=\"nav-link\" href=\"compte.php\">Compte</a></li>"
+                    echo "<li><a class=\"nav-link\" href=\"compte.php\">Compte</a></li>";
                 }
             ?>
             <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
