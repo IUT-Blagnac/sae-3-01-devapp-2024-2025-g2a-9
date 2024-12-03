@@ -6,7 +6,11 @@
         // Récupère données form
         $email = htmlentities($_POST['email']);
         $pwd = htmlentities($_POST['pwd']);
-        $cookie = htmlentities($_POST['cookie']);
+        if (isset($_POST['cookie'])) {
+            $cookie = htmlentities($_POST['cookie']);
+        } else {
+            $cookie = null;
+        }
 
         // Vérifie si les crédentials existents
         $req = $conn->prepare("SELECT nom, prenom FROM CLIENT
@@ -21,17 +25,21 @@
             if($cookie) {
             setcookie('user_email', $email, time()+60*10);
             }
-            // Renvoi sur la page en cours
+            // Renvoi sur la page en cours (could)
             if (isset($_SESSION['url'])) {
                 $url = $_SESSION['url'];
                 unset($_SESSION['url']);
-                header("location:$url");
+                header("location:index.php");
                 exit();
             }
             else {
                 header("location:index.php");
                 exit();
             }
+        }
+        else {
+            header("location: formConnexion.php?msgErreur=L'adresse E-mail ou mot de passe est incorrect.");
+            exit();
         }
     }
 ?>
