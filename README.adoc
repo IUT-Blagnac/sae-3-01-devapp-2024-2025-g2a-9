@@ -165,7 +165,7 @@ Planning des séances (demi-journée en télétravail) :
 |===
 | Sprint | Lundi AM | Lundi PM | Mardi AM | Mardi PM | Mercredi AM | Mercredi PM | Jeudi AM | Jeudi PM | Vendredi AM | Vendredi PM
 | Sprint 1 |  |  |  |  |  |  |  |  | Télétravail |  
-| Sprint 2 |  |  | Télétravail | Télétravail |  |  |  |  |  |  
+| Sprint 2 |  |  | Télétravail | Télétravail |  |  | Télétravail |  | Télétravail possible |  
 | Sprint 3 |  |  |  |  |  |  |  |  |  |  
 | Sprint 4 |  |  |  |  |  |  |  |  |  |  
 | Sprint 5 |  |  |  |  |  |  |  |  |  |  
