@@ -40,7 +40,7 @@ public class CapteursController {
 			this.cStage.initModality(Modality.WINDOW_MODAL);
 			this.cStage.initOwner(_parentStage);
 			this.cStage.setScene(scene);
-			this.cStage.setTitle("Gestion des Capteurs solaires");
+			this.cStage.setTitle("Gestion des Capteurs");
 			this.cStage.setResizable(false);
 
 			this.cViewController = loader.getController();
