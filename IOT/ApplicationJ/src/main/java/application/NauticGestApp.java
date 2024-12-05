@@ -1,6 +1,6 @@
 package application;
 
-import application.control.DailyBankMainFrame;
+import application.control.NauticGestMenu;
 
 /**
  * 
@@ -8,7 +8,7 @@ import application.control.DailyBankMainFrame;
  *
  */
 
-public class DailyBankApp {
+public class NauticGestApp {
 
 	/**
 	 *  Lancement de la fenêtre principale.
@@ -16,7 +16,7 @@ public class DailyBankApp {
 	
 	public static void main(String[] args) {
 
-		DailyBankMainFrame.runApp();
+		MenuController.runApp();
 
 	}
 }

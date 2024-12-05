@@ -33,6 +33,19 @@ import com.google.gson.JsonParser;
 
 public class ConfigController {
 
+    public void start(Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/com/example/view/config.fxml"));
+            scene = new Scene(loader.load(), 600, 800);
+            configController = loader.getController();
+            stage.setScene(scene);
+            stage.setTitle("Configuration");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private TextField mqttServerField, outputFrequenceField;
     @FXML
