@@ -1,4 +1,10 @@
+package application.view;
 
+import application.control.MenuController;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class MenuViewController {
 
@@ -56,5 +62,9 @@ public class MenuViewController {
 	@FXML
 	private void doQuitter() {
 		this.containingStage.close();
+	}
+	@FXML
+	private void doCancel() {
+		
 	}
 }

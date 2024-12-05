@@ -1,4 +1,12 @@
+package application.control;
 
+import application.NauticGestApp;
+import application.view.MenuViewController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 /**
  * Classe de controleur de Dialogue de la fenêtre principale.
@@ -54,7 +62,7 @@ public class MenuController extends Application {
 	 * Lancer la configuration.
 	 */
 	public void configuration() {
-		GestionCapteurs gc = new GestionCapteurs(this.mStage);
+		CapteursController cc = new CapteursController(this.mStage);
 		cm.doClientManagementDialog();
 	}
 

@@ -1,4 +1,4 @@
-package com.example.controller;
+package application.control;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -26,18 +26,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.example.model.ConfigIni;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import application.tools.ConfigIni;
 
 public class ConfigController {
 
     public void start(Stage stage) {
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/com/example/view/config.fxml"));
-            scene = new Scene(loader.load(), 600, 800);
-            configController = loader.getController();
+            FXMLLoader loader = new FXMLLoader(ConfigController.class.getResource("config.fxml"));
+            Scene scene = new Scene(loader.load(), 600, 800);
+            ConfigController configController = loader.getController();
             stage.setScene(scene);
             stage.setTitle("Configuration");
             stage.show();

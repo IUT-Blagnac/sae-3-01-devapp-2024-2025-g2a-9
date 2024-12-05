@@ -1,3 +1,8 @@
+package application.view;
+
+import application.control.PanneauxController;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class PanneauxViewController {
 

@@ -1,4 +1,12 @@
+package application.control;
 
+import application.NauticGestApp;
+import application.view.PanneauxViewController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * La classe PanneauxController gère les opérations de gestion des Panneaux.
@@ -31,7 +39,6 @@ public class PanneauxController {
 			this.pStage = new Stage();
 			this.pStage.initModality(Modality.WINDOW_MODAL);
 			this.pStage.initOwner(_parentStage);
-			StageManagement.manageCenteringStage(_parentStage, this.pStage);
 			this.pStage.setScene(scene);
 			this.pStage.setTitle("Gestion des panneaux solaires");
 			this.pStage.setResizable(false);

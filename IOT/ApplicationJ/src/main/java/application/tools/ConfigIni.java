@@ -1,4 +1,4 @@
-package com.example.model;
+package application.tools;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

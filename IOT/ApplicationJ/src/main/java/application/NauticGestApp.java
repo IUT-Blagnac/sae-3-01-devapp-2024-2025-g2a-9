@@ -1,6 +1,6 @@
 package application;
 
-import application.control.NauticGestMenu;
+import application.control.MenuController;
 
 /**
  * 
