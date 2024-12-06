@@ -11,7 +11,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body overflow-auto">
-    <ul class="sidebar-nav">
+    <ul class="sidebar-nav list-unstyled">
         <li class="sidebar-item">
             <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#Categorie1" aria-expanded="false" aria-controls="Categorie1">Categorie 1</a>
             <ul id="Categorie1" class="sidebar-dropdown list-unstyled collapse">
