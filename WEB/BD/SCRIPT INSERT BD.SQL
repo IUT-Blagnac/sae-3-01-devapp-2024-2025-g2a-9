@@ -87,18 +87,18 @@ INSERT INTO POINTRELAIS (ADRESSEPOINTRELAIS) VALUES ('Plage de Deauville, Deauvi
 -- ----------------------------------------------------------------------------- 
 
 -- Insertion de 10 clients
-INSERT INTO CLIENT (CIVILITE, NOM, PRENOM, PAYS, VILLE, CODEPOSTAL, ADRESSE, DATEN, MAIL, TELEPHONE, LOGIN, PASSWORD) 
+INSERT INTO CLIENT (CIVILITE, NOM, PRENOM, PAYS, DATEN, MAIL, TELEPHONE, PASSWORD) 
 VALUES 
-('MR', 'Durand', 'Pierre', 'France', 'Paris', '75001', '1 Rue de la République', '1985-06-15', 'pierre.durand@mail.com', '0123456789', 'pierreD85', 'pass1234'),
-('MME', 'Lemoine', 'Marie', 'France', 'Lyon', '69002', '12 Rue des Cèdres', '1990-03-22', 'marie.lemoine@mail.com', '0987654321', 'marieL90', 'mdp5678'),
-('MR', 'Martin', 'François', 'France', 'Marseille', '13001', '35 Boulevard Saint-Marcel', '1982-11-05', 'francois.martin@mail.com', '0612345678', 'francoisM82', 'motdepasse01'),
-('MME', 'Bouvier', 'Isabelle', 'Belgique', 'Bruxelles', '99', '45 Avenue Louise', '1975-07-30', 'isabelle.bouvier@mail.com', '0323456789', 'isabelleB75', 'password123'),
-('MR', 'Dupont', 'Jean', 'France', 'Toulouse', '31000', '89 Rue Victor Hugo', '1995-01-12', 'jean.dupont@mail.com', '0789654321', 'jeanD95', 'securePass456'),
-('MME', 'Blanchard', 'Claire', 'France', 'Nice', '06000', '23 Promenade des Anglais', '1988-09-18', 'claire.blanchard@mail.com', '0612348901', 'claireB88', 'clairePass789'),
-('MR', 'Leclerc', 'Julien', 'Canada', 'Montréal', '99', '222 Rue Sainte-Catherine', '1983-02-20', 'julien.leclerc@mail.com', '5141234567', 'julienL83', 'motdepasse456'),
-('MME', 'Garnier', 'Sophie', 'France', 'Bordeaux', '33000', '76 Rue de la Liberté', '1992-12-03', 'sophie.garnier@mail.com', '0551234567', 'sophieG92', 'sophiePass123'),
-('MR', 'Lemoine', 'Jacques', 'France', 'Nantes', '44000', '56 Rue de la Loire', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', 'jacquesL78', 'jacco1234'),
-('MME', 'Robert', 'Cécile', 'France', 'Lille', '59000', '11 Rue de la République', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecileR86', 'cecilePass321');
+('MR', 'Durand', 'Pierre', 'France', '1985-06-15', 'pierre.durand@mail.com', '0123456789', 'pass1234'),
+('MME', 'Lemoine', 'Marie', 'France', '1990-03-22', 'marie.lemoine@mail.com', '0987654321', 'mdp5678'),
+('MR', 'Martin', 'François', 'France', '1982-11-05', 'francois.martin@mail.com', '0612345678', 'motdepasse01'),
+('MME', 'Bouvier', 'Isabelle', 'Belgique', '1975-07-30', 'isabelle.bouvier@mail.com', '0323456789', 'password123'),
+('MR', 'Dupont', 'Jean', 'France', '1995-01-12', 'jean.dupont@mail.com', '0789654321', 'securePass456'),
+('MME', 'Blanchard', 'Claire', 'France', '1988-09-18', 'claire.blanchard@mail.com', '0612348901', 'clairePass789'),
+('MR', 'Leclerc', 'Julien', 'Canada', '1983-02-20', 'julien.leclerc@mail.com', '5141234567', 'motdepasse456'),
+('MME', 'Garnier', 'Sophie', 'France', '1992-12-03', 'sophie.garnier@mail.com', '0551234567', 'sophiePass123'),
+('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', 'jacco1234'),
+('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecilePass321');
 
 
 -- ----------------------------------------------------------------------------- 
@@ -263,7 +263,7 @@ VALUES (35000.00); -- Prix total de l'ensemble
 
 
 -- ----------------------------------------------------------------------------- 
---       TABLE : ENSEMBLE
+--       TABLE : DETAILENSEMBLE
 -- ----------------------------------------------------------------------------- 
 
 INSERT INTO DETAILENSEMBLE (IDENSEMBLE, IDPRODUIT, QUANTITEENSEMBLE)
