@@ -1,4 +1,4 @@
-package com.example.controller;
+package application.control;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

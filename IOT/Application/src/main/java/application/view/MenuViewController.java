@@ -16,7 +16,7 @@ public class MenuViewController {
 
 	// Manipulation de la fenêtre
 	public void initContext(Stage _containingStage, MenuController _m) {
-		this.mDialogController = _ngm;
+		this.mDialogController = _m;
 		this.containingStage = _containingStage;
 		this.configure();
 	}
@@ -26,7 +26,7 @@ public class MenuViewController {
 	}
 
 	public void displayDialog() {
-		this.containingStage.showAndWait();
+		this.containingStage.show();
 	}
 
 	// Gestion du stage
@@ -49,15 +49,15 @@ public class MenuViewController {
 
 	@FXML
 	private void doCapteurs() {
-
+		mDialogController.gestionCapteurs();
 	}
 	@FXML
 	private void doPanneaux() {
-		
+		mDialogController.gestionPanneaux();
 	}
 	@FXML
 	private void doConfig() {
-		
+		mDialogController.configuration();
 	}
 	@FXML
 	private void doQuitter() {

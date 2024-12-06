@@ -34,14 +34,13 @@ public class PanneauxController {
 			BorderPane root = loader.load();
 
 			Scene scene = new Scene(root, root.getPrefWidth() + 50, root.getPrefHeight() + 10);
-			scene.getStylesheets().add(NauticGestApp.class.getResource("application.css").toExternalForm());
 
 			this.pStage = new Stage();
-			this.pStage.initModality(Modality.WINDOW_MODAL);
+			this.pStage.initModality(Modality.NONE);
 			this.pStage.initOwner(_parentStage);
 			this.pStage.setScene(scene);
 			this.pStage.setTitle("Gestion des panneaux solaires");
-			this.pStage.setResizable(false);
+			this.pStage.setResizable(true);
 
 			this.pViewController = loader.getController();
 			this.pViewController.initContext(this.pStage, this);

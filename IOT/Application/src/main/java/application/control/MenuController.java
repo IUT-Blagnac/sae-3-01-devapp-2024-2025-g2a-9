@@ -33,7 +33,6 @@ public class MenuController extends Application {
 
 			// Paramétrage du Stage : feuille de style, titre
 			Scene scene = new Scene(root, root.getPrefWidth() + 20, root.getPrefHeight() + 10);
-			scene.getStylesheets().add(NauticGestApp.class.getResource("application.css").toExternalForm());
 
 			this.mStage.setScene(scene);
 			this.mStage.setTitle("Fenêtre Principale");
@@ -62,23 +61,22 @@ public class MenuController extends Application {
 	 * Lancer la configuration.
 	 */
 	public void configuration() {
-		CapteursController cc = new CapteursController(this.mStage);
-		cm.doClientManagementDialog();
+		/* nigga */
 	}
 
 	/**
 	 * Lancer la gestion des Panneaux.
 	 */
 	public void gestionPanneaux() {
-		PanneauxController pc = new Panneaux(this.mStage);
-		cm.doEmployeManagementDialog();
+		PanneauxController pc = new PanneauxController(this.mStage);
+		pc.doPanneauxControllerDialog();
 	}
 	
 	/**
 	 * Lancer la gestion des Capteurs.
 	 */
 	public void gestionCapteurs() {
-		Capteurs cm = new Capteurs(this.mStage);
-		cm.doEmployeManagementDialog();
+		CapteursController cc = new CapteursController(this.mStage);
+		cc.doCapteursControllerDialog();
 	}
 }
