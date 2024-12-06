@@ -18,7 +18,7 @@
         $req->execute([$email]);
 
         if ($client = $req->fetch()) {
-            if ($pwd === $client['password']) {
+            if (password_verify($pwd, $client['password'])) {
                 $nom = $client['nom'];
                 $prenom = $client['prenom'];
                 $_SESSION['user'] = $email;
