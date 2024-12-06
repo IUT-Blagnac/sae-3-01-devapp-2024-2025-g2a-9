@@ -30,18 +30,17 @@ public class CapteursController {
      */
 	public CapteursController(Stage _parentStage) {
 		try {
-			FXMLLoader loader = new FXMLLoader(CapteursViewController.class.getResource("lecture.fxml"));
+			FXMLLoader loader = new FXMLLoader(CapteursViewController.class.getResource("lectureC.fxml"));
 			BorderPane root = loader.load();
 
 			Scene scene = new Scene(root, root.getPrefWidth() + 50, root.getPrefHeight() + 10);
-			scene.getStylesheets().add(NauticGestApp.class.getResource("application.css").toExternalForm());
 
 			this.cStage = new Stage();
-			this.cStage.initModality(Modality.WINDOW_MODAL);
+			this.cStage.initModality(Modality.NONE);
 			this.cStage.initOwner(_parentStage);
 			this.cStage.setScene(scene);
 			this.cStage.setTitle("Gestion des Capteurs");
-			this.cStage.setResizable(false);
+			this.cStage.setResizable(true);
 
 			this.cViewController = loader.getController();
 			this.cViewController.initContext(this.cStage, this);

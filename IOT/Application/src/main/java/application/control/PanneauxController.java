@@ -1,6 +1,5 @@
 package application.control;
 
-import application.NauticGestApp;
 import application.view.PanneauxViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,7 +18,7 @@ public class PanneauxController {
     private Stage pStage;
 
     /**
-     * Contrôleur de la vue de gestion des clients.
+     * Contrôleur de la vue de gestion des Panneaux.
      */
     private PanneauxViewController pViewController;
 
@@ -30,7 +29,7 @@ public class PanneauxController {
      */
 	public PanneauxController(Stage _parentStage) {
 		try {
-			FXMLLoader loader = new FXMLLoader(PanneauxViewController.class.getResource("lecture.fxml"));
+			FXMLLoader loader = new FXMLLoader(PanneauxViewController.class.getResource("lectureP.fxml"));
 			BorderPane root = loader.load();
 
 			Scene scene = new Scene(root, root.getPrefWidth() + 50, root.getPrefHeight() + 10);

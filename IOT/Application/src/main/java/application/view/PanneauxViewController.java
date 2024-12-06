@@ -36,7 +36,7 @@ public class PanneauxViewController {
 
 	// Gestion du stage
 	private Object closeWindow(WindowEvent e) {
-		this.doCancel();
+		this.doQuitter();
 		e.consume();
 		return null;
 	}
@@ -50,12 +50,6 @@ public class PanneauxViewController {
 
 
 	// Attributs de la scene + actions
-	@FXML
-    private TabPane tabPane;
-
-    @FXML
-    private Tab realTimeTab;
-
     @FXML
     private TableView<?> realTimeTable;
 
@@ -64,9 +58,6 @@ public class PanneauxViewController {
 
     @FXML
     private TableColumn<?, ?> dataColumn;
-
-    @FXML
-    private Tab historyTab;
 
     @FXML
     private ScrollPane historyScrollPane;
@@ -79,4 +70,13 @@ public class PanneauxViewController {
 
     @FXML
     private MenuItem helpMenuItem;
+
+	
+	@FXML
+	private void doConfig() {
+	}
+	@FXML
+	private void doQuitter() {
+		this.containingStage.close();
+	}
 }
