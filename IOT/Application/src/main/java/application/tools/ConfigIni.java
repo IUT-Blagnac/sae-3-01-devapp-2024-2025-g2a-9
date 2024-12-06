@@ -1,6 +1,7 @@
 package application.tools;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +19,6 @@ public class ConfigIni {
      *
      * @param filePath le chemin du fichier INI
      * @throws IOException si une erreur d'entrée/sortie se produit
-     * @author Thomas
      */
     public void loadConfig(String filePath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -48,7 +48,6 @@ public class ConfigIni {
      * @param section la section de la configuration
      * @param key la clé de la configuration
      * @return la valeur de configuration, ou null si la clé n'existe pas
-     * @author Thomas
      */
     public String getConfigValue(String section, String key) {
         return config.getOrDefault(section, new HashMap<>()).get(key);
@@ -70,10 +69,9 @@ public class ConfigIni {
      *
      * @param filePath le chemin du fichier INI
      * @throws IOException si une erreur d'entrée/sortie se produit
-     * @author Thomas
      */
     public void saveConfig(String filePath) throws IOException {
-        try (FileWriter writer = new FileWriter(filePath)) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Map.Entry<String, Map<String, String>> section : config.entrySet()) {
                 writer.write("[" + section.getKey() + "]\n");
                 for (Map.Entry<String, String> entry : section.getValue().entrySet()) {
@@ -84,10 +82,14 @@ public class ConfigIni {
         }
     }
 
+    public Map<String, Map<String, String>> getConfig() {
+        return config;
+    }
+
     public Map<String, String> getSectionConfig(String section) {
         return new HashMap<>(config.getOrDefault(section, new HashMap<>()));
     }
-    
+
     public void setSectionConfig(String section, Map<String, String> sectionConfig) {
         config.put(section, sectionConfig);
     }

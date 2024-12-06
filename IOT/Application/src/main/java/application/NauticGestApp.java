@@ -1,22 +1,27 @@
 package application;
 
 import application.control.MenuController;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
- * 
  * Classe principale de lancement.
- *
  */
+public class NauticGestApp extends Application {
 
-public class NauticGestApp {
+    /**
+     * Méthode de démarrage (JavaFX).
+     */
+    @Override
+    public void start(Stage primaryStage) {
+        MenuController menuController = new MenuController();
+        menuController.start(primaryStage);
+    }
 
-	/**
-	 *  Lancement de la fenêtre principale.
-	 */
-	
-	public static void main(String[] args) {
-
-		MenuController.runApp();
-
-	}
+    /**
+     * Méthode principale de lancement de l'application.
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

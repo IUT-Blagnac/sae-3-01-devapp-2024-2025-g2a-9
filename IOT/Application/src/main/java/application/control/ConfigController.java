@@ -1,21 +1,14 @@
 package application.control;
 
-import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import application.tools.ConfigIni;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.control.TextInputDialog;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -30,15 +23,37 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import application.tools.ConfigIni;
-
+/**
+ * Contrôleur de la fenêtre de configuration.
+ */
 public class ConfigController {
+
+    private ConfigIni configIni = new ConfigIni();
+    private ObservableList<Seuil> seuilsList = FXCollections.observableArrayList();
+    private ObservableList<String> roomsList = FXCollections.observableArrayList();
+    private ScheduledExecutorService executorService;
+    private Process pythonProcess;
+
+    private String mqttServer;
+    private String outputFrequence;
+    private boolean capteursSelected;
+    private boolean solaredgeSelected;
+    private boolean temperatureSelected;
+    private boolean humiditySelected;
+    private boolean activitySelected;
+    private boolean co2Selected;
+    private boolean tvocSelected;
+    private boolean illuminationSelected;
+    private boolean infraredSelected;
+    private boolean infraredVisibleSelected;
+    private boolean pressureSelected;
 
     public void start(Stage stage) {
         try {
-            FXMLLoader loader = new FXMLLoader(ConfigController.class.getResource("config.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/config.fxml"));
             Scene scene = new Scene(loader.load(), 600, 800);
-            ConfigController configController = loader.getController();
+            application.view.ConfigViewController configViewController = loader.getController();
+            configViewController.initContext(stage, this);
             stage.setScene(scene);
             stage.setTitle("Configuration");
             stage.show();
@@ -47,135 +62,59 @@ public class ConfigController {
         }
     }
 
-    @FXML
-    private TextField mqttServerField, outputFrequenceField;
-    @FXML
-    private CheckBox capteursCheckBox, solaredgeCheckBox;
-    @FXML
-    private CheckBox temperatureCheckBox, humidityCheckBox, activityCheckBox, co2CheckBox, tvocCheckBox, illuminationCheckBox, infraredCheckBox, infraredVisibleCheckBox, pressureCheckBox;
-    @FXML
-    private TableView<Seuil> seuilsTableView;
-    @FXML
-    private TableColumn<Seuil, String> seuilNomColumn, seuilValeurColumn;
-    @FXML
-    private ListView<String> roomsListView;
-
-    private ObservableList<Seuil> seuilsList = FXCollections.observableArrayList();
-    private ObservableList<String> roomsList = FXCollections.observableArrayList();
-
-    private ConfigIni configIni = new ConfigIni();
-
-    // Executor service pour la lecture continue des fichiers JSON
-    private ScheduledExecutorService executorService;
-
-    // Processus pour le script Python
-    private Process pythonProcess;
-
-    @FXML
-    public void initialize() {
+    public void loadConfig() {
         try {
-            System.out.println("Emplacement actuel : " + System.getProperty("user.dir"));
-            String configFilePath = "IOT/config.ini";
-
+            String configFilePath = "../config.ini";
             configIni.loadConfig(configFilePath);
 
-            // Section MQTT
-            mqttServerField.setText(configIni.getConfigValue("MQTT", "server"));
-            mqttServerField.setDisable(true);
-
-            // Sélection des topics
-            String topics = configIni.getConfigValue("MQTT", "topics");
-            if (topics != null) {
-                capteursCheckBox.setSelected(topics.contains("AM107/#"));
-                solaredgeCheckBox.setSelected(topics.contains("solaredge/#"));
-            }
-
-            // Sélection des valeurs à récupérer
-            String variablesCapteur = configIni.getConfigValue("variables", "variable_capteur");
-            if (variablesCapteur != null) {
-                temperatureCheckBox.setSelected(variablesCapteur.contains("temperature"));
-                humidityCheckBox.setSelected(variablesCapteur.contains("humidity"));
-                activityCheckBox.setSelected(variablesCapteur.contains("activity"));
-                co2CheckBox.setSelected(variablesCapteur.contains("co2"));
-                tvocCheckBox.setSelected(variablesCapteur.contains("tvoc"));
-                illuminationCheckBox.setSelected(variablesCapteur.contains("illumination"));
-                infraredCheckBox.setSelected(variablesCapteur.contains("infrared"));
-                infraredVisibleCheckBox.setSelected(variablesCapteur.contains("infrared_and_visible"));
-                pressureCheckBox.setSelected(variablesCapteur.contains("pressure"));
-            }
-
-            // Gérer l'état des CheckBox des valeurs à récupérer
-            handleCapteursCheckBox();
-
-            // Seuils Capteur
-            seuilNomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-            seuilValeurColumn.setCellValueFactory(new PropertyValueFactory<>("valeur"));
+            // Charger les seuils
             Map<String, String> seuilsCapteur = configIni.getSectionConfig("seuils_capteur");
             seuilsCapteur.forEach((key, value) -> seuilsList.add(new Seuil(key, value)));
-            seuilsTableView.setItems(seuilsList);
 
-            // Salles
+            // Charger les salles
             String rooms = configIni.getConfigValue("salles", "rooms");
             if (rooms != null && !rooms.isEmpty()) {
                 roomsList.addAll(Arrays.asList(rooms.split(",")));
             }
-            roomsListView.setItems(roomsList);
 
-            // Fréquence
-            outputFrequenceField.setText(configIni.getConfigValue("OUTPUT", "frequence"));
+            // Charger les autres configurations
+            mqttServer = configIni.getConfigValue("MQTT", "server");
+            outputFrequence = configIni.getConfigValue("OUTPUT", "frequence");
+            capteursSelected = Boolean.parseBoolean(configIni.getConfigValue("MQTT", "capteursSelected"));
+            solaredgeSelected = Boolean.parseBoolean(configIni.getConfigValue("MQTT", "solaredgeSelected"));
+            temperatureSelected = Boolean.parseBoolean(configIni.getConfigValue("variables", "temperatureSelected"));
+            humiditySelected = Boolean.parseBoolean(configIni.getConfigValue("variables", "humiditySelected"));
+            activitySelected = Boolean.parseBoolean(configIni.getConfigValue("variables", "activitySelected"));
+            co2Selected = Boolean.parseBoolean(configIni.getConfigValue("variables", "co2Selected"));
+            tvocSelected = Boolean.parseBoolean(configIni.getConfigValue("variables", "tvocSelected"));
+            illuminationSelected = Boolean.parseBoolean(configIni.getConfigValue("variables", "illuminationSelected"));
+            infraredSelected = Boolean.parseBoolean(configIni.getConfigValue("variables", "infraredSelected"));
+            infraredVisibleSelected = Boolean.parseBoolean(configIni.getConfigValue("variables", "infraredVisibleSelected"));
+            pressureSelected = Boolean.parseBoolean(configIni.getConfigValue("variables", "pressureSelected"));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    private void handleCapteursCheckBox() {
-        boolean isSelected = capteursCheckBox.isSelected();
-        temperatureCheckBox.setDisable(!isSelected);
-        humidityCheckBox.setDisable(!isSelected);
-        activityCheckBox.setDisable(!isSelected);
-        co2CheckBox.setDisable(!isSelected);
-        tvocCheckBox.setDisable(!isSelected);
-        illuminationCheckBox.setDisable(!isSelected);
-        infraredCheckBox.setDisable(!isSelected);
-        infraredVisibleCheckBox.setDisable(!isSelected);
-        pressureCheckBox.setDisable(!isSelected);
-    }
-
-    @FXML
-    private void saveConfig() {
+    public void saveConfig(String mqttServer, String outputFrequence, boolean capteursSelected, boolean solaredgeSelected, List<String> variablesCapteur) {
         try {
-            String configFilePath = "IOT/config.ini"; // Utilisez le même chemin qu'au chargement
+            String configFilePath = "../config.ini";
 
             // Section MQTT
-            configIni.setConfigValue("MQTT", "server", mqttServerField.getText());
+            configIni.setConfigValue("MQTT", "server", mqttServer);
 
             // Sélection des topics
             List<String> topics = new ArrayList<>();
-            if (capteursCheckBox.isSelected()) {
+            if (capteursSelected) {
                 topics.add("AM107/by-room/#");
             }
-            if (solaredgeCheckBox.isSelected()) {
+            if (solaredgeSelected) {
                 topics.add("solaredge/#");
             }
             configIni.setConfigValue("MQTT", "topics", String.join(",", topics));
 
-            // Sélection des valeurs à récupérer
-            List<String> variablesCapteur = new ArrayList<>();
-            if (temperatureCheckBox.isSelected()) variablesCapteur.add("temperature");
-            if (humidityCheckBox.isSelected()) variablesCapteur.add("humidity");
-            if (activityCheckBox.isSelected()) variablesCapteur.add("activity");
-            if (co2CheckBox.isSelected()) variablesCapteur.add("co2");
-            if (tvocCheckBox.isSelected()) variablesCapteur.add("tvoc");
-            if (illuminationCheckBox.isSelected()) variablesCapteur.add("illumination");
-            if (infraredCheckBox.isSelected()) variablesCapteur.add("infrared");
-            if (infraredVisibleCheckBox.isSelected()) variablesCapteur.add("infrared_and_visible");
-            if (pressureCheckBox.isSelected()) variablesCapteur.add("pressure");
-
-            // Ajouter systématiquement "room" aux variables capteur
-            variablesCapteur.add("room");
-
+            // Sélection des variables à récupérer
             configIni.setConfigValue("variables", "variable_capteur", String.join(",", variablesCapteur));
 
             // Seuils Capteur
@@ -190,17 +129,17 @@ public class ConfigController {
             configIni.setConfigValue("salles", "rooms", rooms);
 
             // Fréquence
-            configIni.setConfigValue("OUTPUT", "frequence", outputFrequenceField.getText());
+            configIni.setConfigValue("OUTPUT", "frequence", outputFrequence);
 
             // Sauvegarde
             configIni.saveConfig(configFilePath);
-            Files.deleteIfExists(Paths.get("IOT/donnees.json"));
-            Files.deleteIfExists(Paths.get("IOT/alert.json"));
+
+            Files.deleteIfExists(Paths.get("../donnees.json"));
+            Files.deleteIfExists(Paths.get("../alert.json"));
 
             // Lancer le script Python de manière asynchrone
-            System.out.println("Python, loc : " + System.getProperty("user.dir"));
             ProcessBuilder pb = new ProcessBuilder("python3", "prg.py");
-            pb.directory(new File("IOT")); // Définir le répertoire de travail
+            pb.directory(new File("../")); // Définir le répertoire de travail
             pb.redirectErrorStream(true);
             pythonProcess = pb.start();
 
@@ -219,16 +158,6 @@ public class ConfigController {
             // Lire les fichiers JSON en continu
             startReadingJsonFiles();
 
-            // Afficher la fenêtre des graphiques
-            afficherGraphiques();
-
-            // Confirmation
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText(null);
-            alert.setContentText("La configuration a été sauvegardée avec succès.");
-            alert.showAndWait();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -237,10 +166,8 @@ public class ConfigController {
     private void startReadingJsonFiles() {
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
-            Platform.runLater(() -> {
-                readJsonFile("IOT/donnees.json");
-                readJsonFile("IOT/alert.json");
-            });
+            readJsonFile("../donnees.json");
+            readJsonFile("../alert.json");
         }, 0, 2, TimeUnit.SECONDS); // Mise à jour toutes les 2 secondes
     }
 
@@ -268,21 +195,15 @@ public class ConfigController {
         }
     }
 
-    private void afficherGraphiques() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/view/graph.fxml"));
-            Parent root = fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Données en Temps Réel");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ObservableList<Seuil> getSeuilsList() {
+        return seuilsList;
     }
 
-    @FXML
-    private void ajouterSeuil() {
+    public ObservableList<String> getRoomsList() {
+        return roomsList;
+    }
+
+    public void ajouterSeuil() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Ajouter un seuil");
         dialog.setHeaderText(null);
@@ -298,9 +219,7 @@ public class ConfigController {
         });
     }
 
-    @FXML
-    private void modifierSeuil() {
-        Seuil selectedSeuil = seuilsTableView.getSelectionModel().getSelectedItem();
+    public void modifierSeuil(Seuil selectedSeuil) {
         if (selectedSeuil != null) {
             TextInputDialog dialog = new TextInputDialog(selectedSeuil.getValeur());
             dialog.setTitle("Modifier le seuil");
@@ -308,20 +227,10 @@ public class ConfigController {
             dialog.setContentText("Nouvelle valeur pour " + selectedSeuil.getNom() + ":");
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(valeur -> selectedSeuil.setValeur(valeur));
-            seuilsTableView.refresh();
         }
     }
 
-    @FXML
-    private void supprimerSeuil() {
-        Seuil selectedSeuil = seuilsTableView.getSelectionModel().getSelectedItem();
-        if (selectedSeuil != null) {
-            seuilsList.remove(selectedSeuil);
-        }
-    }
-
-    @FXML
-    private void ajouterSalle() {
+    public void ajouterSalle() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Ajouter une salle");
         dialog.setHeaderText(null);
@@ -330,38 +239,38 @@ public class ConfigController {
         result.ifPresent(salle -> roomsList.add(salle));
     }
 
-    @FXML
-    private void supprimerSalle() {
-        String selectedSalle = roomsListView.getSelectionModel().getSelectedItem();
-        if (selectedSalle != null) {
-            roomsList.remove(selectedSalle);
-        }
-    }
-
     // Classe interne pour représenter un seuil
     public static class Seuil {
-        private String nom;
-        private String valeur;
+        private final StringProperty nom;
+        private final StringProperty valeur;
 
         public Seuil(String nom, String valeur) {
-            this.nom = nom;
-            this.valeur = valeur;
+            this.nom = new SimpleStringProperty(nom);
+            this.valeur = new SimpleStringProperty(valeur);
         }
 
         public String getNom() {
-            return nom;
+            return nom.get();
         }
 
         public void setNom(String nom) {
-            this.nom = nom;
+            this.nom.set(nom);
+        }
+
+        public StringProperty nomProperty() {
+            return nom;
         }
 
         public String getValeur() {
-            return valeur;
+            return valeur.get();
         }
 
         public void setValeur(String valeur) {
-            this.valeur = valeur;
+            this.valeur.set(valeur);
+        }
+
+        public StringProperty valeurProperty() {
+            return valeur;
         }
     }
 
@@ -370,5 +279,58 @@ public class ConfigController {
         if (pythonProcess != null && pythonProcess.isAlive()) {
             pythonProcess.destroy();
         }
+    }
+
+    // Getters pour les propriétés
+    public String getMqttServer() {
+        return mqttServer;
+    }
+
+    public String getOutputFrequence() {
+        return outputFrequence;
+    }
+
+    public boolean isCapteursSelected() {
+        return capteursSelected;
+    }
+
+    public boolean isSolaredgeSelected() {
+        return solaredgeSelected;
+    }
+
+    public boolean isTemperatureSelected() {
+        return temperatureSelected;
+    }
+
+    public boolean isHumiditySelected() {
+        return humiditySelected;
+    }
+
+    public boolean isActivitySelected() {
+        return activitySelected;
+    }
+
+    public boolean isCo2Selected() {
+        return co2Selected;
+    }
+
+    public boolean isTvocSelected() {
+        return tvocSelected;
+    }
+
+    public boolean isIlluminationSelected() {
+        return illuminationSelected;
+    }
+
+    public boolean isInfraredSelected() {
+        return infraredSelected;
+    }
+
+    public boolean isInfraredVisibleSelected() {
+        return infraredVisibleSelected;
+    }
+
+    public boolean isPressureSelected() {
+        return pressureSelected;
     }
 }
