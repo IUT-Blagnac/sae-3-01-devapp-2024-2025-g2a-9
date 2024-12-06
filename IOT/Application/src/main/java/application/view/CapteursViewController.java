@@ -98,7 +98,6 @@ public class CapteursViewController {
      * @return null
      */
     private Object closeWindow(WindowEvent e) {
-        e.consume(); // Empêche la fermeture par défaut
         this.doCancel();
         return null;
     }

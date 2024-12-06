@@ -15,25 +15,25 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.CapteursViewController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Fichier">
-            <items>
-              <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" text="Quitter" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Modifier">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Configuration" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Aide">
-            <items>
-              <MenuItem mnemonicParsing="false" text="OnVerra" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+      <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="Fichier">
+                    <items>
+                        <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" text="Quitter" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Modifier">
+                    <items>
+                        <MenuItem fx:id="configMenuItem" mnemonicParsing="false" text="Configuration" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Aide">
+                    <items>
+                        <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="OnVerra" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
    </top>
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">

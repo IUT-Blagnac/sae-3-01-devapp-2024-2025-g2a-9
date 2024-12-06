@@ -63,8 +63,11 @@ public class MenuViewController {
 	private void doQuitter() {
 		this.containingStage.close();
 	}
+
+	
 	@FXML
-	private void doCancel() {
-		
-	}
+    private void doCancel() {
+        // Fermer la fenêtre sans afficher de message
+        this.containingStage.close();
+    }
 }
