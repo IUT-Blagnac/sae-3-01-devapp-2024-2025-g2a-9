@@ -2,13 +2,7 @@ package com.example.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -109,6 +103,14 @@ public class ConfigController {
 
             // Fréquence
             outputFrequenceField.setText(configIni.getConfigValue("OUTPUT", "frequence"));
+
+            // Ajouter un écouteur pour la fermeture de la fenêtre
+            Platform.runLater(() -> {
+                Stage stage = (Stage) mqttServerField.getScene().getWindow();
+                stage.setOnCloseRequest(event -> {
+                    shutdown();
+                });
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -262,6 +264,13 @@ public class ConfigController {
             stage.setTitle("Données en Temps Réel");
             stage.setScene(new Scene(root));
             stage.show();
+
+            // Ajouter un écouteur pour fermer correctement le contrôleur
+            GraphController controller = fxmlLoader.getController();
+            stage.setOnCloseRequest(event -> {
+                controller.shutdown();
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -355,6 +364,14 @@ public class ConfigController {
     public void stopPythonProcess() {
         if (pythonProcess != null && pythonProcess.isAlive()) {
             pythonProcess.destroy();
+        }
+    }
+
+    // Méthode pour arrêter l'executorService
+    public void shutdown() {
+        stopPythonProcess();
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
         }
     }
 }

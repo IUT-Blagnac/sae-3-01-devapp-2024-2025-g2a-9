@@ -1,17 +1,13 @@
 package com.example.controller;
 
+import com.example.service.FichierJson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -28,13 +24,14 @@ public class GraphController {
     private Instant startTimeInstant = Instant.now();
 
     private ScheduledExecutorService executorService;
+    private FichierJson FichierJson = new FichierJson();
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static final int MAX_POINTS = 8; // Nombre maximum de points par série
+    private static final int MAX_POINTS = 8; // Nombre maximum de points visibles dans le graphique
 
     @FXML
     public void initialize() {
-        // Configurer les axes si nécessaire
+        // Configurer axes
         temperatureChart.getXAxis().setLabel("Temps (s)");
         temperatureChart.getYAxis().setLabel("Température (°C)");
 
@@ -45,27 +42,18 @@ public class GraphController {
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
             Platform.runLater(this::updateData);
-        }, 0, 5, TimeUnit.SECONDS); // Mise à jour toutes les 5 secondes
+        }, 0, 5, TimeUnit.SECONDS); // MAJ toutes les 5 secondes
     }
 
     private void updateData() {
         try {
-            Path path = Paths.get("IOT/donnees.json");
-            if (!Files.exists(path)) {
-                System.out.println("Le fichier donnees.json n'existe pas.");
-                return;
-            }
-
-            Reader reader = Files.newBufferedReader(path);
-            JsonArray dataArray = JsonParser.parseReader(reader).getAsJsonArray();
-            reader.close();
-
+            JsonArray dataArray = FichierJson.readJsonFile("IOT/donnees.json");
             if (dataArray.size() == 0) {
                 System.out.println("Le fichier donnees.json est vide.");
                 return;
             }
 
-            // Définir l'heure actuelle et le seuil de deux heures
+            // Heure actuelle et seuil de 2 heures (pour enlever les données plus anciennes)
             LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
             LocalDateTime cutoff = now.minusHours(2);
 
@@ -87,7 +75,7 @@ public class GraphController {
                     continue;
                 }
 
-                // Vérifier si la donnée est dans les deux dernières heures
+                // Verif si la donnée est dans les deux dernières heures
                 if (dataTime.isBefore(cutoff)) {
                     continue; // Ignorer les données plus anciennes
                 }
