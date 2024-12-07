@@ -4,10 +4,10 @@
 :sectnums!:
 :imagesdir: images
 
-**Application IoT de surveillance environnementale**  
-**Version :** 1.0  
-**Date :** Janvier 2024  
-**Équipe :** Groupe 9  
+**Application IoT de surveillance environnementale**  +
+**Version :** 1.0  +
+**Date :** 07 Décembre 2024  +
+**Groupe :** 2A9  
 
 == Présentation de l'application
 
@@ -32,43 +32,85 @@ L'application est divisée en deux composants principaux :
 == Implémentation
 
 === Configuration (config.ini)
-Le fichier config.ini contient tous les paramètres de l'application :
-- Section MQTT : serveur et topics
-- Section variables : métriques à surveiller  
-- Section seuils_capteur : valeurs limites pour les alertes
+Le fichier config.ini contient tous les paramètres de l'application :  +
+- Section MQTT : serveur et topics  +
+- Section variables : métriques à surveiller  +
+- Section seuils_capteur : valeurs limites pour les alertes  +
 - Section OUTPUT : configuration des fichiers de sortie
 
 === Script Python (prg.py)
-Fonctionnalités principales :
-- Lecture de la configuration depuis config.ini
-- Connexion MQTT et souscription aux topics
-- Traitement des données reçues
-- Génération d'alertes 
+Fonctionnalités principales :  +
+- Lecture de la configuration depuis config.ini  +
+- Connexion MQTT et souscription aux topics  +
+- Traitement des données reçues  +
+- Génération d'alertes  +
 - Écriture dans les fichiers JSON
 
 === Interface Java
 Classes principales :
-- `ConfigViewController.java` : Gestion de l'interface de configuration
-- `ConfigController.java` : Logique de configuration et lancement du script Python
-- `EnergieExtraction.java` : Traitement des données JSON
+
+1. Controllers
+- MenuController : Contrôleur principal gérant le lancement de l'application et les fenêtres
+- ConfigController : Gestion de la configuration (lecture/écriture config.ini, seuils...)
+- CapteursController : Contrôle des données des capteurs environnementaux
+- PanneauxController : Gestion des panneaux solaires et visualisation des données
+
+2. Views
+- ConfigViewController : Interface de configuration des paramètres 
+- PanneauxViewController : Affichage des données des panneaux en temps réel
+- CapteursViewController : Visualisation des données des capteurs
+- MenuViewController : Interface principale de navigation
+
+3. Models
+- Seuil : Modèle pour les valeurs limites des capteurs
+- DataEnergie : Données énergétiques des panneaux solaires
+
+4. Utils
+- ConfigIni : Gestion du fichier de configuration .ini
+- EnergieExtraction : Extraction et traitement des données énergétiques
+
+Cette architecture MVC (Modèle-Vue-Contrôleur) permet une séparation claire des responsabilités :
+
+- Les contrôleurs gèrent la logique métier
+- Les vues s'occupent de l'interface utilisateur
+- Les modèles représentent les données
 
 == Installation et Déploiement
 
 === Prérequis
-- Python 3.x avec les modules : paho-mqtt, json, configparser
-- Java 17 avec JavaFX
-- Fichier config.ini configuré
+- Python 3 avec les modules suivants : 
+    * paho-mqtt (pip install paho-mqtt)
+    * json (module intégré)
+    * configparser (module intégré)
+    * datetime (module intégré)
+- Java 17+ (télécharger depuis https://www.oracle.com/java/technologies/downloads/)
+- JavaFX (module intégré dans maven)
 
 === Déploiement
-1. Placer les fichiers dans un répertoire commun :
-    - prg.py
-    - config.ini  
-    - Application Java compilée
 
-2. Configuration :
-    - Éditer config.ini selon les besoins
-    - Vérifier les droits d'accès aux fichiers
+==== Structure des fichiers :
+     Le projet doit maintenir la structure suivante :
+     ``
+     IOT/
+     ├── Application/        # Application Java
+     ├── config.ini         # Fichier de configuration
+     ├── donnees.json       # Données des capteurs
+     ├── alert.json         # Alertes générées
+     └── prg.py            # Script Python
+     ``
 
-3. Lancement :
-    - L'interface Java lance automatiquement le script Python
-    - Les données sont écrites dans donnees.json et alert.json
+==== Configuration initiale :
+     - Cloner le dépôt depuis GitHub
+     - Vérifier que config.ini contient les bons paramètres :
+         * Serveur MQTT : mqtt.iut-blagnac.fr
+         * Topics : AM107/by-room/#
+         * Seuils des capteurs selon les besoins
+         * Fréquence de rafraîchissement
+
+==== Lancement :
+     - Exécuter l'application Java depuis le dossier Application
+     - L'application lancera automatiquement le script prg.py
+     - Les données seront écrites dans donnees.json et alert.json
+     - L'interface se rafraîchira selon la fréquence configurée
+
+Note : Assurez-vous que les chemins relatifs entre l'application Java et le script Python sont correctement configurés ("../config.ini", "../donnees.json", etc.)
