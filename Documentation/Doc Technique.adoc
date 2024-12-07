@@ -34,6 +34,12 @@ L'application est divisée en deux composants principaux :
 - Visualise l'historique des alertes
 - Gère la configuration via config.ini
 
+Cette architecture MVC (Modèle-Vue-Contrôleur) permet une séparation claire des responsabilités :
+
+- Les contrôleurs gèrent la logique métier
+- Les vues s'occupent de l'interface utilisateur
+- Les modèles représentent les données
+
 == Implémentation
 
 === Configuration (config.ini)
@@ -73,12 +79,6 @@ Classes principales :
 4. Utils
 - ConfigIni : Gestion du fichier de configuration .ini
 - EnergieExtraction : Extraction et traitement des données énergétiques
-
-Cette architecture MVC (Modèle-Vue-Contrôleur) permet une séparation claire des responsabilités :
-
-- Les contrôleurs gèrent la logique métier
-- Les vues s'occupent de l'interface utilisateur
-- Les modèles représentent les données
 
 == Installation et Déploiement
 
