@@ -1,5 +1,6 @@
 package application.control;
 
+import application.model.Seuil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -237,41 +238,6 @@ public class ConfigController {
         dialog.setContentText("Entrez le nom de la salle:");
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(salle -> roomsList.add(salle));
-    }
-
-    // Classe interne pour représenter un seuil
-    public static class Seuil {
-        private final StringProperty nom;
-        private final StringProperty valeur;
-
-        public Seuil(String nom, String valeur) {
-            this.nom = new SimpleStringProperty(nom);
-            this.valeur = new SimpleStringProperty(valeur);
-        }
-
-        public String getNom() {
-            return nom.get();
-        }
-
-        public void setNom(String nom) {
-            this.nom.set(nom);
-        }
-
-        public StringProperty nomProperty() {
-            return nom;
-        }
-
-        public String getValeur() {
-            return valeur.get();
-        }
-
-        public void setValeur(String valeur) {
-            this.valeur.set(valeur);
-        }
-
-        public StringProperty valeurProperty() {
-            return valeur;
-        }
     }
 
     // Méthode pour arrêter le processus Python
