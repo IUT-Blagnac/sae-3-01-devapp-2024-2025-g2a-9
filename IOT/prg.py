@@ -194,7 +194,8 @@ def on_message(client, userdata, msg):
                 donnees_filtrees['currentPower'] = (None, False)
             donnees_filtrees["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             donnees_en_attente.append(donnees_filtrees)
-            # Vous pouvez ajouter un message ici si nécessaire
+            print("Message reçu pour SolarEdge.")
+            message_recu = True
 
         # Écriture en fonction de la fréquence
         if message_recu and (frequence_ecriture == 0 or (datetime.now() - derniere_ecriture).total_seconds() >= frequence_ecriture):

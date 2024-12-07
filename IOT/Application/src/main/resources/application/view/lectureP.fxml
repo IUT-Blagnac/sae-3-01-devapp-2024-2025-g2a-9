@@ -12,6 +12,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.PanneauxViewController">
    <top>
@@ -42,29 +45,24 @@
                <content>
                   <TableView fx:id="realTimeTable" prefHeight="200.0" prefWidth="200.0">
                     <columns>
-                      <TableColumn prefWidth="110.0" text="Type" />
-                      <TableColumn prefWidth="110.0" text="Donnée" />
+                      <TableColumn fx:id="typeColumn" prefWidth="110.0" text="Type" />
+                      <TableColumn fx:id="dataColumn" prefWidth="110.0" text="Donnée" />
                     </columns>
                   </TableView>
                </content>
           </Tab>
-          <Tab text="Historique">
+          <Tab text="Graphiques">
                <content>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                     <content>
-                        <GridPane>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
+                  <VBox>
+                      <LineChart fx:id="lineChart" title="Énergie">
+                          <xAxis>
+                              <NumberAxis label="Temps (s)" />
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis label="Énergie (kWh)" />
+                          </yAxis>
+                      </LineChart>
+                  </VBox>
                </content>
           </Tab>
         </tabs>

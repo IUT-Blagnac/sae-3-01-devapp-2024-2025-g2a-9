@@ -2,37 +2,27 @@ package application.view;
 
 import application.control.CapteursController;
 import application.model.SensorData;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.chart.XYChart;
 
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Reader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class CapteursViewController {
 
@@ -89,12 +79,14 @@ public class CapteursViewController {
 
     private ObservableList<SensorData> sensorDataList = FXCollections.observableArrayList();
 
-    /**
-     * Initialise le contexte pour la fenêtre.
-     *
-     * @param _cStage Fenêtre actuelle.
-     * @param _p      Contrôleur parent.
-     */
+    @FXML
+    private void initialize() {
+        roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        dataColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+        showAllDataButton.setOnAction(event -> showAllData());
+    }
+
     public void initContext(Stage _cStage, CapteursController _p) {
         this.cDialogController = _p;
         this.cStage = _cStage;
@@ -103,9 +95,6 @@ public class CapteursViewController {
         startDataUpdate();
     }
 
-    /**
-     * Configure les actions et événements de la fenêtre.
-     */
     private void configure() {
         this.cStage.setOnCloseRequest(this::closeWindow);
     }
@@ -140,15 +129,18 @@ public class CapteursViewController {
                 JsonObject data = dataArray.get(i).getAsJsonObject();
 
                 String room = data.has("room") ? data.get("room").getAsString() : "Inconnu";
-                String type = "Température";
-                double value = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
 
-                sensorDataList.add(new SensorData(room, type, value));
+                if (data.has("temperature") && data.get("temperature").isJsonArray()) {
+                    String type = "Température";
+                    double value = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
+                    sensorDataList.add(new SensorData(room, type, value));
+                }
 
-                type = "Humidité";
-                value = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
-
-                sensorDataList.add(new SensorData(room, type, value));
+                if (data.has("humidity") && data.get("humidity").isJsonArray()) {
+                    String type = "Humidité";
+                    double value = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
+                    sensorDataList.add(new SensorData(room, type, value));
+                }
             }
 
         } catch (Exception e) {
@@ -177,33 +169,25 @@ public class CapteursViewController {
             temperatureChart.getData().clear();
             humidityChart.getData().clear();
 
-            Map<String, XYChart.Series<Number, Number>> tempSeriesMap = new HashMap<>();
-            Map<String, XYChart.Series<Number, Number>> humiditySeriesMap = new HashMap<>();
+            XYChart.Series<Number, Number> tempSeries = new XYChart.Series<>();
+            XYChart.Series<Number, Number> humiditySeries = new XYChart.Series<>();
 
             for (int i = 0; i < dataArray.size(); i++) {
                 JsonObject data = dataArray.get(i).getAsJsonObject();
 
-                String room = data.has("room") ? data.get("room").getAsString() : "Inconnu";
-                double temperature = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
-                double humidity = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
+                if (data.has("temperature") && data.get("temperature").isJsonArray()) {
+                    double temperature = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
+                    tempSeries.getData().add(new XYChart.Data<>(i, temperature));
+                }
 
-                XYChart.Series<Number, Number> tempSeries = tempSeriesMap.computeIfAbsent(room, k -> {
-                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                    series.setName(k);
-                    temperatureChart.getData().add(series);
-                    return series;
-                });
-
-                XYChart.Series<Number, Number> humiditySeries = humiditySeriesMap.computeIfAbsent(room, k -> {
-                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                    series.setName(k);
-                    humidityChart.getData().add(series);
-                    return series;
-                });
-
-                tempSeries.getData().add(new XYChart.Data<>(i, temperature));
-                humiditySeries.getData().add(new XYChart.Data<>(i, humidity));
+                if (data.has("humidity") && data.get("humidity").isJsonArray()) {
+                    double humidity = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
+                    humiditySeries.getData().add(new XYChart.Data<>(i, humidity));
+                }
             }
+
+            temperatureChart.getData().add(tempSeries);
+            humidityChart.getData().add(humiditySeries);
 
         } catch (Exception e) {
             System.err.println("Erreur lors de la mise à jour des données: " + e.getMessage());
@@ -211,40 +195,25 @@ public class CapteursViewController {
         }
     }
 
-    @FXML
-    private void initialize() {
-        roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        dataColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-        showAllDataButton.setOnAction(event -> showAllData());
-    }
-
-    /**
-     * Affiche la fenêtre.
-     */
     public void displayDialog() {
         this.cStage.showAndWait();
     }
 
-    /**
-     * Gère la fermeture de la fenêtre.
-     *
-     * @param e Événement de fermeture.
-     * @return null
-     */
     private Object closeWindow(WindowEvent e) {
         this.doQuitter();
         return null;
     }
 
     @FXML
-	private void doConfig() {
-	}
+    private void doConfig() {
+    }
+
     @FXML
-	private void doAide() {
-	}
+    private void doAide() {
+    }
+
     @FXML
-	private void doQuitter() {
-		this.cStage.close();
-	}
+    private void doQuitter() {
+        this.cStage.close();
+    }
 }

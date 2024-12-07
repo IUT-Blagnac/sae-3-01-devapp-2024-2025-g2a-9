@@ -1,14 +1,35 @@
 [
     {
+        "lastUpdateTime": "2024-12-07 14:55:32",
+        "lifeTimeData": {
+            "energy": 3468620
+        },
+        "lastYearData": {
+            "energy": 2987590
+        },
+        "lastMonthData": {
+            "energy": 53184
+        },
+        "lastDayData": {
+            "energy": 4446
+        },
+        "currentPower": [
+            1080.7057,
+            false
+        ],
+        "measuredBy": "INVERTER",
+        "date": "2024-12-07 15:06:13"
+    },
+    {
         "temperature": [
-            20,
+            19,
             false
         ],
         "humidity": [
-            51.5,
+            48.5,
             false
         ],
-        "date": "2024-12-07 13:48:33",
-        "room": "B103"
+        "date": "2024-12-07 15:06:30",
+        "room": "E001"
     }
 ]
