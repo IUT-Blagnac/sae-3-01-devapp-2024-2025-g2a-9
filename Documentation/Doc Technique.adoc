@@ -1,1 +1,130 @@
+= Documentation Technique - Application IoT 
+:toc: left
+:toc-title: Sommaire
+:sectnums:
+:imagesdir: images
 
+== Présentation générale de l'application
+
+L'application IoT est un système de monitoring qui permet de visualiser les données des panneaux solaires et des capteurs de température/humidité. Elle est composée de trois parties principales :
+
+- Un script Python qui collecte les données des capteurs via MQTT
+- Une application Java/JavaFX qui affiche les données en temps réel 
+- Un système de stockage JSON pour la persistance des données
+
+=== Use Case global
+
+image::usecase.png[Use Case]
+
+L'application s'adresse à deux types d'utilisateurs :
+
+* Administrateur : Configure les paramètres de connexion MQTT et la fréquence d'acquisition
+* Utilisateur standard : Visualise les données des capteurs et panneaux en temps réel
+
+== Architecture
+
+=== Architecture générale
+
+L'application suit une architecture 3-tiers :
+
+[plantuml]
+....
+package "Couche Présentation" {
+    [Application JavaFX]
+}
+
+package "Couche Métier" {
+    [Script Python]  
+}
+
+package "Couche Données" {
+    [Fichiers JSON]
+}
+....
+
+=== Ressources externes 
+
+* Eclipse Paho MQTT (https://www.eclipse.org/paho/) - Client MQTT Python
+* JavaFX (https://openjfx.io/) - Framework IHM Java
+* Jackson (https://github.com/FasterXML/jackson) - Parsing JSON en Java
+
+=== Structure des packages
+
+L'application JavaFX suit le pattern MVC avec les packages suivants :
+
+* application.control : Contrôleurs de l'application
+* application.view : Vues FXML et contrôleurs de vue
+* application.model : Classes métier et accès aux données
+
+=== Eléments essentiels
+
+La communication entre les composants suit le diagramme de séquence suivant :
+
+[plantuml]
+....
+actor User
+participant "JavaFX App" as GUI
+participant "Python Script" as PY
+participant "JSON Files" as JSON
+
+User -> GUI : Configure
+GUI -> PY : Launch script
+PY -> JSON : Write data
+GUI -> JSON : Read data
+GUI -> User : Display
+....
+
+== Fonctionnalités détaillées
+
+=== Configuration 
+
+Classes impliquées :
+* ConfigController : Gestion de la configuration
+* ConfigViewController : IHM de configuration
+
+Diagramme de séquence :
+[plantuml]
+....
+participant "ConfigViewController" as View
+participant "ConfigController" as Ctrl
+
+View -> Ctrl : saveConfig()
+Ctrl -> "Python Process" : start()
+....
+
+=== Affichage temps réel
+
+Classes impliquées :
+* PanneauxController : Affichage des données panneaux
+* CapteursController : Affichage des données capteurs
+
+Spécificités :
+* Rafraîchissement automatique toutes les X secondes
+* Parsing JSON via classe EnergieExtraction
+
+== Installation 
+
+=== Environnement de développement 
+
+. Installer Java JDK 11+ et JavaFX SDK
+. Installer Python 3.8+ et pip
+. Installer les dépendances Python :
+[source,bash]
+----
+pip install paho-mqtt 
+----
+. Importer le projet dans Eclipse/IntelliJ/VSCode
+
+=== Déploiement
+
+. Installer Java Runtime 11+ 
+. Installer Python 3.8+
+. Déployer l'application :
+[source,bash]
+----
+# Lancer le script Python
+python prg.py
+
+# Lancer l'application Java 
+java -jar iot-app.jar
+----
