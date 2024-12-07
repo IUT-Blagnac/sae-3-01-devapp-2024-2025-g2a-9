@@ -1,8 +1,13 @@
 package application.control;
 
+import application.model.DataEnergie;
 import application.view.PanneauxViewController;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -48,7 +53,7 @@ public class PanneauxController {
 			e.printStackTrace();
 		}
 	}
-
+    
 	/**
      * Affiche la vue de gestion des panneaux.
      */
@@ -56,25 +61,32 @@ public class PanneauxController {
 		this.pViewController.displayDialog();
 	}
 
-	public ObservableMap<String, Integer> getOMapEnergie() {
-    ObservableMap<String, Integer> observableMap = FXCollections.observableHashMap();
-
-    try {
-        // Simuler un JSON dynamique (vous remplacerez cette partie par une requête réelle)
-        String jsonData = fetchJsonFromSource();
-
-        // Extraire les données avec EnergieExtraction
-        EnergieExtraction extraction = new EnergieExtraction(jsonData);
-        HashMap<String, Integer> extractedData = extraction.extractEnergyData();
-
-        // Ajouter les données extraites dans la ObservableMap
-        observableMap.putAll(extractedData);
-    } catch (IOException e) {
-        e.printStackTrace();
+    public void loadPanneaux(ObservableList<DataEnergie> dataEnergies) {
+        // Un moyen de lire le json et en faire une liste de dataEnergie (dans model)
     }
 
-    return observableMap;
-}
+    public void loadTable(TableView<DataEnergie> realTimeTable, ObservableList<DataEnergie> dataEnergies) {
+        realTimeTable.getItems().clear();
+        if (!dataEnergies.isEmpty()) {
+            DataEnergie last = dataEnergies.get(dataEnergies.size() - 1);
+            ObservableList<DataEnergie> lastData = javafx.collections.FXCollections.observableArrayList(last);
+            realTimeTable.setItems(lastData);
+        }
+    }
 
+    public void loadChart(LineChart<String, Number> lineChart, ObservableList<DataEnergie> dataEnergies) {
+        lineChart.getData().clear(); // Efface les anciennes données
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Énergie");
+        for (DataEnergie data : dataEnergies) {
+            series.getData().add(new XYChart.Data<>(data.getDate().toString(), data.getValue()));
+        }
+        lineChart.getData().add(series); // Ajoute les données à la courbe
+    }
 
+    public void updateData(ObservableList<DataEnergie> dataEnergies, TableView<DataEnergie> realTimeTable, LineChart<String, Number> lineChart) {
+        loadTable(realTimeTable, dataEnergies);
+        loadChart(lineChart, dataEnergies);
+        // Faudrait faire un thread qui reload les panneaux tout les X secondes et vérifie si les données changent
+    }
 }
