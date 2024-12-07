@@ -7,24 +7,60 @@
 == Page de garde
 Application IoT de surveillance environnementale
 Version 1.0
-[Previous content remains the same until section 3]
+Date : Janvier 2024
+Équipe : Groupe 9
+Membres : [Liste des membres]
 
-== 3. Fonctionnalités détaillées
+== 1. Présentation de l'application
+=== 1.1. Description générale
+Cette application de surveillance environnementale est conçue pour l'entreprise "La Bonne Note", spécialisée dans la vente d'instruments de musique. Elle permet la collecte, la visualisation et l'analyse des données environnementales (température, CO2, humidité) provenant de capteurs installés dans leur entrepôt. L'application fournit une interface graphique JavaFX pour la visualisation en temps réel et historique des données, ainsi qu'un système d'alertes pour les dépassements de seuils.
+
+=== 1.2. Use Case global
+* Types d'utilisateurs :
+** Administrateurs : Ces utilisateurs ont accès à toutes les fonctionnalités de l'application, notamment la configuration des seuils d'alerte, la gestion des paramètres de connexion MQTT, et la configuration des fichiers de données.
+** Utilisateurs standards : Ces utilisateurs peuvent visualiser les données en temps réel, consulter l'historique des mesures, et recevoir les alertes de dépassement de seuils.
+
+== 2. Architecture
+=== 2.1. Architecture générale
+* Sous-systèmes :
+** Interface utilisateur JavaFX : Développée avec Java 17 et JavaFX, elle offre une interface moderne et responsive pour la visualisation des données.
+** Backend Java : Gère la logique métier, le traitement des données et la communication avec le script Python.
+** Script Python MQTT : Assure la connexion au broker MQTT et la collecte des données des capteurs.
+** Système de persistance : Utilise des fichiers JSON pour stocker l'historique des données et des alertes.
+
+=== 2.2. Ressources externes
+* JavaFX 17
+** Lien : https://openjfx.io/
+** Documentation : https://openjfx.io/javadoc/17/
+* Eclipse Paho MQTT
+** Lien : https://www.eclipse.org/paho/
+** Documentation : https://www.eclipse.org/paho/files/javadoc/
+* Jackson JSON Parser
+** Lien : https://github.com/FasterXML/jackson
+** Documentation : https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-core/
+
+=== 2.3. Structure des packages
+L'application suit le pattern MVC (Modèle-Vue-Contrôleur) avec les packages suivants :
+
+* `model` : Contient les classes de modèle comme Alert.java et Data.java qui représentent les données métier.
+* `view` : Contient les fichiers FXML et les contrôleurs de vue associés.
+* `controller` : Gère la logique de contrôle et la communication entre les vues et les modèles.
+* `util` : Fournit des classes utilitaires pour la gestion des JSON, dates et connexions MQTT.
+* `service` : Implémente les services métier pour la gestion des données et des alertes.
+
+=== 2.4. Éléments essentiels de conception
+Les patterns de conception suivants ont été implémentés :
+
+* Observer : Utilisé pour la mise à jour en temps réel des données affichées dans l'interface.
+* Singleton : Appliqué à la gestion de la configuration pour assurer une instance unique.
+* Factory : Employé pour la création standardisée des objets de données.
+
+== 3. Fonctionnalités
 === 3.1. Configuration MQTT
 * Classes impliquées :
 ** ConfigurationController.java : Gère l'interface de configuration
 ** MQTTConnection.java : Établit et maintient la connexion MQTT
 ** Configuration.java : Stocke les paramètres de configuration
-
-Fonctionnement détaillé :
-* L'utilisateur peut configurer :
-** Adresse du broker MQTT
-** Port de connexion
-** Identifiants de connexion
-** Topics de souscription
-* La configuration est sauvegardée dans un fichier JSON
-* Validation des paramètres avant connexion
-* Reconnexion automatique en cas de perte de connexion
 
 === 3.2. Visualisation des données
 * Classes impliquées :
@@ -32,54 +68,31 @@ Fonctionnement détaillé :
 ** GraphMaker.java : Génère les graphiques de visualisation
 ** JsonReader.java : Lit et parse les données des fichiers JSON
 
-Fonctionnement détaillé :
-* Affichage en temps réel :
-** Températures actuelles par zone
-** Niveaux de CO2
-** Taux d'humidité
-* Graphiques historiques :
-** Sélection de la période (jour/semaine/mois)
-** Comparaison multi-capteurs
-** Export des données en CSV
-* Filtres et recherche :
-** Par date
-** Par type de mesure
-** Par zone de l'entrepôt
-
 === 3.3. Gestion des alertes
 * Classes impliquées :
 ** AlertUtilities.java : Gère l'affichage des alertes
 ** AlertController.java : Contrôle la logique des alertes
-** AlertNotificationService.java : Service de notification
 
-Fonctionnement détaillé :
-* Configuration des seuils :
-** Seuils personnalisables par type de mesure
-** Définition de plages horaires
-** Niveaux d'alerte (warning, critique)
-* Système de notification :
-** Alertes visuelles dans l'interface
-** Notifications système
-** Log des alertes avec horodatage
-* Historique des alertes :
-** Consultation des alertes passées
-** Filtrage par type et niveau
-** Export des rapports d'alerte
+== 4. Procédures d'installation
+=== 4.1. Installation environnement de développement
+1. Prérequis :
+    * JDK 17 ou supérieur
+    * Maven 3.8 ou supérieur
+    * Python 3.8 ou supérieur
+    * IDE Java (Eclipse ou IntelliJ IDEA recommandé)
 
-=== 3.4. Gestion des données
-* Classes impliquées :
-** DataManager.java : Gestion du cycle de vie des données
-** StorageService.java : Service de persistance
-** DataAnalyzer.java : Analyse des données
+2. Configuration de l'IDE :
+    * Importer le projet Maven
+    * Configurer le JDK 17
+    * Installer les plugins JavaFX nécessaires
 
-Fonctionnement détaillé :
-* Stockage des données :
-** Format JSON structuré
-** Rotation automatique des logs
-** Compression des données anciennes
-* Analyse statistique :
-** Calcul des moyennes par période
-** Détection des tendances
-** Génération de rapports
+=== 4.2. Installation application finale
+1. Prérequis :
+    * JRE 17 ou supérieur
+    * Python 3.8 ou supérieur
+    * Connexion réseau pour MQTT
 
-[Rest of the document remains the same]
+2. Procédure d'installation :
+    * Extraire l'archive de l'application
+    * Placer les fichiers Python et le fichier de configuration dans le même répertoire
+    * Exécuter l'application via la commande `java -jar application.jar`
