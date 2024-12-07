@@ -200,16 +200,14 @@ public class CapteursViewController {
      * @return null
      */
     private Object closeWindow(WindowEvent e) {
-        this.doCancel();
+        this.doQuitter();
         return null;
     }
 
-    /**
-     * Actions effectuées lors de l'annulation.
-     */
-    private void doCancel() {
-        System.out.println("Window close request intercepted. Cancelling close.");
-    }
+    @FXML
+	private void doQuitter() {
+		this.cStage.close();
+	}
 
     // Ajoutez ici des méthodes supplémentaires pour manipuler vos éléments de l'interface utilisateur, si nécessaire.
 }

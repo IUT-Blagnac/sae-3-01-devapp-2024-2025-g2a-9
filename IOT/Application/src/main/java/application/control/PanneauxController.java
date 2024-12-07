@@ -1,7 +1,12 @@
 package application.control;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import application.model.DataEnergie;
 import application.view.PanneauxViewController;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -27,6 +32,9 @@ public class PanneauxController {
      */
     private PanneauxViewController pViewController;
 
+    private ScheduledExecutorService executorService;
+
+
 	/**
      * Constructeur de la classe PanneauxController.
      *
@@ -44,6 +52,7 @@ public class PanneauxController {
 			this.pStage.initOwner(_parentStage);
 			this.pStage.setScene(scene);
 			this.pStage.setTitle("Gestion des panneaux solaires");
+            this.pStage.setMaximized(true);
 			this.pStage.setResizable(true);
 
 			this.pViewController = loader.getController();
@@ -69,8 +78,8 @@ public class PanneauxController {
         realTimeTable.getItems().clear();
         if (!dataEnergies.isEmpty()) {
             DataEnergie last = dataEnergies.get(dataEnergies.size() - 1);
-            ObservableList<DataEnergie> lastData = javafx.collections.FXCollections.observableArrayList(last);
-            realTimeTable.setItems(lastData);
+            ObservableList<DataEnergie> lastData = javafx.collections.FXCollections.observableArrayList(last); // Obligé de refaire une List
+            realTimeTable.setItems(lastData); // On met que la dernière (c'est celle qui nous intéresse)
         }
     }
 
@@ -85,8 +94,36 @@ public class PanneauxController {
     }
 
     public void updateData(ObservableList<DataEnergie> dataEnergies, TableView<DataEnergie> realTimeTable, LineChart<String, Number> lineChart) {
-        loadTable(realTimeTable, dataEnergies);
-        loadChart(lineChart, dataEnergies);
-        // Faudrait faire un thread qui reload les panneaux tout les X secondes et vérifie si les données changent
+        executorService = Executors.newSingleThreadScheduledExecutor(); // Nouveau Thread
+
+        executorService.scheduleAtFixedRate(() -> {
+            int sizeOld = dataEnergies.size();
+            loadPanneaux(dataEnergies);
+
+            if (sizeOld != dataEnergies.size()) {
+                Platform.runLater(() -> {
+                    loadTable(realTimeTable, dataEnergies);
+                    loadChart(lineChart, dataEnergies);
+                        });
+            }
+        }, 0, 5, TimeUnit.SECONDS); // Mise à jour toutes les 5 secondes
+    }
+
+    /**
+     * Arrête le thread de la méthode updateData.
+     */
+    public void stopUpdateThread() {
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown(); // Propre
+            try {
+                // Attendre jusqu'à 5 secondes pour les tâches en cours
+                if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                    executorService.shutdownNow(); // Pas propre mais pour l'utilisateur
+                }
+            } catch (InterruptedException e) {
+                executorService.shutdownNow(); // Forcer l'arrêt en cas d'interruption
+                Thread.currentThread().interrupt(); // Réinterrompre le thread principal
+            }
+        }
     }
 }

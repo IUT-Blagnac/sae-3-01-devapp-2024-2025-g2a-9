@@ -1,7 +1,5 @@
 package application.view;
 
-import java.util.Map;
-
 import application.control.PanneauxController;
 import application.model.DataEnergie;
 import javafx.fxml.FXML;
@@ -12,7 +10,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -34,14 +31,16 @@ public class PanneauxViewController {
 
 	private void configure() {
 		dataEnergies = FXCollections.observableArrayList();
-		pDialogController.loadPanneaux(dataEnergies);
+		pDialogController.loadPanneaux(dataEnergies); // Faut récupérer la liste des données des Panneaux
 
-		 // Configuration des colonnes
+		pDialogController.loadTable(realTimeTable, dataEnergies);
+		// Configuration des colonnes (avec une seule ligne)
 		typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
 		dataColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 
-		pDialogController.loadTable(realTimeTable, dataEnergies);
 		pDialogController.loadChart(lineChart, dataEnergies);
+
+		pDialogController.updateData(dataEnergies, realTimeTable, lineChart);
 		this.containingStage.setOnCloseRequest(e -> this.closeWindow(e));
 	}
 
@@ -51,6 +50,7 @@ public class PanneauxViewController {
 
 	// Gestion du stage
 	private Object closeWindow(WindowEvent e) {
+		pDialogController.stopUpdateThread();
 		this.doQuitter();
 		e.consume();
 		return null;
