@@ -1,13 +1,18 @@
-= Documentation Technique - Application IoT
-:toc: left
-:toc-title: Table des matières
-:sectnums!:
-:imagesdir: images
+= Document Technique - Application IoT
+:toc-title: Sommaire
+:toc: macro
 
-**Application IoT de surveillance environnementale**  +
+**Application de surveillance des conditions atmosphériques : NauticGestion App**  +
 **Version :** 1.0  +
 **Date :** 07 Décembre 2024  +
-**Groupe :** 2A9  
+**Groupe :** 2A9  +
+*Projet :* SAE DEVAPP (S3.01)
+
+'''
+
+toc::[]
+
+'''
 
 == Présentation de l'application
 
