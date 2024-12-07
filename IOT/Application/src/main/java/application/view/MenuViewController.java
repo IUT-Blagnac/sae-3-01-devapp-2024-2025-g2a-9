@@ -1,6 +1,5 @@
 package application.view;
 
-import application.control.ConfigController;
 import application.control.MenuController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

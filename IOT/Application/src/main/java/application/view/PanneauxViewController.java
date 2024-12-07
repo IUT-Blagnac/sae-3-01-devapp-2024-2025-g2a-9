@@ -78,7 +78,9 @@ public class PanneauxViewController {
     @FXML
     private MenuItem helpMenuItem;
 
-	
+	@FXML
+	private void doAide() {
+	}
 	@FXML
 	private void doConfig() {
 	}

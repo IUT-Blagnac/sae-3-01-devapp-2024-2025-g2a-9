@@ -1,6 +1,5 @@
 package application.control;
 
-import application.NauticGestApp;
 import application.view.CapteursViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
