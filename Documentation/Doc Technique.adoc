@@ -6,7 +6,7 @@
 **Version :** 1.0  +
 **Date :** 07 Décembre 2024  +
 **Groupe :** 2A9  +
-*Projet :* SAE DEVAPP (S3.01)
+*Projet :* SAE DevApp (S3.01)
 
 '''
 
