@@ -1,39 +1,62 @@
 package application.tools;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+import application.model.DataEnergie;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 public class EnergieExtraction {
-    private final JsonNode data;
-
-    // Constructeur qui prend une chaîne JSON et la transforme en un arbre JSON
-    public EnergieExtraction(String jsonData) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        this.data = mapper.readTree(jsonData);
+    private JsonArray data;
+    
+        // Constructeur qui prend une chaîne JSON et la transforme en un arbre JSON
+        public EnergieExtraction(String filePath) throws IOException {
+            Path path = Paths.get(filePath);
+            if (!Files.exists(path)) {
+                System.out.println("Le fichier donnees.json n'existe pas.");
+                this.data = null;
+                return;
+            }
+    
+            try (Reader reader = Files.newBufferedReader(path)) {
+                JsonArray data = JsonParser.parseReader(reader).getAsJsonArray();
+                reader.close();
+    
+                if (data.size() == 0) {
+                    System.out.println("Le fichier donnees.json est vide.");
+                    this.data = null;
+                    return;
+                }
+    
+                this.data = data;
+            } catch (JsonIOException | JsonSyntaxException e) {
+                e.printStackTrace();
+                this.data = null;
+        }
     }
 
     // Méthode pour extraire l'énergie dans une HashMap
-    public HashMap<String, Integer> extractEnergyData() {
-        HashMap<String, Integer> energieMap = new HashMap<>();
-
-        // Vérifie si les champs "lastDayData" et "date" existent
-        if (data.has("lastDayData") && data.has("date")) {
-            JsonNode lastDayData = data.get("lastDayData");
-            JsonNode energyNode = lastDayData.get("energy");
-            String date = data.get("date").asText();
-
-            // Ajoute les données dans la HashMap si "energy" est présent
-            if (energyNode != null) {
-                int energy = energyNode.asInt();
-                energieMap.put(date, energy);
-            }
+    public void extractEnergyData(ObservableList<DataEnergie> dataEnergies) {
+        if (data == null) {
+            System.out.println("Aucun données disponibles pour l'extraction.");
+            return;
         }
+        // Parcourt chaque élément de l'array JSON
+        for (JsonElement element : data) {
+            String date = element.getAsJsonObject().get("date").getAsString(); // Récupère la date en String
+            double energy = element.getAsJsonObject().get("energy").getAsDouble(); // Récupère la valeur energie en Double
 
-        return energieMap;
+            dataEnergies.add(new DataEnergie(date, energy)); // On ajoute un objet avec les données
+        }
     }
-
 }

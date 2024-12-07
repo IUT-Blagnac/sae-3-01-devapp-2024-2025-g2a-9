@@ -1,13 +1,11 @@
 package application.model;
 
-import java.util.Date;
-
 public class DataEnergie {
     private final String type = "Energie";
-    private Date date;
+    private String date;
     private double value;
 
-    public DataEnergie(Date _date, double _double){
+    public DataEnergie(String _date, double _double){
         date = _date;
         value = _double;
     }
@@ -15,11 +13,11 @@ public class DataEnergie {
         return type;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
