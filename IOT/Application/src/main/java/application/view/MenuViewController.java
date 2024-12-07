@@ -31,7 +31,7 @@ public class MenuViewController {
 
 	// Gestion du stage
 	private Object closeWindow(WindowEvent e) {
-		this.doCancel();
+		this.doQuitter();
 		e.consume();
 		return null;
 	}
@@ -63,11 +63,4 @@ public class MenuViewController {
 	private void doQuitter() {
 		this.containingStage.close();
 	}
-
-	
-	@FXML
-    private void doCancel() {
-        // Fermer la fenêtre sans afficher de message
-        this.containingStage.close();
-    }
 }

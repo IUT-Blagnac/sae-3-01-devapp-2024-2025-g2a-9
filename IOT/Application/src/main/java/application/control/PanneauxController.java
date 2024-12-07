@@ -56,4 +56,25 @@ public class PanneauxController {
 		this.pViewController.displayDialog();
 	}
 
+	public ObservableMap<String, Integer> getOMapEnergie() {
+    ObservableMap<String, Integer> observableMap = FXCollections.observableHashMap();
+
+    try {
+        // Simuler un JSON dynamique (vous remplacerez cette partie par une requête réelle)
+        String jsonData = fetchJsonFromSource();
+
+        // Extraire les données avec EnergieExtraction
+        EnergieExtraction extraction = new EnergieExtraction(jsonData);
+        HashMap<String, Integer> extractedData = extraction.extractEnergyData();
+
+        // Ajouter les données extraites dans la ObservableMap
+        observableMap.putAll(extractedData);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+    return observableMap;
+}
+
+
 }

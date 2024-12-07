@@ -17,8 +17,8 @@ public class EnergieExtraction {
     }
 
     // Méthode pour extraire l'énergie dans une HashMap
-    public Map<String, Integer> extractEnergyData() {
-        Map<String, Integer> energyMap = new HashMap<>();
+    public HashMap<String, Integer> extractEnergyData() {
+        HashMap<String, Integer> energieMap = new HashMap<>();
 
         // Vérifie si les champs "lastDayData" et "date" existent
         if (data.has("lastDayData") && data.has("date")) {
@@ -29,11 +29,11 @@ public class EnergieExtraction {
             // Ajoute les données dans la HashMap si "energy" est présent
             if (energyNode != null) {
                 int energy = energyNode.asInt();
-                energyMap.put(date, energy);
+                energieMap.put(date, energy);
             }
         }
 
-        return energyMap;
+        return energieMap;
     }
 
 }
