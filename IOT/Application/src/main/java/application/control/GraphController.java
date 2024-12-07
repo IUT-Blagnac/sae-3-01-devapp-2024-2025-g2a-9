@@ -50,7 +50,7 @@ public class GraphController {
 
     private void updateData() {
         try {
-            Path path = Paths.get("IOT/donnees.json");
+            Path path = Paths.get("../donnees.json");
             if (!Files.exists(path)) {
                 System.out.println("Le fichier donnees.json n'existe pas.");
                 return;

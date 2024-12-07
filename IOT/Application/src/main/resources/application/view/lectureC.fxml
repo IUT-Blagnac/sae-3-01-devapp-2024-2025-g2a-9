@@ -40,10 +40,11 @@
         <tabs>
           <Tab text="Temps réel">
                <content>
-                  <TableView prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="realTimeTable" prefHeight="200.0" prefWidth="200.0">
                     <columns>
-                      <TableColumn prefWidth="110.0" text="Type" />
-                      <TableColumn prefWidth="110.0" text="Donnée" />
+                      <TableColumn fx:id="roomColumn" prefWidth="110.0" text="Salle" />
+                      <TableColumn fx:id="typeColumn" prefWidth="110.0" text="Type" />
+                      <TableColumn fx:id="dataColumn" prefWidth="110.0" text="Donnée" />
                     </columns>
                   </TableView>
                </content>
