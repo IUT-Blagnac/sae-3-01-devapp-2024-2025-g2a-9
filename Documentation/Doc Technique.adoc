@@ -4,123 +4,95 @@
 :sectnums:
 :imagesdir: images
 
-== 1. Présentation de l'application
+== Page de garde
+Application IoT de surveillance environnementale
+Version 1.0
+Date : Janvier 2024
+Équipe : Groupe 9
+Membres : [Liste des membres]
 
+== 1. Présentation de l'application
 === 1.1. Description générale
-L'application IoT est un système de surveillance en temps réel permettant de :
-- Visualiser les données des panneaux solaires Solaredge
-- Monitorer les capteurs (température, humidité, CO2, activité)
-- Configurer les paramètres de connexion MQTT
-- Afficher les données en temps réel et historiques
+Cette application de surveillance environnementale est conçue pour l'entreprise "La Bonne Note", spécialisée dans la vente d'instruments de musique. Elle permet la collecte, la visualisation et l'analyse des données environnementales (température, CO2, humidité) provenant de capteurs installés dans leur entrepôt. L'application fournit une interface graphique JavaFX pour la visualisation en temps réel et historique des données, ainsi qu'un système d'alertes pour les dépassements de seuils.
 
 === 1.2. Use Case global
-[plantuml]
-----
-@startuml
-left to right direction
-actor "Utilisateur" as user
-actor "Administrateur" as admin
-
-rectangle "Application IoT" {
-    usecase "Visualiser données panneaux" as UC1
-    usecase "Consulter capteurs" as UC2
-    usecase "Configurer MQTT" as UC3
-    usecase "Définir fréquence" as UC4
-}
-
-user --> UC1
-user --> UC2
-admin --> UC3
-admin --> UC4
-@enduml
-----
+* Types d'utilisateurs :
+** Administrateurs : Ces utilisateurs ont accès à toutes les fonctionnalités de l'application, notamment la configuration des seuils d'alerte, la gestion des paramètres de connexion MQTT, et la configuration des fichiers de données.
+** Utilisateurs standards : Ces utilisateurs peuvent visualiser les données en temps réel, consulter l'historique des mesures, et recevoir les alertes de dépassement de seuils.
 
 == 2. Architecture
-
 === 2.1. Architecture générale
-L'application suit une architecture MVC avec 3 couches distinctes :
-
-- *Présentation* : Interface JavaFX
-- *Métier* : Logique applicative Java + Script Python MQTT
-- *Données* : Fichiers JSON de configuration et données
+* Sous-systèmes :
+** Interface utilisateur JavaFX : Développée avec Java 17 et JavaFX, elle offre une interface moderne et responsive pour la visualisation des données.
+** Backend Java : Gère la logique métier, le traitement des données et la communication avec le script Python.
+** Script Python MQTT : Assure la connexion au broker MQTT et la collecte des données des capteurs.
+** Système de persistance : Utilise des fichiers JSON pour stocker l'historique des données et des alertes.
 
 === 2.2. Ressources externes
-[cols="1,2,2"]
-|===
-|Technologie |Version |Usage
-
-|JavaFX |17.0.2 |Framework IHM
-|Eclipse Paho |1.2.5 |Client MQTT Python
-|Jackson |2.13.0 |Parsing JSON
-|===
+* JavaFX 17
+** Lien : https://openjfx.io/
+** Documentation : https://openjfx.io/javadoc/17/
+* Eclipse Paho MQTT
+** Lien : https://www.eclipse.org/paho/
+** Documentation : https://www.eclipse.org/paho/files/javadoc/
+* Jackson JSON Parser
+** Lien : https://github.com/FasterXML/jackson
+** Documentation : https://www.javadoc.io/doc/com.fasterxml.jackson.core/jackson-core/
 
 === 2.3. Structure des packages
+L'application suit le pattern MVC (Modèle-Vue-Contrôleur) avec les packages suivants :
 
-* *application*
-** *control* : Contrôleurs principaux
-*** ConfigController : Gestion configuration
-*** PanneauxController : Gestion panneaux
-*** CapteursController : Gestion capteurs
-** *view* : Vues FXML et contrôleurs associés
-** *model* : Classes métier et accès données
+* `model` : Contient les classes de modèle comme Alert.java et Data.java qui représentent les données métier.
+* `view` : Contient les fichiers FXML et les contrôleurs de vue associés.
+* `controller` : Gère la logique de contrôle et la communication entre les vues et les modèles.
+* `util` : Fournit des classes utilitaires pour la gestion des JSON, dates et connexions MQTT.
+* `service` : Implémente les services métier pour la gestion des données et des alertes.
 
-== 3. Fonctionnalités détaillées
+=== 2.4. Éléments essentiels de conception
+Les patterns de conception suivants ont été implémentés :
 
+* Observer : Utilisé pour la mise à jour en temps réel des données affichées dans l'interface.
+* Singleton : Appliqué à la gestion de la configuration pour assurer une instance unique.
+* Factory : Employé pour la création standardisée des objets de données.
+
+== 3. Fonctionnalités
 === 3.1. Configuration MQTT
-*Classes impliquées :*
-- ConfigController : Sauvegarde/lecture config
-- ConfigViewController : Interface config
+* Classes impliquées :
+** ConfigurationController.java : Gère l'interface de configuration
+** MQTTConnection.java : Établit et maintient la connexion MQTT
+** Configuration.java : Stocke les paramètres de configuration
 
-[source,java]
-----
-public void saveConfig(String mqttServer, String outputFrequence, 
-                                            boolean capteursSelected, boolean solaredgeSelected, 
-                                            List<String> variablesCapteur) {
-        // Sauvegarde config
-        // Lance script Python
-        ProcessBuilder pb = new ProcessBuilder("python3", "prg.py");
-        pythonProcess = pb.start();
-}
-----
+=== 3.2. Visualisation des données
+* Classes impliquées :
+** WharehouseMonitorController.java : Affiche les données en temps réel
+** GraphMaker.java : Génère les graphiques de visualisation
+** JsonReader.java : Lit et parse les données des fichiers JSON
 
-=== 3.2. Visualisation temps réel
-*Classes impliquées :*
-- PanneauxViewController
-- CapteursViewController 
+=== 3.3. Gestion des alertes
+* Classes impliquées :
+** AlertUtilities.java : Gère l'affichage des alertes
+** AlertController.java : Contrôle la logique des alertes
 
-*Fonctionnement :*
-. Lecture périodique fichiers JSON
-. Mise à jour TableView JavaFX
-. Gestion des graphiques
+== 4. Procédures d'installation
+=== 4.1. Installation environnement de développement
+1. Prérequis :
+    * JDK 17 ou supérieur
+    * Maven 3.8 ou supérieur
+    * Python 3.8 ou supérieur
+    * IDE Java (Eclipse ou IntelliJ IDEA recommandé)
 
-== 4. Installation 
+2. Configuration de l'IDE :
+    * Importer le projet Maven
+    * Configurer le JDK 17
+    * Installer les plugins JavaFX nécessaires
 
-=== 4.1. Environnement développement
-. Prérequis :
-- JDK 11+
-- Python 3.8+
-- IDE Java (Eclipse/IntelliJ)
+=== 4.2. Installation application finale
+1. Prérequis :
+    * JRE 17 ou supérieur
+    * Python 3.8 ou supérieur
+    * Connexion réseau pour MQTT
 
-. Installation :
-[source,bash]
-----
-# Install Python deps
-pip install paho-mqtt
-
-# Import project in IDE
-git clone <repo>
-cd IOT/Application
-mvn install
-----
-
-=== 4.2. Déploiement
-[source,bash]
-----
-# 1. Launch Python MQTT client
-cd IOT/Python
-python prg.py
-
-# 2. Launch Java app
-cd IOT/Application
-java -jar target/iot-app.jar
-----
+2. Procédure d'installation :
+    * Extraire l'archive de l'application
+    * Placer les fichiers Python et le fichier de configuration dans le même répertoire
+    * Exécuter l'application via la commande `java -jar application.jar`

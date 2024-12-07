@@ -1,6 +1,8 @@
 package application.view;
 
 import application.control.ConfigController;
+import application.model.Seuil;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,13 +28,14 @@ public class ConfigViewController {
     @FXML
     private CheckBox temperatureCheckBox, humidityCheckBox, activityCheckBox, co2CheckBox, tvocCheckBox, illuminationCheckBox, infraredCheckBox, infraredVisibleCheckBox, pressureCheckBox;
     @FXML
-    private TableView<ConfigController.Seuil> seuilsTableView;
+    private TableView<Seuil> seuilsTableView;
     @FXML
-    private TableColumn<ConfigController.Seuil, String> seuilNomColumn, seuilValeurColumn;
+    private TableColumn<Seuil, String> seuilNomColumn, seuilValeurColumn;
     @FXML
     private ListView<String> roomsListView;
     @FXML
     private Button saveButton;
+
 
     public void initContext(Stage stage, ConfigController configController) {
         this.stage = stage;
@@ -152,7 +155,7 @@ public class ConfigViewController {
 
     @FXML
     private void modifierSeuil() {
-        ConfigController.Seuil selectedSeuil = seuilsTableView.getSelectionModel().getSelectedItem();
+        Seuil selectedSeuil = seuilsTableView.getSelectionModel().getSelectedItem();
         if (selectedSeuil != null) {
             configController.modifierSeuil(selectedSeuil);
             seuilsTableView.refresh();
@@ -161,7 +164,7 @@ public class ConfigViewController {
 
     @FXML
     private void supprimerSeuil() {
-        ConfigController.Seuil selectedSeuil = seuilsTableView.getSelectionModel().getSelectedItem();
+        Seuil selectedSeuil = seuilsTableView.getSelectionModel().getSelectedItem();
         if (selectedSeuil != null) {
             configController.getSeuilsList().remove(selectedSeuil);
         }
