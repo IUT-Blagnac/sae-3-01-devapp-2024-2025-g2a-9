@@ -108,21 +108,6 @@ public class CapteursViewController {
      */
     private void configure() {
         this.cStage.setOnCloseRequest(this::closeWindow);
-
-        // Action quitter
-        quitMenuItem.setOnAction(event -> this.cStage.close());
-
-        // Action configuration
-        configMenuItem.setOnAction(event -> {
-            // Ajouter une logique de configuration si nécessaire
-            System.out.println("Configuration action triggered.");
-        });
-
-        // Action aide
-        helpMenuItem.setOnAction(event -> {
-            // Ajouter une logique d'aide si nécessaire
-            System.out.println("Help action triggered.");
-        });
     }
 
     private void startDataUpdate() {
@@ -253,9 +238,13 @@ public class CapteursViewController {
     }
 
     @FXML
+	private void doConfig() {
+	}
+    @FXML
+	private void doAide() {
+	}
+    @FXML
 	private void doQuitter() {
 		this.cStage.close();
 	}
-
-    // Ajoutez ici des méthodes supplémentaires pour manipuler vos éléments de l'interface utilisateur, si nécessaire.
 }

@@ -1,10 +1,12 @@
 package application.control;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import application.model.DataEnergie;
+import application.tools.EnergieExtraction;
 import application.view.PanneauxViewController;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -71,7 +73,14 @@ public class PanneauxController {
 	}
 
     public void loadPanneaux(ObservableList<DataEnergie> dataEnergies) {
-        // Un moyen de lire le json et en faire une liste de dataEnergie (dans model)
+        EnergieExtraction extraction;
+        try {
+            // On utilise la classe extraction qui va récupérer les données à partir du json
+            extraction = new EnergieExtraction("../donnees.json");
+            extraction.extractEnergyData(dataEnergies);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadTable(TableView<DataEnergie> realTimeTable, ObservableList<DataEnergie> dataEnergies) {

@@ -19,17 +19,17 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Fichier">
                     <items>
-                        <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" text="Quitter" />
+                        <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" onAction="#doQuitter" text="Quitter" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Modifier">
                     <items>
-                        <MenuItem fx:id="configMenuItem" mnemonicParsing="false" text="Configuration" />
+                        <MenuItem fx:id="configMenuItem" mnemonicParsing="false" onAction="#doConfig" text="Configuration" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
                     <items>
-                        <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="OnVerra" />
+                        <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#doAide" text="OnVerra" />
                     </items>
                 </Menu>
             </menus>

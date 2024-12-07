@@ -29,7 +29,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Aide">
             <items>
-              <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="OnVerra" />
+              <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#doAide" text="OnVerra" />
             </items>
           </Menu>
         </menus>
