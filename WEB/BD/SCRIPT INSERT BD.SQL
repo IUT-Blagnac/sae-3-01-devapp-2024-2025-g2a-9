@@ -4,7 +4,7 @@
 
 ALTER TABLE CATEGORIE AUTO_INCREMENT = 1
 ALTER TABLE POINTRELAIS AUTO_INCREMENT = 1
-ALTER TABLE CLIENT AUTO_INCREMENT = 1
+ALTER TABLE UTILISATEUR AUTO_INCREMENT = 1
 ALTER TABLE PRODUIT AUTO_INCREMENT = 1
 ALTER TABLE ENSEMBLE AUTO_INCREMENT = 1
 ALTER TABLE PAIEMENT AUTO_INCREMENT = 1
@@ -83,22 +83,28 @@ INSERT INTO POINTRELAIS (ADRESSEPOINTRELAIS) VALUES ('Plage de Deauville, Deauvi
 
 
 -- ----------------------------------------------------------------------------- 
---       TABLE : CLIENT
+--       TABLE : UTILISATEUR
 -- ----------------------------------------------------------------------------- 
 
--- Insertion de 10 clients
-INSERT INTO CLIENT (CIVILITE, NOM, PRENOM, PAYS, DATEN, MAIL, TELEPHONE, PASSWORD) 
+-- Insertion de 10 UTILISATEURs
+INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, PAYS, DATEN, MAIL, TELEPHONE, PASSWORD, DROIT) 
 VALUES 
-('MR', 'Durand', 'Pierre', 'France', '1985-06-15', 'pierre.durand@mail.com', '0123456789', 'pass1234'),
-('MME', 'Lemoine', 'Marie', 'France', '1990-03-22', 'marie.lemoine@mail.com', '0987654321', 'mdp5678'),
-('MR', 'Martin', 'François', 'France', '1982-11-05', 'francois.martin@mail.com', '0612345678', 'motdepasse01'),
-('MME', 'Bouvier', 'Isabelle', 'Belgique', '1975-07-30', 'isabelle.bouvier@mail.com', '0323456789', 'password123'),
-('MR', 'Dupont', 'Jean', 'France', '1995-01-12', 'jean.dupont@mail.com', '0789654321', 'securePass456'),
-('MME', 'Blanchard', 'Claire', 'France', '1988-09-18', 'claire.blanchard@mail.com', '0612348901', 'clairePass789'),
-('MR', 'Leclerc', 'Julien', 'Canada', '1983-02-20', 'julien.leclerc@mail.com', '5141234567', 'motdepasse456'),
-('MME', 'Garnier', 'Sophie', 'France', '1992-12-03', 'sophie.garnier@mail.com', '0551234567', 'sophiePass123'),
-('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', 'jacco1234'),
-('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecilePass321');
+('MR', 'Durand', 'Pierre', 'France', '1985-06-15', 'pierre.durand@mail.com', '0123456789', 'pass1234', 'CLIENT'),
+('MME', 'Lemoine', 'Marie', 'France', '1990-03-22', 'marie.lemoine@mail.com', '0987654321', 'mdp5678', 'CLIENT'),
+('MR', 'Martin', 'François', 'France', '1982-11-05', 'francois.martin@mail.com', '0612345678', 'motdepasse01', 'CLIENT'),
+('MME', 'Bouvier', 'Isabelle', 'Belgique', '1975-07-30', 'isabelle.bouvier@mail.com', '0323456789', 'password123', 'CLIENT'),
+('MR', 'Dupont', 'Jean', 'France', '1995-01-12', 'jean.dupont@mail.com', '0789654321', 'securePass456', 'CLIENT'),
+('MME', 'Blanchard', 'Claire', 'France', '1988-09-18', 'claire.blanchard@mail.com', '0612348901', 'clairePass789', 'CLIENT'),
+('MR', 'Leclerc', 'Julien', 'Canada', '1983-02-20', 'julien.leclerc@mail.com', '5141234567', 'motdepasse456', 'CLIENT'),
+('MME', 'Garnier', 'Sophie', 'France', '1992-12-03', 'sophie.garnier@mail.com', '0551234567', 'sophiePass123', 'CLIENT'),
+('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', 'jacco1234', 'CLIENT'),
+('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecilePass321', 'CLIENT');
+
+-- Insertion de 10 UTILISATEURs ADMIN
+INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, MAIL, PASSWORD) 
+VALUES 
+('MR', 'Nonne', 'Laurent', 'laurent.nonne@mail.com', 'pass1234', 'ADMIN'),
+('MME', 'Teste', 'Olivier', 'olivier.teste@mail.com', 'mdp5678', 'ADMIN'),
 
 
 -- ----------------------------------------------------------------------------- 
@@ -311,24 +317,24 @@ VALUES (1200000.00, 'Carte Bancaire');
 --       TABLE : COMMANDE
 -- ----------------------------------------------------------------------------- 
 
--- Commande 1 : Client 1, Paiement 1, Livraison à domicile
-INSERT INTO COMMANDE (IDCLIENT, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON)
+-- Commande 1 : UTILISATEUR 1, Paiement 1, Livraison à domicile
+INSERT INTO COMMANDE (IDUTILISATEUR, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON)
 VALUES (1, 1, '2024-12-01', 'Domicile', '12 Rue de la Mer, 75001 Paris');
 
--- Commande 2 : Client 2, Paiement 2, Livraison en point relais (adresse livraison NULL)
-INSERT INTO COMMANDE (IDCLIENT, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON, IDPOINTRELAIS)
+-- Commande 2 : UTILISATEUR 2, Paiement 2, Livraison en point relais (adresse livraison NULL)
+INSERT INTO COMMANDE (IDUTILISATEUR, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON, IDPOINTRELAIS)
 VALUES (2, 2, '2024-12-02', 'Relais', NULL, 1); -- point relais avec ID 1
 
--- Commande 3 : Client 3, Paiement 3, Livraison à domicile
-INSERT INTO COMMANDE (IDCLIENT, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON)
+-- Commande 3 : UTILISATEUR 3, Paiement 3, Livraison à domicile
+INSERT INTO COMMANDE (IDUTILISATEUR, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON)
 VALUES (3, 3, '2024-12-03', 'Domicile', '34 Avenue des Plages, 13001 Marseille');
 
--- Commande 4 : Client 4, Paiement 4, Livraison en point relais (adresse livraison NULL)
-INSERT INTO COMMANDE (IDCLIENT, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON, IDPOINTRELAIS)
+-- Commande 4 : UTILISATEUR 4, Paiement 4, Livraison en point relais (adresse livraison NULL)
+INSERT INTO COMMANDE (IDUTILISATEUR, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON, IDPOINTRELAIS)
 VALUES (4, 4, '2024-12-04', 'Relais', NULL, 2); -- point relais avec ID 2
 
--- Commande 5 : Client 5, Paiement 5, Livraison à domicile
-INSERT INTO COMMANDE (IDCLIENT, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON)
+-- Commande 5 : UTILISATEUR 5, Paiement 5, Livraison à domicile
+INSERT INTO COMMANDE (IDUTILISATEUR, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON)
 VALUES (5, 5, '2024-12-05', 'Domicile', '56 Boulevard des Bateaux, 67000 Strasbourg');
 
 
@@ -373,24 +379,24 @@ VALUES
 
 -- Insertion des avis
 
--- Avis 1 : Produit 1 (Yacht Prestige 50), Client 1, Note 5
-INSERT INTO AVIS (IDPRODUIT, IDCLIENT, NOTE, COMMENTAIRE, DATEAVIS)
+-- Avis 1 : Produit 1 (Yacht Prestige 50), UTILISATEUR 1, Note 5
+INSERT INTO AVIS (IDPRODUIT, IDUTILISATEUR, NOTE, COMMENTAIRE, DATEAVIS)
 VALUES (1, 1, 5, 'Excellent yacht, parfait pour des croisières de luxe. Très confortable et performant.', '2024-12-01');
 
--- Avis 2 : Produit 2 (Voilier Classic), Client 2, Note 4
-INSERT INTO AVIS (IDPRODUIT, IDCLIENT, NOTE, COMMENTAIRE, DATEAVIS)
+-- Avis 2 : Produit 2 (Voilier Classic), UTILISATEUR 2, Note 4
+INSERT INTO AVIS (IDPRODUIT, IDUTILISATEUR, NOTE, COMMENTAIRE, DATEAVIS)
 VALUES (2, 2, 4, 'Très bon voilier pour des sorties en mer, mais pourrait être un peu plus rapide.', '2024-12-02');
 
--- Avis 3 : Produit 3 (Chalutier Marine), Client 3, Note 3
-INSERT INTO AVIS (IDPRODUIT, IDCLIENT, NOTE, COMMENTAIRE, DATEAVIS)
+-- Avis 3 : Produit 3 (Chalutier Marine), UTILISATEUR 3, Note 3
+INSERT INTO AVIS (IDPRODUIT, IDUTILISATEUR, NOTE, COMMENTAIRE, DATEAVIS)
 VALUES (3, 3, 3, 'Bon chalutier pour la pêche, mais manquant de quelques équipements modernes.', '2024-12-03');
 
--- Avis 4 : Produit 5 (Jetski Turbo), Client 4, Note 5
-INSERT INTO AVIS (IDPRODUIT, IDCLIENT, NOTE, COMMENTAIRE, DATEAVIS)
+-- Avis 4 : Produit 5 (Jetski Turbo), UTILISATEUR 4, Note 5
+INSERT INTO AVIS (IDPRODUIT, IDUTILISATEUR, NOTE, COMMENTAIRE, DATEAVIS)
 VALUES (5, 4, 5, 'Super jetski ! Très rapide et facile à manier, parfait pour des sensations fortes sur eau.', '2024-12-04');
 
--- Avis 5 : Produit 6 (Péniche Riviera), Client 5, Note 4
-INSERT INTO AVIS (IDPRODUIT, IDCLIENT, NOTE, COMMENTAIRE, DATEAVIS)
+-- Avis 5 : Produit 6 (Péniche Riviera), UTILISATEUR 5, Note 4
+INSERT INTO AVIS (IDPRODUIT, IDUTILISATEUR, NOTE, COMMENTAIRE, DATEAVIS)
 VALUES (6, 5, 4, 'Très agréable pour des vacances sur eau. Le confort est au rendez-vous, mais le moteur est un peu bruyant.', '2024-12-05');
 
 
@@ -398,26 +404,26 @@ VALUES (6, 5, 4, 'Très agréable pour des vacances sur eau. Le confort est au r
 --       TABLE : FAVORI
 -- ----------------------------------------------------------------------------- 
 
--- Insertion des articles favoris pour des clients
+-- Insertion des articles favoris pour des UTILISATEURs
 
--- Article favori 1 : Produit 1 (Yacht Prestige 50) pour Client 1
-INSERT INTO FAVORI (IDPRODUIT, IDCLIENT, DATEFAVORI)
+-- Article favori 1 : Produit 1 (Yacht Prestige 50) pour UTILISATEUR 1
+INSERT INTO FAVORI (IDPRODUIT, IDUTILISATEUR, DATEFAVORI)
 VALUES (1, 1, '2024-12-01');
 
--- Article favori 2 : Produit 3 (Chalutier Marine) pour Client 2
-INSERT INTO FAVORI (IDPRODUIT, IDCLIENT, DATEFAVORI)
+-- Article favori 2 : Produit 3 (Chalutier Marine) pour UTILISATEUR 2
+INSERT INTO FAVORI (IDPRODUIT, IDUTILISATEUR, DATEFAVORI)
 VALUES (3, 2, '2024-12-02');
 
--- Article favori 3 : Produit 5 (Jetski Turbo) pour Client 3
-INSERT INTO FAVORI (IDPRODUIT, IDCLIENT, DATEFAVORI)
+-- Article favori 3 : Produit 5 (Jetski Turbo) pour UTILISATEUR 3
+INSERT INTO FAVORI (IDPRODUIT, IDUTILISATEUR, DATEFAVORI)
 VALUES (5, 3, '2024-12-03');
 
--- Article favori 4 : Produit 7 (Bateau Offshore Jet) pour Client 4
-INSERT INTO FAVORI (IDPRODUIT, IDCLIENT, DATEFAVORI)
+-- Article favori 4 : Produit 7 (Bateau Offshore Jet) pour UTILISATEUR 4
+INSERT INTO FAVORI (IDPRODUIT, IDUTILISATEUR, DATEFAVORI)
 VALUES (7, 4, '2024-12-04');
 
--- Article favori 5 : Produit 9 (Kit Bateau Nautica) pour Client 5
-INSERT INTO FAVORI (IDPRODUIT, IDCLIENT, DATEFAVORI)
+-- Article favori 5 : Produit 9 (Kit Bateau Nautica) pour UTILISATEUR 5
+INSERT INTO FAVORI (IDPRODUIT, IDUTILISATEUR, DATEFAVORI)
 VALUES (9, 5, '2024-12-05');
 
 
@@ -425,24 +431,24 @@ VALUES (9, 5, '2024-12-05');
 --       TABLE : PANIER
 -- ----------------------------------------------------------------------------- 
 
--- Panier 1 : Client 1, Date : 2024-12-01
-INSERT INTO PANIER (IDCLIENT, DATEPANIER)
+-- Panier 1 : UTILISATEUR 1, Date : 2024-12-01
+INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
 VALUES (1, '2024-12-01');
 
--- Panier 2 : Client 2, Date : 2024-12-02
-INSERT INTO PANIER (IDCLIENT, DATEPANIER)
+-- Panier 2 : UTILISATEUR 2, Date : 2024-12-02
+INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
 VALUES (2, '2024-12-02');
 
--- Panier 3 : Client 3, Date : 2024-12-03
-INSERT INTO PANIER (IDCLIENT, DATEPANIER)
+-- Panier 3 : UTILISATEUR 3, Date : 2024-12-03
+INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
 VALUES (3, '2024-12-03');
 
--- Panier 4 : Client 4, Date : 2024-12-04
-INSERT INTO PANIER (IDCLIENT, DATEPANIER)
+-- Panier 4 : UTILISATEUR 4, Date : 2024-12-04
+INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
 VALUES (4, '2024-12-04');
 
--- Panier 5 : Client 5, Date : 2024-12-05
-INSERT INTO PANIER (IDCLIENT, DATEPANIER)
+-- Panier 5 : UTILISATEUR 5, Date : 2024-12-05
+INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
 VALUES (5, '2024-12-05');
 
 
@@ -450,31 +456,31 @@ VALUES (5, '2024-12-05');
 --       TABLE : DETAILPANIER
 -- ----------------------------------------------------------------------------- 
 
--- Panier 1 : Détails pour Client 1 (Produit 1 et 3)
+-- Panier 1 : Détails pour UTILISATEUR 1 (Produit 1 et 3)
 INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
 VALUES 
 (1, 1, 2),  -- 2 Yacht Prestige 50
 (3, 1, 1);  -- 1 Chalutier Marine
 
--- Panier 2 : Détails pour Client 2 (Produit 2 et 4)
+-- Panier 2 : Détails pour UTILISATEUR 2 (Produit 2 et 4)
 INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
 VALUES 
 (2, 2, 1),  -- 1 Voilier Classic
 (4, 2, 2);  -- 2 Bolincheur Excell
 
--- Panier 3 : Détails pour Client 3 (Produit 5 et 6)
+-- Panier 3 : Détails pour UTILISATEUR 3 (Produit 5 et 6)
 INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
 VALUES 
 (5, 3, 1),  -- 1 Jetski Turbo
 (6, 3, 3);  -- 3 Péniche Riviera
 
--- Panier 4 : Détails pour Client 4 (Produit 7 et 8)
+-- Panier 4 : Détails pour UTILISATEUR 4 (Produit 7 et 8)
 INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
 VALUES 
 (7, 4, 1),  -- 1 Bateau Offshore Jet
 (8, 4, 2);  -- 2 Bateau Offshore Zéphyr
 
--- Panier 5 : Détails pour Client 5 (Produit 9 et 10)
+-- Panier 5 : Détails pour UTILISATEUR 5 (Produit 9 et 10)
 INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
 VALUES 
 (9, 5, 2),  -- 2 Kit Bateau Nautica
