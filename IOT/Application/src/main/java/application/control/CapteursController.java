@@ -18,42 +18,41 @@ public class CapteursController {
     private Stage cStage;
 
     /**
-     * Contrôleur de la vue de gestion des clients.
+     * Contrôleur de la vue de gestion des capteurs.
      */
     private CapteursViewController cViewController;
 
-	/**
+    /**
      * Constructeur de la classe CapteursController.
      *  
      * @param _parentStage Stage parent de cette fenêtre.
      */
-	public CapteursController(Stage _parentStage) {
-		try {
-			FXMLLoader loader = new FXMLLoader(CapteursViewController.class.getResource("lectureC.fxml"));
-			BorderPane root = loader.load();
+    public CapteursController(Stage _parentStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(CapteursViewController.class.getResource("/application/view/lectureC.fxml"));
+            BorderPane root = loader.load();
 
-			Scene scene = new Scene(root, root.getPrefWidth() + 50, root.getPrefHeight() + 10);
+            Scene scene = new Scene(root, root.getPrefWidth() + 50, root.getPrefHeight() + 10);
 
-			this.cStage = new Stage();
-			this.cStage.initModality(Modality.NONE);
-			this.cStage.initOwner(_parentStage);
-			this.cStage.setScene(scene);
-			this.cStage.setTitle("Gestion des Capteurs");
-			this.cStage.setResizable(true);
+            this.cStage = new Stage();
+            this.cStage.initModality(Modality.NONE);
+            this.cStage.initOwner(_parentStage);
+            this.cStage.setScene(scene);
+            this.cStage.setTitle("Gestion des Capteurs");
+            this.cStage.setResizable(true);
 
-			this.cViewController = loader.getController();
-			this.cViewController.initContext(this.cStage, this);
+            this.cViewController = loader.getController();
+            this.cViewController.initContext(this.cStage, this);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
+    /**
      * Affiche la vue de gestion des Capteurs.
      */
-	public void doCapteursControllerDialog() {
-		this.cViewController.displayDialog();
-	}
-
+    public void doCapteursControllerDialog() {
+        this.cViewController.displayDialog();
+    }
 }
