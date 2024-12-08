@@ -21,11 +21,15 @@
             <li><a class="nav-link" href="#">Magasins</a></li>
             <?php
                 session_start();
-                if (!isset($_SESSION['user'])) {
-                    $_SESSION['url'] = $_SERVER['REQUEST_URI']; // Enregistre l'URL actuelle
+                $_SESSION['url'] = basename($_SERVER['PHP_SELF']);// Enregistre le fichier php actuel
+                if (!isset($_SESSION['user'])) { 
                     echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Compte</a></li>";
                 } else {
-                    echo "<li><a class=\"nav-link\" href=\"compte.php\">Compte</a></li>";
+                    if ($_SESSION['url'] == "compte.php") {
+                        echo '<li><a class="nav-link" href="deconnexion.php">Déconnexion</a></li>';
+                    } else {
+                        echo '<li><a class="nav-link" href="compte.php">Compte</a></li>';
+                    }
                 }
             ?>
             <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
