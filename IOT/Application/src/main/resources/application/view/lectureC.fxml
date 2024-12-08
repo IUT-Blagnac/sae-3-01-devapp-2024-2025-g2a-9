@@ -2,39 +2,46 @@
 
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.CapteursViewController">
     <top>
-        <MenuBar>
-            <menus>
-                <Menu mnemonicParsing="false" text="Fichier">
-                    <items>
-                        <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" text="Quitter" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Modifier">
-                    <items>
-                        <MenuItem fx:id="configMenuItem" mnemonicParsing="false" text="Configuration" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Aide">
-                    <items>
-                        <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="OnVerra" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
+        <VBox>
+            <MenuBar>
+                <menus>
+                    <Menu mnemonicParsing="false" text="Fichier">
+                        <items>
+                            <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" text="Quitter" />
+                        </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Modifier">
+                        <items>
+                            <MenuItem fx:id="configMenuItem" mnemonicParsing="false" text="Configuration" />
+                        </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Aide">
+                        <items>
+                            <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="OnVerra" />
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
+            <Text fx:id="colorLegendText" />
+            <HBox fx:id="colorLegendContainer" spacing="10" />
+        </VBox>
     </top>
     <center>
         <TabPane fx:id="tabPane" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
@@ -52,90 +59,46 @@
                 </Tab>
                 <Tab text="Toutes les salles">
                     <content>
-                        <VBox>
-                            <Button fx:id="showAllDataButton" text="Afficher toutes les données" />
-                            <!-- Graphique pour la température -->
-                            <LineChart fx:id="temperatureChart" title="Température">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Température (°C)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour l'humidité -->
-                            <LineChart fx:id="humidityChart" title="Humidité">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Humidité (%)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour l'activité -->
-                            <LineChart fx:id="activityChart" title="Activité">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Activité (niveau)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour le CO₂ -->
-                            <LineChart fx:id="co2Chart" title="CO₂">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="CO₂ (ppm)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour le TVOC -->
-                            <LineChart fx:id="tvocChart" title="TVOC">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="TVOC (ppb)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour la luminosité -->
-                            <LineChart fx:id="illuminationChart" title="Luminosité">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Luminosité (lux)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour l'infrarouge -->
-                            <LineChart fx:id="infraredChart" title="Infrarouge">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Infrarouge (niveau)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour l'infrarouge et visible -->
-                            <LineChart fx:id="infraredVisibleChart" title="Infrarouge et Visible">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Niveau" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour la pression -->
-                            <LineChart fx:id="pressureChart" title="Pression">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Pression (hPa)" />
-                                </yAxis>
-                            </LineChart>
-                        </VBox>
+                        <ScrollPane fitToWidth="true" fitToHeight="true">
+                            <VBox>
+                                <LineChart fx:id="temperatureChart" title="Température" legendSide="BOTTOM">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Température (°C)" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                                <LineChart fx:id="humidityChart" title="Humidité" legendSide="BOTTOM">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Humidité (%)" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                                <LineChart fx:id="co2Chart" title="CO₂" legendSide="BOTTOM">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="CO₂ (ppm)" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                                <LineChart fx:id="pressureChart" title="Pression" legendSide="BOTTOM">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Pression (hPa)" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                            </VBox>
+                        </ScrollPane>
                     </content>
                 </Tab>
                 <Tab text="Salle individuelle">
@@ -158,69 +121,7 @@
                                     <NumberAxis label="Humidité (%)" />
                                 </yAxis>
                             </LineChart>
-                            <!-- Graphique pour l'activité individuelle -->
-                            <LineChart fx:id="individualActivityChart" title="Activité">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Activité (niveau)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour le CO₂ individuel -->
-                            <LineChart fx:id="individualCo2Chart" title="CO₂">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="CO₂ (ppm)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour le TVOC individuel -->
-                            <LineChart fx:id="individualTvocChart" title="TVOC">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="TVOC (ppb)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour la luminosité individuelle -->
-                            <LineChart fx:id="individualIlluminationChart" title="Luminosité">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Luminosité (lux)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour l'infrarouge individuel -->
-                            <LineChart fx:id="individualInfraredChart" title="Infrarouge">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Infrarouge (niveau)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour l'infrarouge et visible individuel -->
-                            <LineChart fx:id="individualInfraredVisibleChart" title="Infrarouge et Visible">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Niveau" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Graphique pour la pression individuelle -->
-                            <LineChart fx:id="individualPressureChart" title="Pression">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Pression (hPa)" />
-                                </yAxis>
-                            </LineChart>
+                            <!-- Ajoutez d'autres graphiques pour chaque type de donnée récupérée -->
                         </VBox>
                     </content>
                 </Tab>

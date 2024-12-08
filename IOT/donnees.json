@@ -1,34 +1,86 @@
 [
     {
         "temperature": [
-            19.9,
+            17,
+            false
+        ],
+        "humidity": [
+            46,
+            false
+        ],
+        "date": "2024-12-08 12:47:30",
+        "room": "C102"
+    },
+    {
+        "temperature": [
+            18.3,
+            false
+        ],
+        "humidity": [
+            42.5,
+            false
+        ],
+        "date": "2024-12-08 12:47:33",
+        "room": "E007"
+    },
+    {
+        "temperature": [
+            18.4,
+            false
+        ],
+        "humidity": [
+            43.5,
+            false
+        ],
+        "date": "2024-12-08 12:48:02",
+        "room": "B203"
+    },
+    {
+        "temperature": [
+            15.9,
+            false
+        ],
+        "humidity": [
+            46.5,
+            false
+        ],
+        "date": "2024-12-08 12:48:02",
+        "room": "amphi1"
+    },
+    {
+        "temperature": [
+            18,
             false
         ],
         "humidity": [
             42,
             false
         ],
-        "activity": [
-            0,
-            false
-        ],
-        "date": "2024-12-07 17:44:22",
-        "room": "E209"
+        "date": "2024-12-08 12:48:02",
+        "room": "E208"
     },
     {
         "temperature": [
-            19.1,
+            17.3,
             false
         ],
         "humidity": [
-            43,
+            43.5,
             false
         ],
-        "activity": [
-            0,
+        "date": "2024-12-08 12:48:20",
+        "room": "E210"
+    },
+    {
+        "temperature": [
+            18.9,
             false
         ],
-        "date": "2024-12-07 17:45:05",
-        "room": "E003"
+        "humidity": [
+            39.5,
+            false
+        ],
+        "date": "2024-12-08 12:48:33",
+        "room": "B103"
     }
 ]
