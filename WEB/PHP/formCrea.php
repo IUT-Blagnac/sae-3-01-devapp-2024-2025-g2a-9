@@ -25,12 +25,6 @@
                     echo htmlentities($_GET['msgErreur']);
                     echo '</div>';
                 }
-                if (!empty($_COOKIE['user_email'])) {
-                    $cookie = $_COOKIE['user_email'];
-                }
-                else {
-                    $cookie = "";
-                }
                 ?>
                 <form method="post" action="traitCrea.php">
                     <div class="row mb-4 w-50">

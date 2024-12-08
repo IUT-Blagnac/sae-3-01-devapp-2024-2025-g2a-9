@@ -26,10 +26,11 @@
             exit();
         }else{
             $password = password_hash($mdp,PASSWORD_DEFAULT);
-            $req = $conn->prepare("INSERT INTO UTILISATEUR (nom,prenom,civilite,dateN,mail,telephone,password,pays,droit)
+            $req = $conn->prepare("INSERT INTO UTILISATEUR (nom, prenom, civilite, dateN, mail, telephone, password, pays, droit)
                                    VALUES (?,?,?,?,?,?,?,?,'CLIENT')") ;
-            $req->execute([$nom,$prenom,$civilite,$dateN,$mail,$Numtel,$password,$pays]);
+            $req->execute([$nom, $prenom, $civilite, $dateN, $mail, $Numtel, $password, $pays]);
             header("location:formConnexion.php");
             exit();
         }
     }
+?>

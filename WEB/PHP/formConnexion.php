@@ -52,7 +52,7 @@
                     <button type="submit" name="submit" class="btn btn-primary">Se connecter</button><br><br>
                     <!-- Inscription -->
                     <div>
-                        <p>Pas de compte ? <a href="formCreer.php">S'inscrire</a></p>
+                        <p>Pas de compte ? <a href="formCrea.php">S'inscrire</a></p>
                     </div>
                 </form>
             </center>
