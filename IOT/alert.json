@@ -1,20 +1,19 @@
 [
     {
         "currentPower": 0,
-        "date": "2024-12-08 18:27:09",
+        "date": "2024-12-08 18:34:40",
         "room": ""
     },
     {
-        "temperature": 17.1,
-        "co2": 450,
-        "date": "2024-12-08 18:27:30",
-        "room": "C102"
+        "temperature": 17.3,
+        "co2": 440,
+        "infrared": 1,
+        "date": "2024-12-08 18:35:03",
+        "room": "E003"
     },
     {
-        "temperature": 18,
-        "co2": 413,
-        "infrared": 1,
-        "date": "2024-12-08 18:27:33",
-        "room": "E007"
+        "currentPower": 0,
+        "date": "2024-12-08 18:35:08",
+        "room": ""
     }
 ]

@@ -369,7 +369,7 @@ public class CapteursViewController {
         if (selectedRoom == null) {
             return;
         }
-    
+
         individualTemperatureChart.getData().clear();
         individualHumidityChart.getData().clear();
         individualLuminosityChart.getData().clear();
@@ -377,7 +377,7 @@ public class CapteursViewController {
         individualTvocChart.getData().clear();
         individualInfraredChart.getData().clear();
         individualInfraredVisibleChart.getData().clear();
-    
+
         XYChart.Series<Number, Number> tempSeriesOriginal = tempSeriesMap.get(selectedRoom);
         if (tempSeriesOriginal != null) {
             XYChart.Series<Number, Number> tempSeriesCopy = new XYChart.Series<>();
@@ -387,7 +387,7 @@ public class CapteursViewController {
             }
             individualTemperatureChart.getData().add(tempSeriesCopy);
         }
-    
+
         XYChart.Series<Number, Number> humiditySeriesOriginal = humiditySeriesMap.get(selectedRoom);
         if (humiditySeriesOriginal != null) {
             XYChart.Series<Number, Number> humiditySeriesCopy = new XYChart.Series<>();
@@ -397,7 +397,7 @@ public class CapteursViewController {
             }
             individualHumidityChart.getData().add(humiditySeriesCopy);
         }
-    
+
         XYChart.Series<Number, Number> luminositySeriesOriginal = luminositySeriesMap.get(selectedRoom);
         if (luminositySeriesOriginal != null) {
             XYChart.Series<Number, Number> luminositySeriesCopy = new XYChart.Series<>();
@@ -407,7 +407,7 @@ public class CapteursViewController {
             }
             individualLuminosityChart.getData().add(luminositySeriesCopy);
         }
-    
+
         XYChart.Series<Number, Number> activitySeriesOriginal = activitySeriesMap.get(selectedRoom);
         if (activitySeriesOriginal != null) {
             XYChart.Series<Number, Number> activitySeriesCopy = new XYChart.Series<>();
@@ -417,7 +417,7 @@ public class CapteursViewController {
             }
             individualActivityChart.getData().add(activitySeriesCopy);
         }
-    
+
         XYChart.Series<Number, Number> tvocSeriesOriginal = tvocSeriesMap.get(selectedRoom);
         if (tvocSeriesOriginal != null) {
             XYChart.Series<Number, Number> tvocSeriesCopy = new XYChart.Series<>();
@@ -427,7 +427,7 @@ public class CapteursViewController {
             }
             individualTvocChart.getData().add(tvocSeriesCopy);
         }
-    
+
         XYChart.Series<Number, Number> infraredSeriesOriginal = infraredSeriesMap.get(selectedRoom);
         if (infraredSeriesOriginal != null) {
             XYChart.Series<Number, Number> infraredSeriesCopy = new XYChart.Series<>();
@@ -437,7 +437,7 @@ public class CapteursViewController {
             }
             individualInfraredChart.getData().add(infraredSeriesCopy);
         }
-    
+
         XYChart.Series<Number, Number> infraredVisibleSeriesOriginal = infraredVisibleSeriesMap.get(selectedRoom);
         if (infraredVisibleSeriesOriginal != null) {
             XYChart.Series<Number, Number> infraredVisibleSeriesCopy = new XYChart.Series<>();
@@ -473,7 +473,7 @@ public class CapteursViewController {
     }
 
 
-    private void updateCharts() {
+        private void updateCharts() {
         try {
             Path path = Paths.get("../donnees.json");
             if (!Files.exists(path)) {
@@ -570,8 +570,8 @@ public class CapteursViewController {
                     }
                 }
     
-                if (data.has("luminosity") && data.get("luminosity").isJsonArray()) {
-                    double luminosity = data.get("luminosity").getAsJsonArray().get(0).getAsDouble();
+                if (data.has("illumination") && data.get("illumination").isJsonArray()) {
+                    double luminosity = data.get("illumination").getAsJsonArray().get(0).getAsDouble();
                     XYChart.Series<Number, Number> luminositySeries = luminositySeriesMap.computeIfAbsent(room, k -> {
                         XYChart.Series<Number, Number> series = new XYChart.Series<>();
                         series.setName(k);
@@ -626,8 +626,8 @@ public class CapteursViewController {
                     }
                 }
     
-                if (data.has("infrared_visible") && data.get("infrared_visible").isJsonArray()) {
-                    double infraredVisible = data.get("infrared_visible").getAsJsonArray().get(0).getAsDouble();
+                if (data.has("infrared_and_visible") && data.get("infrared_and_visible").isJsonArray()) {
+                    double infraredVisible = data.get("infrared_and_visible").getAsJsonArray().get(0).getAsDouble();
                     XYChart.Series<Number, Number> infraredVisibleSeries = infraredVisibleSeriesMap.computeIfAbsent(room, k -> {
                         XYChart.Series<Number, Number> series = new XYChart.Series<>();
                         series.setName(k);

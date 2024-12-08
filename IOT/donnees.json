@@ -1,6 +1,6 @@
 [
     {
-        "lastUpdateTime": "2024-12-08 18:14:34",
+        "lastUpdateTime": "2024-12-08 18:30:35",
         "lifeTimeData": {
             "energy": 3471500
         },
@@ -18,15 +18,15 @@
             true
         ],
         "measuredBy": "INVERTER",
-        "date": "2024-12-08 18:27:09"
+        "date": "2024-12-08 18:34:40"
     },
     {
         "temperature": [
-            17.1,
+            17.3,
             true
         ],
         "humidity": [
-            47,
+            46,
             false
         ],
         "activity": [
@@ -34,51 +34,11 @@
             false
         ],
         "co2": [
-            450,
+            440,
             true
         ],
         "tvoc": [
-            96,
-            false
-        ],
-        "illumination": [
-            0,
-            false
-        ],
-        "infrared": [
-            0,
-            false
-        ],
-        "infrared_and_visible": [
-            0,
-            false
-        ],
-        "pressure": [
-            990.4,
-            false
-        ],
-        "date": "2024-12-08 18:27:30",
-        "room": "C102"
-    },
-    {
-        "temperature": [
-            18,
-            true
-        ],
-        "humidity": [
-            45.5,
-            false
-        ],
-        "activity": [
-            0,
-            false
-        ],
-        "co2": [
-            413,
-            true
-        ],
-        "tvoc": [
-            62,
+            121,
             false
         ],
         "illumination": [
@@ -94,10 +54,31 @@
             false
         ],
         "pressure": [
-            990.9,
+            990.7,
             false
         ],
-        "date": "2024-12-08 18:27:33",
-        "room": "E007"
+        "date": "2024-12-08 18:35:03",
+        "room": "E003"
+    },
+    {
+        "lastUpdateTime": "2024-12-08 18:30:35",
+        "lifeTimeData": {
+            "energy": 3471500
+        },
+        "lastYearData": {
+            "energy": 2990470
+        },
+        "lastMonthData": {
+            "energy": 56064
+        },
+        "lastDayData": {
+            "energy": 2339
+        },
+        "currentPower": [
+            0,
+            true
+        ],
+        "measuredBy": "INVERTER",
+        "date": "2024-12-08 18:35:08"
     }
 ]
