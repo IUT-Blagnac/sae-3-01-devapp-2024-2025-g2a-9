@@ -1,26 +1,20 @@
 [
     {
-        "temperature": 19.2,
-        "co2": 412,
-        "date": "2024-12-08 17:22:54",
-        "room": "B105"
+        "currentPower": 0,
+        "date": "2024-12-08 18:27:09",
+        "room": ""
     },
     {
-        "temperature": 47.5,
-        "co2": 427,
-        "date": "2024-12-08 17:22:55",
-        "room": "Foyer-etudiants-entr\u00e9e"
+        "temperature": 17.1,
+        "co2": 450,
+        "date": "2024-12-08 18:27:30",
+        "room": "C102"
     },
     {
-        "temperature": 17.9,
-        "co2": 421,
-        "date": "2024-12-08 17:23:00",
-        "room": "B111"
-    },
-    {
-        "temperature": 22,
-        "co2": 423,
-        "date": "2024-12-08 17:23:01",
-        "room": "B234"
+        "temperature": 18,
+        "co2": 413,
+        "infrared": 1,
+        "date": "2024-12-08 18:27:33",
+        "room": "E007"
     }
 ]

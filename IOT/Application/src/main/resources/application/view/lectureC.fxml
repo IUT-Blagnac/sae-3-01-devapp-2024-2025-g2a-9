@@ -12,10 +12,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.CapteursViewController">
     <top>
@@ -60,8 +61,11 @@
                 <Tab text="Toutes les salles">
                     <content>
                         <ScrollPane fitToWidth="true" fitToHeight="true">
-                            <VBox>
-                                <LineChart fx:id="temperatureChart" title="Température" legendSide="BOTTOM">
+                            <GridPane hgap="10" vgap="10">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10" />
+                            </padding>
+                                <LineChart fx:id="temperatureChart" title="Température" legendSide="BOTTOM" GridPane.rowIndex="0" GridPane.columnIndex="0">
                                     <xAxis>
                                         <NumberAxis label="Temps (s)" />
                                     </xAxis>
@@ -70,7 +74,7 @@
                                     </yAxis>
                                     <legendVisible>true</legendVisible>
                                 </LineChart>
-                                <LineChart fx:id="humidityChart" title="Humidité" legendSide="BOTTOM">
+                                <LineChart fx:id="humidityChart" title="Humidité" legendSide="BOTTOM" GridPane.rowIndex="0" GridPane.columnIndex="1">
                                     <xAxis>
                                         <NumberAxis label="Temps (s)" />
                                     </xAxis>
@@ -79,7 +83,7 @@
                                     </yAxis>
                                     <legendVisible>true</legendVisible>
                                 </LineChart>
-                                <LineChart fx:id="co2Chart" title="CO₂" legendSide="BOTTOM">
+                                <LineChart fx:id="co2Chart" title="CO₂" legendSide="BOTTOM" GridPane.rowIndex="1" GridPane.columnIndex="0">
                                     <xAxis>
                                         <NumberAxis label="Temps (s)" />
                                     </xAxis>
@@ -88,7 +92,7 @@
                                     </yAxis>
                                     <legendVisible>true</legendVisible>
                                 </LineChart>
-                                <LineChart fx:id="pressureChart" title="Pression" legendSide="BOTTOM">
+                                <LineChart fx:id="pressureChart" title="Pression" legendSide="BOTTOM" GridPane.rowIndex="1" GridPane.columnIndex="1">
                                     <xAxis>
                                         <NumberAxis label="Temps (s)" />
                                     </xAxis>
@@ -97,31 +101,120 @@
                                     </yAxis>
                                     <legendVisible>true</legendVisible>
                                 </LineChart>
-                            </VBox>
+                                <LineChart fx:id="luminosityChart" title="Luminosité" legendSide="BOTTOM" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Luminosité (lux)" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                                <LineChart fx:id="activityChart" title="Activité" legendSide="BOTTOM" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Activité" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                                <LineChart fx:id="tvocChart" title="TVOC" legendSide="BOTTOM" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="TVOC (ppb)" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                                <LineChart fx:id="infraredChart" title="Infrarouge" legendSide="BOTTOM" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Infrarouge" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                                <LineChart fx:id="infraredVisibleChart" title="Infrarouge Visible" legendSide="BOTTOM" GridPane.rowIndex="4" GridPane.columnIndex="0">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Infrarouge Visible" />
+                                    </yAxis>
+                                    <legendVisible>true</legendVisible>
+                                </LineChart>
+                            </GridPane>
                         </ScrollPane>
                     </content>
                 </Tab>
                 <Tab text="Salle individuelle">
                     <content>
                         <VBox>
-                            <ComboBox fx:id="roomComboBox" layoutX="14.0" layoutY="14.0" prefWidth="150.0" />
-                            <LineChart fx:id="individualTemperatureChart" title="Température">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Température (°C)" />
-                                </yAxis>
-                            </LineChart>
-                            <LineChart fx:id="individualHumidityChart" title="Humidité">
-                                <xAxis>
-                                    <NumberAxis label="Temps (s)" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Humidité (%)" />
-                                </yAxis>
-                            </LineChart>
-                            <!-- Ajoutez d'autres graphiques pour chaque type de donnée récupérée -->
+                            <ComboBox fx:id="roomComboBox" promptText="Sélectionnez une salle" />
+                            <GridPane hgap="10" vgap="10">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10" />
+                            </padding>
+                                <LineChart fx:id="individualTemperatureChart" title="Température" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Température (°C)" />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="individualHumidityChart" title="Humidité" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Humidité (%)" />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="individualLuminosityChart" title="Luminosité" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Luminosité (lux)" />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="individualActivityChart" title="Activité" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Activité" />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="individualTvocChart" title="TVOC" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="TVOC (ppb)" />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="individualInfraredChart" title="Infrarouge" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Infrarouge" />
+                                    </yAxis>
+                                </LineChart>
+                                <LineChart fx:id="individualInfraredVisibleChart" title="Infrarouge Visible" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                                    <xAxis>
+                                        <NumberAxis label="Temps (s)" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Infrarouge Visible" />
+                                    </yAxis>
+                                </LineChart>
+                            </GridPane>
                         </VBox>
                     </content>
                 </Tab>

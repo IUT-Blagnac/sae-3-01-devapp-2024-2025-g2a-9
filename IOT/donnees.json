@@ -1,31 +1,32 @@
 [
     {
-        "temperature": [
-            19.2,
-            true
-        ],
-        "humidity": [
-            43,
-            false
-        ],
-        "activity": [
+        "lastUpdateTime": "2024-12-08 18:14:34",
+        "lifeTimeData": {
+            "energy": 3471500
+        },
+        "lastYearData": {
+            "energy": 2990470
+        },
+        "lastMonthData": {
+            "energy": 56064
+        },
+        "lastDayData": {
+            "energy": 2339
+        },
+        "currentPower": [
             0,
-            false
-        ],
-        "co2": [
-            412,
             true
         ],
-        "date": "2024-12-08 17:22:54",
-        "room": "B105"
+        "measuredBy": "INVERTER",
+        "date": "2024-12-08 18:27:09"
     },
     {
         "temperature": [
-            47.5,
+            17.1,
             true
         ],
         "humidity": [
-            46,
+            47,
             false
         ],
         "activity": [
@@ -33,19 +34,39 @@
             false
         ],
         "co2": [
-            427,
+            450,
             true
         ],
-        "date": "2024-12-08 17:22:55",
-        "room": "Foyer-etudiants-entr\u00e9e"
+        "tvoc": [
+            96,
+            false
+        ],
+        "illumination": [
+            0,
+            false
+        ],
+        "infrared": [
+            0,
+            false
+        ],
+        "infrared_and_visible": [
+            0,
+            false
+        ],
+        "pressure": [
+            990.4,
+            false
+        ],
+        "date": "2024-12-08 18:27:30",
+        "room": "C102"
     },
     {
         "temperature": [
-            17.9,
+            18,
             true
         ],
         "humidity": [
-            44,
+            45.5,
             false
         ],
         "activity": [
@@ -53,30 +74,30 @@
             false
         ],
         "co2": [
-            421,
+            413,
             true
         ],
-        "date": "2024-12-08 17:23:00",
-        "room": "B111"
-    },
-    {
-        "temperature": [
-            22,
-            true
-        ],
-        "humidity": [
-            36,
+        "tvoc": [
+            62,
             false
         ],
-        "activity": [
-            0,
+        "illumination": [
+            1,
             false
         ],
-        "co2": [
-            423,
+        "infrared": [
+            1,
             true
         ],
-        "date": "2024-12-08 17:23:01",
-        "room": "B234"
+        "infrared_and_visible": [
+            1,
+            false
+        ],
+        "pressure": [
+            990.9,
+            false
+        ],
+        "date": "2024-12-08 18:27:33",
+        "room": "E007"
     }
 ]
