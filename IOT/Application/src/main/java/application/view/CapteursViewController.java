@@ -37,6 +37,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+
+/**
+ * Contrôleur de la vue CapteursView.
+ * @author Thomas
+ */
 public class CapteursViewController {
 
     // Contrôleur de Dialogue associé à CapteursController
@@ -143,77 +148,111 @@ public class CapteursViewController {
     private Instant startTimeInstant = Instant.now();
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static final int MAX_POINTS = 8; // Nombre maximum de points visibles dans le graphique
+    private static final int MAX_POINTS = 8; // Nombre max de points visibles dans le graphique
 
+
+    /**
+     * Initialise le controleur dès que le fichier FXML est chargé.
+     * @author Thomas
+     */
     @FXML
     private void initialize() {
+        // Initialisation des colonnes du tableau
         roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         dataColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
     
+        // Initialisation graphique temperature
         temperatureChart.getXAxis().setLabel("Temps (s)");
         temperatureChart.getYAxis().setLabel("Température (°C)");
         temperatureChart.setLegendVisible(true);
     
+        // Initialisation graphique humidite
         humidityChart.getXAxis().setLabel("Temps (s)");
         humidityChart.getYAxis().setLabel("Humidité (%)");
         humidityChart.setLegendVisible(true);
     
+        // Initialisation graphique CO2
         co2Chart.getXAxis().setLabel("Temps (s)");
         co2Chart.getYAxis().setLabel("CO₂ (ppm)");
         co2Chart.setLegendVisible(true);
     
+        // Initialisation graphique pression
         pressureChart.getXAxis().setLabel("Temps (s)");
         pressureChart.getYAxis().setLabel("Pression (hPa)");
         pressureChart.setLegendVisible(true);
     
+        // Initialisation graphique luminosite
         luminosityChart.getXAxis().setLabel("Temps (s)");
         luminosityChart.getYAxis().setLabel("Luminosité (lux)");
         luminosityChart.setLegendVisible(true);
     
+        // Initialisation graphique activite
         activityChart.getXAxis().setLabel("Temps (s)");
         activityChart.getYAxis().setLabel("Activité");
         activityChart.setLegendVisible(true);
     
+        // Initialisation graphique tvoc
         tvocChart.getXAxis().setLabel("Temps (s)");
         tvocChart.getYAxis().setLabel("TVOC (ppb)");
         tvocChart.setLegendVisible(true);
     
+        // Initialisation graphique infrarouge
         infraredChart.getXAxis().setLabel("Temps (s)");
         infraredChart.getYAxis().setLabel("Infrarouge");
         infraredChart.setLegendVisible(true);
     
+        // Initialisation graphique infrarouge visible
         infraredVisibleChart.getXAxis().setLabel("Temps (s)");
         infraredVisibleChart.getYAxis().setLabel("Infrarouge Visible");
         infraredVisibleChart.setLegendVisible(true);
     
+        // Initialisation graphique individuel temperature
         individualTemperatureChart.getXAxis().setLabel("Temps (s)");
         individualTemperatureChart.getYAxis().setLabel("Température (°C)");
     
+        // Initialisation graphique individuel humidite
         individualHumidityChart.getXAxis().setLabel("Temps (s)");
         individualHumidityChart.getYAxis().setLabel("Humidité (%)");
     
+        // Initialisation graphique individuel luminosite
         individualLuminosityChart.getXAxis().setLabel("Temps (s)");
         individualLuminosityChart.getYAxis().setLabel("Luminosité (lux)");
     
+        // Initialisation graphique individuel activite
         individualActivityChart.getXAxis().setLabel("Temps (s)");
         individualActivityChart.getYAxis().setLabel("Activité");
     
+        // Initialisation graphique individuel tvoc
         individualTvocChart.getXAxis().setLabel("Temps (s)");
         individualTvocChart.getYAxis().setLabel("TVOC (ppb)");
     
+        // Initialisation graphique individuel infrarouge
         individualInfraredChart.getXAxis().setLabel("Temps (s)");
         individualInfraredChart.getYAxis().setLabel("Infrarouge");
     
+        // Initialisation graphique individuel infrarouge visible
         individualInfraredVisibleChart.getXAxis().setLabel("Temps (s)");
         individualInfraredVisibleChart.getYAxis().setLabel("Infrarouge Visible");
     
+        // Initialisation de la ComboBox
         roomComboBox.setOnAction(event -> updateIndividualRoomData());
     
+        // Initialisation du texte de la légende des couleurs
         updateColorLegend();
+
+        // Initialisation des seuils
         loadSeuils();
     }
 
+
+    /**
+     * Charge les seuils depuis le fichier config.ini et les initialise.
+     * Les seuils sont utilisés pour déterminer si les valeurs des capteurs dépassent les limites définies.
+     * 
+     * @throws IOException si une erreur d'entrée/sortie se produit lors du chargement du fichier config.ini
+     * @author Thomas
+     */
     private void loadSeuils() {
         try {
             ConfigIni configIni = new ConfigIni();
@@ -235,6 +274,16 @@ public class CapteursViewController {
         }
     }
 
+
+    /**
+     * Initialise le contexte du contrôleur avec la scène et le contrôleur de dialogue.
+     * Configure la table en temps réel et initialise les seuils pour les capteurs.
+     * 
+     * @param _cStage la scène principale de l'application
+     * @param _p le contrôleur de dialogue associé
+     * 
+     * @autor Thomas
+     */
     public void initContext(Stage _cStage, CapteursController _p) {
         this.cDialogController = _p;
         this.cStage = _cStage;
@@ -291,10 +340,23 @@ public class CapteursViewController {
         updateRoomComboBox();
     }
 
+
+    /**
+     * Configure la fenêtre de dialogue.
+     * 
+     * @autor Thomas
+     */
     private void configure() {
         this.cStage.setOnCloseRequest(this::closeWindow);
     }
 
+
+    /**
+     * Démarre la mise à jour périodique des données des capteurs.
+     * Les données sont mises à jour toutes les 5 secondes.
+     * 
+     * @author Thomas
+     */
     private void startDataUpdate() {
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
@@ -302,9 +364,16 @@ public class CapteursViewController {
                 updateData();
                 updateRoomComboBox();
             });
-        }, 0, 5, TimeUnit.SECONDS); // Mise à jour toutes les 5 secondes
+        }, 0, 5, TimeUnit.SECONDS); // MAJ toutes les 5 secondes
     }
 
+
+    /**
+     * Mets à jour les données des capteurs en les lisant depuis le fichier donnees.json.
+     * Les données sont ajoutées à la liste des données des capteurs et les graphiques sont mis à jour.
+     * 
+     * @author Thomas
+     */
     private void updateData() {
         try {
             Path path = Paths.get("../donnees.json");
@@ -363,7 +432,12 @@ public class CapteursViewController {
     }
 
     
-
+    /**
+     * Met à jour les graphiques individuels pour une salle sélectionnée.
+     * Les données sont récupérées à partir des séries de données existantes et ajoutées aux graphiques individuels.
+     * 
+     * @author Thomas
+     */
     private void updateIndividualRoomData() {
         String selectedRoom = roomComboBox.getSelectionModel().getSelectedItem();
         if (selectedRoom == null) {
@@ -450,198 +524,216 @@ public class CapteursViewController {
     }
 
 
+    /**
+     * Affiche la boîte de dialogue et attend que l'utilisateur la ferme.
+     * 
+     * @author Thomas
+     */
     public void displayDialog() {
         this.cStage.showAndWait();
     }
 
+
+    /**
+     * Ferme la fenêtre de l'application.
+     * 
+     * @param e l'événement de fermeture de la fenêtre
+     * @return null
+     * 
+     * @author Thomas
+     */
     private Object closeWindow(WindowEvent e) {
         this.doQuitter();
         return null;
     }
 
-    @FXML
-    private void doConfig() {
-    }
 
-    @FXML
-    private void doAide() {
-    }
-
+   /**
+     * Ferme l'application.
+     * 
+     * @author Thomas
+     */
     @FXML
     private void doQuitter() {
         this.cStage.close();
     }
 
 
-        private void updateCharts() {
-        try {
-            Path path = Paths.get("../donnees.json");
-            if (!Files.exists(path)) {
-                System.out.println("Le fichier donnees.json n'existe pas.");
-                return;
+    /**
+     * Met à jour les graphiques avec les données des capteurs en les lisant depuis le fichier donnees.json.
+     * Les données sont ajoutées aux séries correspondantes et les graphiques sont mis à jour.
+     * 
+     * @author Thomas
+     */
+    private void updateCharts() {
+    try {
+        Path path = Paths.get("../donnees.json");
+        if (!Files.exists(path)) {
+            System.out.println("Le fichier donnees.json n'existe pas.");
+            return;
+        }
+
+        Reader reader = Files.newBufferedReader(path);
+        JsonArray dataArray = JsonParser.parseReader(reader).getAsJsonArray();
+        reader.close();
+
+        if (dataArray.size() == 0) {
+            System.out.println("Le fichier donnees.json est vide.");
+            return;
+        }
+
+        LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
+        LocalDateTime cutoff = now.minusHours(2);
+
+        for (JsonElement element : dataArray) {
+            JsonObject data = element.getAsJsonObject();
+
+            if (!data.has("room")) continue;
+
+            String room = data.get("room").getAsString();
+
+            String dateStr = data.has("date") ? data.get("date").getAsString() : null;
+            if (dateStr == null) continue;
+
+            LocalDateTime dataTime;
+            try {
+                dataTime = LocalDateTime.parse(dateStr, DATE_FORMATTER);
+            } catch (DateTimeParseException e) {
+                continue;
             }
-    
-            Reader reader = Files.newBufferedReader(path);
-            JsonArray dataArray = JsonParser.parseReader(reader).getAsJsonArray();
-            reader.close();
-    
-            if (dataArray.size() == 0) {
-                System.out.println("Le fichier donnees.json est vide.");
-                return;
-            }
-    
-            LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
-            LocalDateTime cutoff = now.minusHours(2);
-    
-            for (JsonElement element : dataArray) {
-                JsonObject data = element.getAsJsonObject();
-    
-                if (!data.has("room")) continue;
-    
-                String room = data.get("room").getAsString();
-    
-                String dateStr = data.has("date") ? data.get("date").getAsString() : null;
-                if (dateStr == null) continue;
-    
-                LocalDateTime dataTime;
-                try {
-                    dataTime = LocalDateTime.parse(dateStr, DATE_FORMATTER);
-                } catch (DateTimeParseException e) {
-                    continue;
-                }
-    
-                if (dataTime.isBefore(cutoff)) continue;
-    
-                long elapsedSeconds = Duration.between(startTimeInstant, dataTime.atZone(ZoneId.systemDefault()).toInstant()).getSeconds();
-    
-                if (data.has("temperature") && data.get("temperature").isJsonArray()) {
-                    double temperature = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> tempSeries = tempSeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        temperatureChart.getData().add(series);
-                        return series;
-                    });
-                    tempSeries.getData().add(new XYChart.Data<>(elapsedSeconds, temperature));
-                    if (tempSeries.getData().size() > MAX_POINTS) {
-                        tempSeries.getData().remove(0);
-                    }
-                }
-    
-                if (data.has("humidity") && data.get("humidity").isJsonArray()) {
-                    double humidity = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> humiditySeries = humiditySeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        humidityChart.getData().add(series);
-                        return series;
-                    });
-                    humiditySeries.getData().add(new XYChart.Data<>(elapsedSeconds, humidity));
-                    if (humiditySeries.getData().size() > MAX_POINTS) {
-                        humiditySeries.getData().remove(0);
-                    }
-                }
-    
-                if (data.has("co2") && data.get("co2").isJsonArray()) {
-                    double co2 = data.get("co2").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> co2Series = co2SeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        co2Chart.getData().add(series);
-                        return series;
-                    });
-                    co2Series.getData().add(new XYChart.Data<>(elapsedSeconds, co2));
-                    if (co2Series.getData().size() > MAX_POINTS) {
-                        co2Series.getData().remove(0);
-                    }
-                }
-    
-                if (data.has("pressure") && data.get("pressure").isJsonArray()) {
-                    double pressure = data.get("pressure").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> pressureSeries = pressureSeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        pressureChart.getData().add(series);
-                        return series;
-                    });
-                    pressureSeries.getData().add(new XYChart.Data<>(elapsedSeconds, pressure));
-                    if (pressureSeries.getData().size() > MAX_POINTS) {
-                        pressureSeries.getData().remove(0);
-                    }
-                }
-    
-                if (data.has("illumination") && data.get("illumination").isJsonArray()) {
-                    double luminosity = data.get("illumination").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> luminositySeries = luminositySeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        luminosityChart.getData().add(series);
-                        return series;
-                    });
-                    luminositySeries.getData().add(new XYChart.Data<>(elapsedSeconds, luminosity));
-                    if (luminositySeries.getData().size() > MAX_POINTS) {
-                        luminositySeries.getData().remove(0);
-                    }
-                }
-    
-                if (data.has("activity") && data.get("activity").isJsonArray()) {
-                    double activity = data.get("activity").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> activitySeries = activitySeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        activityChart.getData().add(series);
-                        return series;
-                    });
-                    activitySeries.getData().add(new XYChart.Data<>(elapsedSeconds, activity));
-                    if (activitySeries.getData().size() > MAX_POINTS) {
-                        activitySeries.getData().remove(0);
-                    }
-                }
-    
-                if (data.has("tvoc") && data.get("tvoc").isJsonArray()) {
-                    double tvoc = data.get("tvoc").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> tvocSeries = tvocSeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        tvocChart.getData().add(series);
-                        return series;
-                    });
-                    tvocSeries.getData().add(new XYChart.Data<>(elapsedSeconds, tvoc));
-                    if (tvocSeries.getData().size() > MAX_POINTS) {
-                        tvocSeries.getData().remove(0);
-                    }
-                }
-    
-                if (data.has("infrared") && data.get("infrared").isJsonArray()) {
-                    double infrared = data.get("infrared").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> infraredSeries = infraredSeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        infraredChart.getData().add(series);
-                        return series;
-                    });
-                    infraredSeries.getData().add(new XYChart.Data<>(elapsedSeconds, infrared));
-                    if (infraredSeries.getData().size() > MAX_POINTS) {
-                        infraredSeries.getData().remove(0);
-                    }
-                }
-    
-                if (data.has("infrared_and_visible") && data.get("infrared_and_visible").isJsonArray()) {
-                    double infraredVisible = data.get("infrared_and_visible").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> infraredVisibleSeries = infraredVisibleSeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        infraredVisibleChart.getData().add(series);
-                        return series;
-                    });
-                    infraredVisibleSeries.getData().add(new XYChart.Data<>(elapsedSeconds, infraredVisible));
-                    if (infraredVisibleSeries.getData().size() > MAX_POINTS) {
-                        infraredVisibleSeries.getData().remove(0);
-                    }
+
+            if (dataTime.isBefore(cutoff)) continue;
+
+            long elapsedSeconds = Duration.between(startTimeInstant, dataTime.atZone(ZoneId.systemDefault()).toInstant()).getSeconds();
+
+            if (data.has("temperature") && data.get("temperature").isJsonArray()) {
+                double temperature = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> tempSeries = tempSeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    temperatureChart.getData().add(series);
+                    return series;
+                });
+                tempSeries.getData().add(new XYChart.Data<>(elapsedSeconds, temperature));
+                if (tempSeries.getData().size() > MAX_POINTS) {
+                    tempSeries.getData().remove(0);
                 }
             }
-    
-            nettoyerDonnees(cutoff);
+
+            if (data.has("humidity") && data.get("humidity").isJsonArray()) {
+                double humidity = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> humiditySeries = humiditySeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    humidityChart.getData().add(series);
+                    return series;
+                });
+                humiditySeries.getData().add(new XYChart.Data<>(elapsedSeconds, humidity));
+                if (humiditySeries.getData().size() > MAX_POINTS) {
+                    humiditySeries.getData().remove(0);
+                }
+            }
+
+            if (data.has("co2") && data.get("co2").isJsonArray()) {
+                double co2 = data.get("co2").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> co2Series = co2SeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    co2Chart.getData().add(series);
+                    return series;
+                });
+                co2Series.getData().add(new XYChart.Data<>(elapsedSeconds, co2));
+                if (co2Series.getData().size() > MAX_POINTS) {
+                    co2Series.getData().remove(0);
+                }
+            }
+
+            if (data.has("pressure") && data.get("pressure").isJsonArray()) {
+                double pressure = data.get("pressure").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> pressureSeries = pressureSeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    pressureChart.getData().add(series);
+                    return series;
+                });
+                pressureSeries.getData().add(new XYChart.Data<>(elapsedSeconds, pressure));
+                if (pressureSeries.getData().size() > MAX_POINTS) {
+                    pressureSeries.getData().remove(0);
+                }
+            }
+
+            if (data.has("illumination") && data.get("illumination").isJsonArray()) {
+                double luminosity = data.get("illumination").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> luminositySeries = luminositySeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    luminosityChart.getData().add(series);
+                    return series;
+                });
+                luminositySeries.getData().add(new XYChart.Data<>(elapsedSeconds, luminosity));
+                if (luminositySeries.getData().size() > MAX_POINTS) {
+                    luminositySeries.getData().remove(0);
+                }
+            }
+
+            if (data.has("activity") && data.get("activity").isJsonArray()) {
+                double activity = data.get("activity").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> activitySeries = activitySeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    activityChart.getData().add(series);
+                    return series;
+                });
+                activitySeries.getData().add(new XYChart.Data<>(elapsedSeconds, activity));
+                if (activitySeries.getData().size() > MAX_POINTS) {
+                    activitySeries.getData().remove(0);
+                }
+            }
+
+            if (data.has("tvoc") && data.get("tvoc").isJsonArray()) {
+                double tvoc = data.get("tvoc").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> tvocSeries = tvocSeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    tvocChart.getData().add(series);
+                    return series;
+                });
+                tvocSeries.getData().add(new XYChart.Data<>(elapsedSeconds, tvoc));
+                if (tvocSeries.getData().size() > MAX_POINTS) {
+                    tvocSeries.getData().remove(0);
+                }
+            }
+
+            if (data.has("infrared") && data.get("infrared").isJsonArray()) {
+                double infrared = data.get("infrared").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> infraredSeries = infraredSeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    infraredChart.getData().add(series);
+                    return series;
+                });
+                infraredSeries.getData().add(new XYChart.Data<>(elapsedSeconds, infrared));
+                if (infraredSeries.getData().size() > MAX_POINTS) {
+                    infraredSeries.getData().remove(0);
+                }
+            }
+
+            if (data.has("infrared_and_visible") && data.get("infrared_and_visible").isJsonArray()) {
+                double infraredVisible = data.get("infrared_and_visible").getAsJsonArray().get(0).getAsDouble();
+                XYChart.Series<Number, Number> infraredVisibleSeries = infraredVisibleSeriesMap.computeIfAbsent(room, k -> {
+                    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                    series.setName(k);
+                    infraredVisibleChart.getData().add(series);
+                    return series;
+                });
+                infraredVisibleSeries.getData().add(new XYChart.Data<>(elapsedSeconds, infraredVisible));
+                if (infraredVisibleSeries.getData().size() > MAX_POINTS) {
+                    infraredVisibleSeries.getData().remove(0);
+                }
+            }
+        }
+
+        nettoyerDonnees(cutoff);
     
         } catch (Exception e) {
             System.err.println("Erreur lors de la mise à jour des graphiques: " + e.getMessage());
@@ -649,6 +741,14 @@ public class CapteursViewController {
         }
     }
 
+
+    /**
+     * Nettoie les séries de données en supprimant les points de données plus anciens que la date limite spécifiée.
+     * 
+     * @param cutoff la date limite pour la suppression des points de données
+     * 
+     * @author Thomas
+     */
     private void nettoyerDonnees(LocalDateTime cutoff) {
         nettoyerSerie(tempSeriesMap, cutoff);
         nettoyerSerie(humiditySeriesMap, cutoff);
@@ -656,6 +756,15 @@ public class CapteursViewController {
         nettoyerSerie(pressureSeriesMap, cutoff);
     }
     
+
+    /**
+     * Nettoie les séries de données en supprimant les points de données plus anciens que la date limite spécifiée.
+     * 
+     * @param seriesMap la map contenant les séries de données à nettoyer
+     * @param cutoff la date limite pour la suppression des points de données
+     * 
+     * @author Thomas
+     */
     private void nettoyerSerie(Map<String, XYChart.Series<Number, Number>> seriesMap, LocalDateTime cutoff) {
         for (XYChart.Series<Number, Number> series : seriesMap.values()) {
             series.getData().removeIf(data -> {
@@ -667,6 +776,13 @@ public class CapteursViewController {
         }
     }
 
+
+    /**
+     * Met à jour la légende des couleurs avec les séries de données actuelles.
+     * Chaque salle est associée à une couleur dans la légende.
+     * 
+     * @author Thomas
+     */
     private void updateColorLegend() {
         colorLegendContainer.getChildren().clear();
         for (String room : tempSeriesMap.keySet()) {
@@ -681,6 +797,15 @@ public class CapteursViewController {
         }
     }
 
+
+    /**
+     * Extrait la couleur associée à une série de données.
+     * 
+     * @param series la série de données dont la couleur doit être extraite
+     * @return la couleur associée à la série de données
+     * 
+     * @author Thomas
+     */
     private String extractColorFromSeries(XYChart.Series<Number, Number> series) {
         // Obtenir la classe CSS par défaut de la série
         String defaultColorStyleClass = series.getNode().getStyleClass().stream()
@@ -704,6 +829,12 @@ public class CapteursViewController {
         return defaultColorMap.getOrDefault(defaultColorStyleClass, "couleur inconnue");
     }
 
+
+    /**
+     * Met à jour la ComboBox des salles avec les salles actuellement disponibles.
+     * 
+     * @author Thomas
+     */
     private void updateRoomComboBox() {
         try {
             Path path = Paths.get("../donnees.json");

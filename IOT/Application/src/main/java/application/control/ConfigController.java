@@ -24,6 +24,7 @@ import com.google.gson.JsonParser;
 
 /**
  * Contrôleur de la fenêtre de configuration.
+ * @author Thomas
  */
 public class ConfigController {
 
@@ -47,6 +48,14 @@ public class ConfigController {
     private boolean infraredVisibleSelected;
     private boolean pressureSelected;
 
+
+    /**
+     * Démarre la fenêtre de configuration.
+     * 
+     * @param stage la scène principale de l'application
+     * 
+     * @author Thomas
+     */
     public void start(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/config.fxml"));
@@ -61,6 +70,12 @@ public class ConfigController {
         }
     }
 
+
+    /**
+     * Charge la configuration depuis le fichier config.ini.
+     * 
+     * @author Thomas
+     */
     public void loadConfig() {
         try {
             String configFilePath = "../config.ini";
@@ -96,6 +111,18 @@ public class ConfigController {
         }
     }
 
+
+    /**
+     * Sauvegarde la configuration dans le fichier config.ini.
+     * 
+     * @param mqttServer l'adresse du serveur MQTT
+     * @param outputFrequence la fréquence de sortie
+     * @param capteursSelected si les capteurs sont sélectionnés
+     * @param solaredgeSelected si Solaredge est sélectionné
+     * @param variablesCapteur la liste des variables des capteurs sélectionnées
+     * 
+     * @author Thomas
+     */
     public void saveConfig(String mqttServer, String outputFrequence, boolean capteursSelected, boolean solaredgeSelected, List<String> variablesCapteur) {
         try {
             String configFilePath = "../config.ini";
@@ -162,6 +189,12 @@ public class ConfigController {
         }
     }
 
+
+    /**
+     * Démarre la lecture périodique des fichiers JSON.
+     * 
+     * @author Thomas
+     */
     private void startReadingJsonFiles() {
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
@@ -170,6 +203,14 @@ public class ConfigController {
         }, 0, 2, TimeUnit.SECONDS); // Mise à jour toutes les 2 secondes
     }
 
+
+    /**
+     * Lit et traite le fichier JSON spécifié.
+     * 
+     * @param filePath le chemin du fichier JSON à lire
+     * 
+     * @author Thomas
+     */
     private void readJsonFile(String filePath) {
         try {
             Path path = Paths.get(filePath);
@@ -194,14 +235,36 @@ public class ConfigController {
         }
     }
 
+
+    /**
+     * Retourne la liste des seuils.
+     * 
+     * @return la liste des seuils
+     * 
+     * @author Thomas
+     */
     public ObservableList<Seuil> getSeuilsList() {
         return seuilsList;
     }
 
+
+    /**
+     * Retourne la liste des salles.
+     * 
+     * @return la liste des salles
+     * 
+     * @author Thomas
+     */
     public ObservableList<String> getRoomsList() {
         return roomsList;
     }
 
+
+    /**
+     * Ajoute un nouveau seuil à la liste des seuils.
+     * 
+     * @author Thomas
+     */
     public void ajouterSeuil() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Ajouter un seuil");
@@ -218,6 +281,14 @@ public class ConfigController {
         });
     }
 
+
+    /**
+     * Modifie la valeur d'un seuil sélectionné.
+     * 
+     * @param selectedSeuil le seuil sélectionné à modifier
+     * 
+     * @author Thomas
+     */
     public void modifierSeuil(Seuil selectedSeuil) {
         if (selectedSeuil != null) {
             TextInputDialog dialog = new TextInputDialog(selectedSeuil.getValeur());
@@ -229,6 +300,12 @@ public class ConfigController {
         }
     }
 
+
+    /**
+     * Ajoute une nouvelle salle à la liste des salles.
+     * 
+     * @author Thomas
+     */
     public void ajouterSalle() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Ajouter une salle");
@@ -238,14 +315,20 @@ public class ConfigController {
         result.ifPresent(salle -> roomsList.add(salle));
     }
 
-    // Méthode pour arrêter le processus Python
+
+    /**
+     * Arrête le processus Python en cours d'exécution.
+     * 
+     * @author Thomas
+     */
     public void stopPythonProcess() {
         if (pythonProcess != null && pythonProcess.isAlive()) {
             pythonProcess.destroy();
         }
     }
 
-    // Getters pour les propriétés
+    
+    // Getters
     public String getMqttServer() {
         return mqttServer;
     }

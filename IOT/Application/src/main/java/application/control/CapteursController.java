@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 /**
  * La classe CapteursController gère les opérations de gestion des Capteurs.
+ * @author Thomas
  */
 public class CapteursController {
 

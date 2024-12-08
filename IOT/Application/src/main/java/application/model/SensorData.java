@@ -1,5 +1,9 @@
 package application.model;
 
+/**
+ * Classe pour gérer les données des capteurs.
+ * @autor Thomas
+ */
 public class SensorData {
     private String room;
     private String type;

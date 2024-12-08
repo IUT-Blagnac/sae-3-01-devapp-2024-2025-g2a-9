@@ -28,6 +28,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
+
+/**
+ * Contrôleur pour le graphique de données en temps réel.
+ * @autor Thomas
+ */
 public class GraphController {
 
     @FXML
@@ -47,7 +52,6 @@ public class GraphController {
     private LineChart<Number, Number> co2Chart;
     @FXML
     private LineChart<Number, Number> pressureChart;
-    // Ajoutez d'autres LineChart pour chaque type de donnée
 
     @FXML
     private ComboBox<String> roomSelector;
@@ -55,7 +59,6 @@ public class GraphController {
     private LineChart<Number, Number> individualTemperatureChart;
     @FXML
     private LineChart<Number, Number> individualHumidityChart;
-    // Ajoutez d'autres LineChart pour la salle individuelle
 
     private ScheduledExecutorService executorService;
 
@@ -65,13 +68,18 @@ public class GraphController {
     private Map<String, XYChart.Series<Number, Number>> humiditySeriesMap = new HashMap<>();
     private Map<String, XYChart.Series<Number, Number>> co2SeriesMap = new HashMap<>();
     private Map<String, XYChart.Series<Number, Number>> pressureSeriesMap = new HashMap<>();
-    // Ajoutez d'autres maps pour chaque type de donnée
 
     private Instant startTimeInstant = Instant.now();
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final int MAX_POINTS = 8; // Nombre maximum de points par série
 
+
+    /**
+     * Initialise le contrôleur dès que le fichier FXML est chargé.
+     * 
+     * @author Thomas
+     */
     @FXML
     public void initialize() {
         roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
@@ -90,21 +98,24 @@ public class GraphController {
         pressureChart.getXAxis().setLabel("Temps (s)");
         pressureChart.getYAxis().setLabel("Pression (hPa)");
 
-        // Initialisez les autres graphiques de la même manière
-
         individualTemperatureChart.getXAxis().setLabel("Temps (s)");
         individualTemperatureChart.getYAxis().setLabel("Température (°C)");
 
         individualHumidityChart.getXAxis().setLabel("Temps (s)");
         individualHumidityChart.getYAxis().setLabel("Humidité (%)");
 
-        // Initialisez les autres graphiques individuels
-
         roomSelector.setOnAction(event -> updateIndividualRoomData());
 
         startDataUpdate();
     }
 
+
+    /**
+     * Démarre la mise à jour périodique des données des capteurs.
+     * Les données sont mises à jour toutes les 5 secondes.
+     * 
+     * @author Thomas
+     */
     private void startDataUpdate() {
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
@@ -112,6 +123,13 @@ public class GraphController {
         }, 0, 5, TimeUnit.SECONDS); // Mise à jour toutes les 5 secondes
     }
 
+
+    /**
+     * Met à jour les données des capteurs en les lisant depuis le fichier donnees.json.
+     * Les données sont ajoutées à la liste des données des capteurs et les graphiques sont mis à jour.
+     * 
+     * @author Thomas
+     */
     private void updateData() {
         try {
             Path path = Paths.get("../donnees.json");
@@ -129,7 +147,7 @@ public class GraphController {
                 return;
             }
 
-            // Définir l'heure actuelle et le seuil de deux heures
+            // Définir l'heure actuelle et le seuil de deux heures (au dela on ignore les données)
             LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
             LocalDateTime cutoff = now.minusHours(2);
 
@@ -138,7 +156,7 @@ public class GraphController {
             humiditySeriesMap.clear();
             co2SeriesMap.clear();
             pressureSeriesMap.clear();
-            // Effacez les autres maps de séries si nécessaire
+            // On efface les autres séries
 
             for (int i = 0; i < dataArray.size(); i++) {
                 JsonObject data = dataArray.get(i).getAsJsonObject();
@@ -158,9 +176,9 @@ public class GraphController {
                     continue;
                 }
 
-                // Vérifier si la donnée est dans les deux dernières heures
+                // verif si la donnée est dans les deux dernières heures
                 if (dataTime.isBefore(cutoff)) {
-                    continue; // Ignorer les données plus anciennes
+                    continue; // Ignore les données plus anciennes
                 }
 
                 // Calculer le temps écoulé depuis le début en secondes
@@ -236,14 +254,12 @@ public class GraphController {
                         sensorDataList.add(new SensorData(room, "Pression", pressure));
                     }
                 }
-
-                // Ajoutez le traitement pour les autres types de données de la même manière
             }
 
-            // Nettoyer les données plus anciennes que deux heures
+            // on nettoie les données plus anciennes que 2h
             nettoyerDonnees(cutoff);
 
-            // Mettre à jour la liste des salles dans le ComboBox
+            // MAJ des salles dans le combobox
             Platform.runLater(() -> {
                 roomSelector.getItems().clear();
                 roomSelector.getItems().addAll(tempSeriesMap.keySet());
@@ -255,6 +271,15 @@ public class GraphController {
         }
     }
 
+
+    /**
+     * Extrait une valeur numérique d'un élément JSON.
+     * 
+     * @param jsonElement l'élément JSON dont la valeur doit être extraite
+     * @return la valeur numérique extraite, ou Double.NaN si l'extraction échoue
+     * 
+     * @author Thomas
+     */
     private double extractValue(JsonElement jsonElement) {
         if (jsonElement.isJsonArray()) {
             JsonArray array = jsonElement.getAsJsonArray();
@@ -267,6 +292,13 @@ public class GraphController {
         return Double.NaN;
     }
 
+
+    /**
+     * Met à jour les graphiques individuels pour une salle sélectionnée.
+     * Les données sont récupérées à partir des séries de données existantes et ajoutées aux graphiques individuels.
+     * 
+     * @author Thomas
+     */
     private void updateIndividualRoomData() {
         String selectedRoom = roomSelector.getSelectionModel().getSelectedItem();
         if (selectedRoom == null) {
@@ -284,19 +316,32 @@ public class GraphController {
             individualHumidityChart.getData().clear();
             individualHumidityChart.getData().add(humiditySeriesOriginal);
         }
-
-        // Répétez ce processus pour d'autres types de données si nécessaire
     }
 
-    // Méthode pour nettoyer les données plus anciennes que le seuil
+
+    /**
+     * Nettoie les séries de données en supprimant les points de données plus anciens que la date limite spécifiée.
+     * 
+     * @param cutoff la date limite pour la suppression des points de données
+     * 
+     * @author Thomas
+     */
     private void nettoyerDonnees(LocalDateTime cutoff) {
         nettoyerSerie(tempSeriesMap, cutoff);
         nettoyerSerie(humiditySeriesMap, cutoff);
         nettoyerSerie(co2SeriesMap, cutoff);
         nettoyerSerie(pressureSeriesMap, cutoff);
-        // Nettoyez les autres séries de la même manière
     }
 
+
+    /**
+     * Nettoie les séries de données en supprimant les points de données plus anciens que la date limite spécifiée.
+     * 
+     * @param seriesMap la map contenant les séries de données à nettoyer
+     * @param cutoff la date limite pour la suppression des points de données
+     * 
+     * @author Thomas
+     */
     private void nettoyerSerie(Map<String, XYChart.Series<Number, Number>> seriesMap, LocalDateTime cutoff) {
         for (Map.Entry<String, XYChart.Series<Number, Number>> entry : seriesMap.entrySet()) {
             XYChart.Series<Number, Number> series = entry.getValue();
@@ -309,8 +354,12 @@ public class GraphController {
         }
     }
 
-    // Pour arrêter le ScheduledExecutorService lors de la fermeture de l'application
-    public void shutdown() {
+    /**
+     * Arrête le ScheduledExecutorService lors de la fermeture de l'application. (mise à jour des données)
+     * 
+     * @author Thomas
+     */
+        public void shutdown() {
         if (executorService != null) {
             executorService.shutdownNow();
         }

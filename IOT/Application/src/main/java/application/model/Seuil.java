@@ -3,6 +3,10 @@ package application.model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * Classe pour gérer les seuils.
+ * @author Thomas
+ */
 public class Seuil {
     private final StringProperty nom;
     private final StringProperty valeur;

@@ -19,6 +19,7 @@ public class ConfigIni {
      *
      * @param filePath le chemin du fichier INI
      * @throws IOException si une erreur d'entrée/sortie se produit
+     * @autor Thomas
      */
     public void loadConfig(String filePath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -48,6 +49,7 @@ public class ConfigIni {
      * @param section la section de la configuration
      * @param key la clé de la configuration
      * @return la valeur de configuration, ou null si la clé n'existe pas
+     * @autor Thomas
      */
     public String getConfigValue(String section, String key) {
         return config.getOrDefault(section, new HashMap<>()).get(key);
@@ -59,6 +61,7 @@ public class ConfigIni {
      * @param section la section de la configuration
      * @param key la clé de la configuration
      * @param value la valeur de configuration
+     * @autor Thomas
      */
     public void setConfigValue(String section, String key, String value) {
         config.computeIfAbsent(section, k -> new HashMap<>()).put(key, value);
@@ -69,6 +72,7 @@ public class ConfigIni {
      *
      * @param filePath le chemin du fichier INI
      * @throws IOException si une erreur d'entrée/sortie se produit
+     * @autor Thomas
      */
     public void saveConfig(String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
