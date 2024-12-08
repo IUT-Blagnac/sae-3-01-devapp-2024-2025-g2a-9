@@ -71,9 +71,6 @@ public class CapteursViewController {
     private LineChart<Number, Number> pressureChart;
 
     @FXML
-    private ComboBox<String> roomSelector;
-
-    @FXML
     private LineChart<Number, Number> individualTemperatureChart;
 
     @FXML
@@ -84,6 +81,9 @@ public class CapteursViewController {
 
     @FXML
     private HBox colorLegendContainer;
+
+    @FXML
+    private ComboBox<String> roomComboBox;
 
     private ScheduledExecutorService executorService;
 
@@ -123,14 +123,13 @@ public class CapteursViewController {
         pressureChart.setLegendVisible(true);
 
         // Initialisez les autres graphiques de la même manière
-
         individualTemperatureChart.getXAxis().setLabel("Temps (s)");
         individualTemperatureChart.getYAxis().setLabel("Température (°C)");
-
+    
         individualHumidityChart.getXAxis().setLabel("Temps (s)");
         individualHumidityChart.getYAxis().setLabel("Humidité (%)");
 
-        roomSelector.setOnAction(event -> updateIndividualRoomData());
+        roomComboBox.setOnAction(event -> updateIndividualRoomData());
 
         updateColorLegend();
     }
@@ -141,6 +140,15 @@ public class CapteursViewController {
         this.configure();
         realTimeTable.setItems(sensorDataList);
         startDataUpdate();
+        ObservableList<String> rooms = FXCollections.observableArrayList(
+            "E210", "B103", "E207", "E101", "E100", "C006", "hall-amphi", "E102", "E103", "B110", 
+            "hall-entrée-principale", "B106", "B001", "E004", "E106", "C004", "Foyer-personnels", 
+            "B202", "Local-velo", "B201", "B109", "C001", "B002", "Salle-conseil", "B105", 
+            "Foyer-etudiants-entrée", "B111", "B234", "E006", "B113", "E209", "E003", "B217", 
+            "B112", "C002", "E001", "C102", "E007", "B203", "E208", "amphi1"
+        );
+        roomComboBox.setItems(rooms);
+        updateRoomComboBox();
     }
 
     private void configure() {
@@ -150,8 +158,11 @@ public class CapteursViewController {
     private void startDataUpdate() {
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
-            Platform.runLater(this::updateData);
-        }, 0, 10, TimeUnit.SECONDS); // Mise à jour toutes les 10 secondes
+            Platform.runLater(() -> {
+                updateData();
+                updateRoomComboBox();
+            });
+        }, 0, 5, TimeUnit.SECONDS); // Mise à jour toutes les 5 secondes
     }
 
     private void updateData() {
@@ -214,25 +225,41 @@ public class CapteursViewController {
     
 
     private void updateIndividualRoomData() {
-        String selectedRoom = roomSelector.getSelectionModel().getSelectedItem();
+        String selectedRoom = roomComboBox.getSelectionModel().getSelectedItem();
         if (selectedRoom == null) {
             return;
         }
-
+    
         individualTemperatureChart.getData().clear();
         individualHumidityChart.getData().clear();
-
-        XYChart.Series<Number, Number> tempSeries = tempSeriesMap.get(selectedRoom);
-        if (tempSeries != null) {
-            individualTemperatureChart.getData().add(tempSeries);
+    
+        XYChart.Series<Number, Number> tempSeriesOriginal = tempSeriesMap.get(selectedRoom);
+        if (tempSeriesOriginal != null) {
+            XYChart.Series<Number, Number> tempSeriesCopy = new XYChart.Series<>();
+            tempSeriesCopy.setName(tempSeriesOriginal.getName());
+    
+            for (XYChart.Data<Number, Number> dataPoint : tempSeriesOriginal.getData()) {
+                XYChart.Data<Number, Number> dataCopy = new XYChart.Data<>(dataPoint.getXValue(), dataPoint.getYValue());
+                tempSeriesCopy.getData().add(dataCopy);
+            }
+    
+            individualTemperatureChart.getData().add(tempSeriesCopy);
         }
-
-        XYChart.Series<Number, Number> humiditySeries = humiditySeriesMap.get(selectedRoom);
-        if (humiditySeries != null) {
-            individualHumidityChart.getData().add(humiditySeries);
+    
+        XYChart.Series<Number, Number> humiditySeriesOriginal = humiditySeriesMap.get(selectedRoom);
+        if (humiditySeriesOriginal != null) {
+            XYChart.Series<Number, Number> humiditySeriesCopy = new XYChart.Series<>();
+            humiditySeriesCopy.setName(humiditySeriesOriginal.getName());
+    
+            for (XYChart.Data<Number, Number> dataPoint : humiditySeriesOriginal.getData()) {
+                XYChart.Data<Number, Number> dataCopy = new XYChart.Data<>(dataPoint.getXValue(), dataPoint.getYValue());
+                humiditySeriesCopy.getData().add(dataCopy);
+            }
+    
+            individualHumidityChart.getData().add(humiditySeriesCopy);
         }
-
-        // Ajoutez le code pour afficher les données individuelles des autres types si nécessaire
+    
+        // Répétez ce processus pour d'autres types de données si nécessaire
     }
 
 
@@ -300,7 +327,6 @@ public class CapteursViewController {
     
                 long elapsedSeconds = Duration.between(startTimeInstant, dataTime.atZone(ZoneId.systemDefault()).toInstant()).getSeconds();
     
-                // Mise à jour des séries pour chaque type de capteur
                 if (data.has("temperature") && data.get("temperature").isJsonArray()) {
                     double temperature = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
                     XYChart.Series<Number, Number> tempSeries = tempSeriesMap.computeIfAbsent(room, k -> {
@@ -310,6 +336,9 @@ public class CapteursViewController {
                         return series;
                     });
                     tempSeries.getData().add(new XYChart.Data<>(elapsedSeconds, temperature));
+                    if (tempSeries.getData().size() > MAX_POINTS) {
+                        tempSeries.getData().remove(0);
+                    }
                 }
     
                 if (data.has("humidity") && data.get("humidity").isJsonArray()) {
@@ -321,6 +350,9 @@ public class CapteursViewController {
                         return series;
                     });
                     humiditySeries.getData().add(new XYChart.Data<>(elapsedSeconds, humidity));
+                    if (humiditySeries.getData().size() > MAX_POINTS) {
+                        humiditySeries.getData().remove(0);
+                    }
                 }
     
                 if (data.has("co2") && data.get("co2").isJsonArray()) {
@@ -332,6 +364,9 @@ public class CapteursViewController {
                         return series;
                     });
                     co2Series.getData().add(new XYChart.Data<>(elapsedSeconds, co2));
+                    if (co2Series.getData().size() > MAX_POINTS) {
+                        co2Series.getData().remove(0);
+                    }
                 }
     
                 if (data.has("pressure") && data.get("pressure").isJsonArray()) {
@@ -343,17 +378,18 @@ public class CapteursViewController {
                         return series;
                     });
                     pressureSeries.getData().add(new XYChart.Data<>(elapsedSeconds, pressure));
+                    if (pressureSeries.getData().size() > MAX_POINTS) {
+                        pressureSeries.getData().remove(0);
+                    }
                 }
             }
     
-            // Nettoyer les données plus anciennes que le cutoff
             nettoyerDonnees(cutoff);
     
         } catch (Exception e) {
             System.err.println("Erreur lors de la mise à jour des graphiques: " + e.getMessage());
             e.printStackTrace();
         }
-        updateColorLegend();
     }
 
     private void nettoyerDonnees(LocalDateTime cutoff) {
@@ -409,5 +445,35 @@ public class CapteursViewController {
         defaultColorMap.put("default-color9", "#ff8e6c");
 
         return defaultColorMap.getOrDefault(defaultColorStyleClass, "couleur inconnue");
+    }
+
+    private void updateRoomComboBox() {
+        try {
+            Path path = Paths.get("../donnees.json");
+            if (!Files.exists(path)) {
+                System.out.println("Le fichier donnees.json n'existe pas.");
+                return;
+            }
+
+            Reader reader = Files.newBufferedReader(path);
+            JsonArray dataArray = JsonParser.parseReader(reader).getAsJsonArray();
+            reader.close();
+
+            ObservableList<String> rooms = FXCollections.observableArrayList();
+            for (JsonElement element : dataArray) {
+                JsonObject data = element.getAsJsonObject();
+                if (data.has("room")) {
+                    String room = data.get("room").getAsString();
+                    if (!rooms.contains(room)) {
+                        rooms.add(room);
+                    }
+                }
+            }
+            roomComboBox.setItems(rooms);
+
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la mise à jour des salles: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

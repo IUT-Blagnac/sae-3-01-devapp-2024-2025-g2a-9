@@ -1,15 +1,51 @@
 [
     {
         "temperature": [
-            17,
+            17.1,
             false
         ],
         "humidity": [
-            46,
+            48.5,
             false
         ],
-        "date": "2024-12-08 12:47:30",
+        "pressure": [
+            991,
+            false
+        ],
+        "date": "2024-12-08 15:36:29",
+        "room": "E001"
+    },
+    {
+        "temperature": [
+            17.1,
+            false
+        ],
+        "humidity": [
+            46.5,
+            false
+        ],
+        "pressure": [
+            990.4,
+            false
+        ],
+        "date": "2024-12-08 15:37:30",
         "room": "C102"
+    },
+    {
+        "temperature": [
+            18.2,
+            false
+        ],
+        "humidity": [
+            44.5,
+            false
+        ],
+        "pressure": [
+            990.9,
+            false
+        ],
+        "date": "2024-12-08 15:37:33",
+        "room": "E007"
     },
     {
         "temperature": [
@@ -17,34 +53,30 @@
             false
         ],
         "humidity": [
-            42.5,
+            44.5,
             false
         ],
-        "date": "2024-12-08 12:47:33",
-        "room": "E007"
-    },
-    {
-        "temperature": [
-            18.4,
+        "pressure": [
+            989.6,
             false
         ],
-        "humidity": [
-            43.5,
-            false
-        ],
-        "date": "2024-12-08 12:48:02",
+        "date": "2024-12-08 15:38:01",
         "room": "B203"
     },
     {
         "temperature": [
-            15.9,
+            16,
             false
         ],
         "humidity": [
-            46.5,
+            48.5,
             false
         ],
-        "date": "2024-12-08 12:48:02",
+        "pressure": [
+            990.4,
+            false
+        ],
+        "date": "2024-12-08 15:38:02",
         "room": "amphi1"
     },
     {
@@ -53,34 +85,30 @@
             false
         ],
         "humidity": [
-            42,
+            44,
             false
         ],
-        "date": "2024-12-08 12:48:02",
+        "pressure": [
+            989.7,
+            false
+        ],
+        "date": "2024-12-08 15:38:02",
         "room": "E208"
     },
     {
         "temperature": [
-            17.3,
+            17.4,
             false
         ],
         "humidity": [
-            43.5,
+            46,
             false
         ],
-        "date": "2024-12-08 12:48:20",
+        "pressure": [
+            989,
+            false
+        ],
+        "date": "2024-12-08 15:38:20",
         "room": "E210"
-    },
-    {
-        "temperature": [
-            18.9,
-            false
-        ],
-        "humidity": [
-            39.5,
-            false
-        ],
-        "date": "2024-12-08 12:48:33",
-        "room": "B103"
     }
 ]

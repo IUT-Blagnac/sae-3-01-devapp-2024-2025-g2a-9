@@ -273,21 +273,19 @@ public class GraphController {
             return;
         }
 
-        individualTemperatureChart.getData().clear();
-        individualHumidityChart.getData().clear();
-        // Effacez les données des autres graphiques individuels
-
-        XYChart.Series<Number, Number> tempSeries = tempSeriesMap.get(selectedRoom);
-        if (tempSeries != null) {
-            individualTemperatureChart.getData().add(tempSeries);
+        XYChart.Series<Number, Number> tempSeriesOriginal = tempSeriesMap.get(selectedRoom);
+        if (tempSeriesOriginal != null) {
+            individualTemperatureChart.getData().clear();
+            individualTemperatureChart.getData().add(tempSeriesOriginal);
         }
 
-        XYChart.Series<Number, Number> humiditySeries = humiditySeriesMap.get(selectedRoom);
-        if (humiditySeries != null) {
-            individualHumidityChart.getData().add(humiditySeries);
+        XYChart.Series<Number, Number> humiditySeriesOriginal = humiditySeriesMap.get(selectedRoom);
+        if (humiditySeriesOriginal != null) {
+            individualHumidityChart.getData().clear();
+            individualHumidityChart.getData().add(humiditySeriesOriginal);
         }
 
-        // Ajoutez le code pour les autres types de données individuels
+        // Répétez ce processus pour d'autres types de données si nécessaire
     }
 
     // Méthode pour nettoyer les données plus anciennes que le seuil
