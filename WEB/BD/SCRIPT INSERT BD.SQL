@@ -426,62 +426,36 @@ VALUES (7, 4, '2024-12-04');
 INSERT INTO FAVORI (IDPRODUIT, IDUTILISATEUR, DATEFAVORI)
 VALUES (9, 5, '2024-12-05');
 
-
--- ----------------------------------------------------------------------------- 
---       TABLE : PANIER
--- ----------------------------------------------------------------------------- 
-
--- Panier 1 : UTILISATEUR 1, Date : 2024-12-01
-INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
-VALUES (1, '2024-12-01');
-
--- Panier 2 : UTILISATEUR 2, Date : 2024-12-02
-INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
-VALUES (2, '2024-12-02');
-
--- Panier 3 : UTILISATEUR 3, Date : 2024-12-03
-INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
-VALUES (3, '2024-12-03');
-
--- Panier 4 : UTILISATEUR 4, Date : 2024-12-04
-INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
-VALUES (4, '2024-12-04');
-
--- Panier 5 : UTILISATEUR 5, Date : 2024-12-05
-INSERT INTO PANIER (IDUTILISATEUR, DATEPANIER)
-VALUES (5, '2024-12-05');
-
-
 -- ----------------------------------------------------------------------------- 
 --       TABLE : DETAILPANIER
 -- ----------------------------------------------------------------------------- 
 
 -- Panier 1 : Détails pour UTILISATEUR 1 (Produit 1 et 3)
-INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
+INSERT INTO DETAILPANIER (IDPRODUIT, IDUTILISATEUR, QUANTITEPANIER)
 VALUES 
 (1, 1, 2),  -- 2 Yacht Prestige 50
 (3, 1, 1);  -- 1 Chalutier Marine
 
 -- Panier 2 : Détails pour UTILISATEUR 2 (Produit 2 et 4)
-INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
+INSERT INTO DETAILPANIER (IDPRODUIT, IDUTILISATEUR, QUANTITEPANIER)
 VALUES 
 (2, 2, 1),  -- 1 Voilier Classic
 (4, 2, 2);  -- 2 Bolincheur Excell
 
 -- Panier 3 : Détails pour UTILISATEUR 3 (Produit 5 et 6)
-INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
+INSERT INTO DETAILPANIER (IDPRODUIT, IDUTILISATEUR, QUANTITEPANIER)
 VALUES 
 (5, 3, 1),  -- 1 Jetski Turbo
 (6, 3, 3);  -- 3 Péniche Riviera
 
 -- Panier 4 : Détails pour UTILISATEUR 4 (Produit 7 et 8)
-INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
+INSERT INTO DETAILPANIER (IDPRODUIT, IDUTILISATEUR, QUANTITEPANIER)
 VALUES 
 (7, 4, 1),  -- 1 Bateau Offshore Jet
 (8, 4, 2);  -- 2 Bateau Offshore Zéphyr
 
 -- Panier 5 : Détails pour UTILISATEUR 5 (Produit 9 et 10)
-INSERT INTO DETAILPANIER (IDPRODUIT, IDPANIER, QUANTITEPANIER)
+INSERT INTO DETAILPANIER (IDPRODUIT, IDUTILISATEUR, QUANTITEPANIER)
 VALUES 
 (9, 5, 2),  -- 2 Kit Bateau Nautica
 (10, 5, 1);  -- 1 Kit Bateau Explorer
