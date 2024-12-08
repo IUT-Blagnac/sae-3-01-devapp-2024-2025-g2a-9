@@ -2,6 +2,8 @@ package application.view;
 
 import application.control.CapteursController;
 import application.model.SensorData;
+import application.model.Seuil;
+import application.tools.ConfigIni;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +22,7 @@ import javafx.stage.WindowEvent;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.io.IOException;
 import java.io.Reader;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -85,6 +88,18 @@ public class CapteursViewController {
     @FXML
     private ComboBox<String> roomComboBox;
 
+
+    //seuils
+    private Seuil seuilTemperature;
+    private Seuil seuilHumidite;
+    private Seuil seuilCO2;
+    private Seuil seuilPression;
+    private Seuil seuilLuminosite;
+    private Seuil seuilActivite;
+    private Seuil seuiltvoc;
+    private Seuil seuilInfrarouge;
+    private Seuil seuilInfrarougeVisible;
+
     private ScheduledExecutorService executorService;
 
     private ObservableList<SensorData> sensorDataList = FXCollections.observableArrayList();
@@ -132,6 +147,28 @@ public class CapteursViewController {
         roomComboBox.setOnAction(event -> updateIndividualRoomData());
 
         updateColorLegend();
+        loadSeuils();
+    }
+
+    private void loadSeuils() {
+        try {
+            ConfigIni configIni = new ConfigIni();
+            configIni.loadConfig("../config.ini");
+
+            seuilTemperature = new Seuil("Température", configIni.getConfigValue("seuils_capteur", "temperature"));
+            seuilHumidite = new Seuil("Humidité", configIni.getConfigValue("seuils_capteur", "humidity"));
+            seuilCO2 = new Seuil("CO₂", configIni.getConfigValue("seuils_capteur", "co2"));
+            seuilPression = new Seuil("Pression", configIni.getConfigValue("seuils_capteur", "pressure"));
+            seuilLuminosite = new Seuil("Luminosité", configIni.getConfigValue("seuils_capteur", "illumination"));
+            seuilActivite = new Seuil("Activité", configIni.getConfigValue("seuils_capteur", "activity"));
+            seuiltvoc = new Seuil("TVOC", configIni.getConfigValue("seuils_capteur", "tvoc"));
+            seuilInfrarouge = new Seuil("Infrarouge", configIni.getConfigValue("seuils_capteur", "infrared"));
+            seuilInfrarougeVisible = new Seuil("Infrarouge Visible", configIni.getConfigValue("seuils_capteur", "infrared_and_visible"));
+
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement du fichier config.ini: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void initContext(Stage _cStage, CapteursController _p) {
@@ -139,6 +176,45 @@ public class CapteursViewController {
         this.cStage = _cStage;
         this.configure();
         realTimeTable.setItems(sensorDataList);
+                realTimeTable.setRowFactory(tv -> new TableRow<SensorData>() {
+            @Override
+            protected void updateItem(SensorData item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setStyle("");
+                } else {
+                    boolean exceedsThreshold = false;
+                    double value = item.getValue();
+                    String type = item.getType();
+        
+                    if ("Température".equals(type) && value > Double.parseDouble(seuilTemperature.getValeur())) {
+                        exceedsThreshold = true;
+                    } else if ("Humidité".equals(type) && value > Double.parseDouble(seuilHumidite.getValeur())) {
+                        exceedsThreshold = true;
+                    } else if ("CO₂".equals(type) && value > Double.parseDouble(seuilCO2.getValeur())) {
+                        exceedsThreshold = true;
+                    } else if ("Pression".equals(type) && value > Double.parseDouble(seuilPression.getValeur())) {
+                        exceedsThreshold = true;
+                    } else if ("Luminosité".equals(type) && value > Double.parseDouble(seuilLuminosite.getValeur())) {
+                        exceedsThreshold = true;
+                    } else if ("Activité".equals(type) && value > Double.parseDouble(seuilActivite.getValeur())) {
+                        exceedsThreshold = true;
+                    } else if ("TVOC".equals(type) && value > Double.parseDouble(seuiltvoc.getValeur())) {
+                        exceedsThreshold = true;
+                    } else if ("Infrarouge".equals(type) && value > Double.parseDouble(seuilInfrarouge.getValeur())) {
+                        exceedsThreshold = true;
+                    } else if ("Infrarouge Visible".equals(type) && value > Double.parseDouble(seuilInfrarougeVisible.getValeur())) {
+                        exceedsThreshold = true;
+                    }
+        
+                    if (exceedsThreshold) {
+                        setStyle("-fx-background-color: red;");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            }
+        });
         startDataUpdate();
         ObservableList<String> rooms = FXCollections.observableArrayList(
             "E210", "B103", "E207", "E101", "E100", "C006", "hall-amphi", "E102", "E103", "B110", 

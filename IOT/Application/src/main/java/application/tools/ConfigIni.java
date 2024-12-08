@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * classe pour gerer la config du fichier config.ini
+ * Classe pour gérer la configuration du fichier config.ini.
  */
 public class ConfigIni {
     private Map<String, Map<String, String>> config = new HashMap<>();

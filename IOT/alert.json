@@ -1,162 +1,26 @@
 [
     {
-        "humidity": 88,
-        "date": "2024-12-08 16:01:35",
-        "room": "Local-velo"
-    },
-    {
-        "temperature": 21.6,
-        "date": "2024-12-08 16:02:01",
-        "room": "C001"
-    },
-    {
-        "temperature": 20.7,
-        "date": "2024-12-08 16:02:32",
-        "room": "Salle-conseil"
+        "temperature": 19.2,
+        "co2": 412,
+        "date": "2024-12-08 17:22:54",
+        "room": "B105"
     },
     {
         "temperature": 47.5,
-        "date": "2024-12-08 16:02:54",
+        "co2": 427,
+        "date": "2024-12-08 17:22:55",
         "room": "Foyer-etudiants-entr\u00e9e"
     },
     {
-        "temperature": 47.5,
-        "date": "2024-12-08 16:02:56",
-        "room": "Foyer-etudiants-entr\u00e9e"
+        "temperature": 17.9,
+        "co2": 421,
+        "date": "2024-12-08 17:23:00",
+        "room": "B111"
     },
     {
         "temperature": 22,
-        "date": "2024-12-08 16:03:00",
-        "room": "B234"
-    },
-    {
-        "temperature": 24.3,
-        "date": "2024-12-08 16:09:20",
-        "room": "E100"
-    },
-    {
-        "humidity": 88.5,
-        "date": "2024-12-08 16:11:35",
-        "room": "Local-velo"
-    },
-    {
-        "temperature": 21.6,
-        "date": "2024-12-08 16:12:02",
-        "room": "C001"
-    },
-    {
-        "temperature": 20.7,
-        "date": "2024-12-08 16:12:32",
-        "room": "Salle-conseil"
-    },
-    {
-        "temperature": 47.5,
-        "date": "2024-12-08 16:12:55",
-        "room": "Foyer-etudiants-entr\u00e9e"
-    },
-    {
-        "temperature": 22,
-        "date": "2024-12-08 16:13:01",
-        "room": "B234"
-    },
-    {
-        "temperature": 24.7,
-        "date": "2024-12-08 16:19:19",
-        "room": "E100"
-    },
-    {
-        "humidity": 89,
-        "date": "2024-12-08 16:21:34",
-        "room": "Local-velo"
-    },
-    {
-        "temperature": 21.6,
-        "date": "2024-12-08 16:22:02",
-        "room": "C001"
-    },
-    {
-        "temperature": 20.7,
-        "date": "2024-12-08 16:22:31",
-        "room": "Salle-conseil"
-    },
-    {
-        "temperature": 47.5,
-        "date": "2024-12-08 16:22:54",
-        "room": "Foyer-etudiants-entr\u00e9e"
-    },
-    {
-        "temperature": 47.5,
-        "date": "2024-12-08 16:22:57",
-        "room": "Foyer-etudiants-entr\u00e9e"
-    },
-    {
-        "temperature": 21.9,
-        "date": "2024-12-08 16:23:00",
-        "room": "B234"
-    },
-    {
-        "temperature": 24.8,
-        "date": "2024-12-08 16:29:20",
-        "room": "E100"
-    },
-    {
-        "humidity": 89,
-        "date": "2024-12-08 16:31:35",
-        "room": "Local-velo"
-    },
-    {
-        "temperature": 21.6,
-        "date": "2024-12-08 16:32:02",
-        "room": "C001"
-    },
-    {
-        "temperature": 20.7,
-        "date": "2024-12-08 16:32:32",
-        "room": "Salle-conseil"
-    },
-    {
-        "temperature": 47.5,
-        "date": "2024-12-08 16:32:54",
-        "room": "Foyer-etudiants-entr\u00e9e"
-    },
-    {
-        "temperature": 47.5,
-        "date": "2024-12-08 16:32:57",
-        "room": "Foyer-etudiants-entr\u00e9e"
-    },
-    {
-        "temperature": 22,
-        "date": "2024-12-08 16:33:00",
-        "room": "B234"
-    },
-    {
-        "temperature": 24.1,
-        "date": "2024-12-08 16:39:20",
-        "room": "E100"
-    },
-    {
-        "humidity": 89,
-        "date": "2024-12-08 16:41:35",
-        "room": "Local-velo"
-    },
-    {
-        "temperature": 21.7,
-        "date": "2024-12-08 16:42:02",
-        "room": "C001"
-    },
-    {
-        "temperature": 20.7,
-        "date": "2024-12-08 16:42:32",
-        "room": "Salle-conseil"
-    },
-    {
-        "temperature": 47.5,
-        "date": "2024-12-08 16:42:55",
-        "room": "Foyer-etudiants-entr\u00e9e"
-    },
-    {
-        "temperature": 21.9,
-        "date": "2024-12-08 16:43:01",
+        "co2": 423,
+        "date": "2024-12-08 17:23:01",
         "room": "B234"
     }
 ]
