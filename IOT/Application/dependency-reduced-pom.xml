@@ -13,6 +13,7 @@
         <version>${javafx.maven.plugin.version}</version>
         <configuration>
           <mainClass>application.NauticGestApp</mainClass>
+          <launcher>app</launcher>
         </configuration>
       </plugin>
       <plugin>
