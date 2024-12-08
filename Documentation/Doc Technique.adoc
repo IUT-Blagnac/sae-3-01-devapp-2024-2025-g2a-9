@@ -34,11 +34,14 @@ L'application est divisée en deux composants principaux :
 - Visualise l'historique des alertes
 - Gère la configuration via config.ini
 
-Cette architecture MVC (Modèle-Vue-Contrôleur) permet une séparation claire des responsabilités :
+Pour l'interface JaveFx, nous avons utilisé une architecture MVC (Modèle-Vue-Contrôleur) permet une séparation claire des responsabilités : +
+- Les contrôleurs gèrent la logique métier (application.control) +
+- Les vues s'occupent de l'interface utilisateur et de l'affichage (application.view) +
+- Les modèles représentent les données (application.model)
 
-- Les contrôleurs gèrent la logique métier
-- Les vues s'occupent de l'interface utilisateur
-- Les modèles représentent les données
+
+Nous avons aussi utilisé un package regroupant les outils utilisés pour le bon fonctionnement de l'application. Le package application.tools regroupe 2 classes.
+De plus les fichiers de vues (fxml) se trouvent dans le fichier resources/application/view après avoir parcouru Application/src/main. Un css est aussi présent mais n'a pas été utilisé. (Possibilité d'amélioration)
 
 == Implémentation
 
@@ -79,6 +82,12 @@ Classes principales :
 4. Utils
 - ConfigIni : Gestion du fichier de configuration .ini
 - EnergieExtraction : Extraction et traitement des données énergétiques
+
++
+Pour en arriver là, nous avons utilisé des documentations concernant JavaFx, afin de découvrir certains composants essentiels ainsi que leurs utilisations : +
+- https://o7planning.org/11009/javafx + 
+- https://docs.oracle.com/javase/8/javafx/api/javafx +
+- https://jenkov.com/tutorials/javafx/index.html
 
 == Installation et Déploiement
 
