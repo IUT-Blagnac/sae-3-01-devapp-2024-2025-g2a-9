@@ -46,6 +46,7 @@ public class CapteursController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Erreur lors du chargement de lectureC.fxml", e);
         }
     }
 

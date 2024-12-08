@@ -10,6 +10,10 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -26,6 +30,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -54,9 +59,6 @@ public class CapteursViewController {
     private TableColumn<SensorData, Double> dataColumn;
 
     @FXML
-    private Button showAllDataButton;
-
-    @FXML
     private LineChart<Number, Number> temperatureChart;
 
     @FXML
@@ -68,8 +70,6 @@ public class CapteursViewController {
     @FXML
     private LineChart<Number, Number> pressureChart;
 
-    // Ajoutez d'autres LineChart pour chaque type de donnée
-
     @FXML
     private ComboBox<String> roomSelector;
 
@@ -78,6 +78,12 @@ public class CapteursViewController {
 
     @FXML
     private LineChart<Number, Number> individualHumidityChart;
+
+    @FXML
+    private Text colorLegendText;
+
+    @FXML
+    private HBox colorLegendContainer;
 
     private ScheduledExecutorService executorService;
 
@@ -99,19 +105,22 @@ public class CapteursViewController {
         roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         dataColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-        showAllDataButton.setOnAction(event -> showAllData());
 
         temperatureChart.getXAxis().setLabel("Temps (s)");
         temperatureChart.getYAxis().setLabel("Température (°C)");
+        temperatureChart.setLegendVisible(true);
 
         humidityChart.getXAxis().setLabel("Temps (s)");
         humidityChart.getYAxis().setLabel("Humidité (%)");
+        humidityChart.setLegendVisible(true);
 
         co2Chart.getXAxis().setLabel("Temps (s)");
         co2Chart.getYAxis().setLabel("CO₂ (ppm)");
+        co2Chart.setLegendVisible(true);
 
         pressureChart.getXAxis().setLabel("Temps (s)");
         pressureChart.getYAxis().setLabel("Pression (hPa)");
+        pressureChart.setLegendVisible(true);
 
         // Initialisez les autres graphiques de la même manière
 
@@ -122,6 +131,8 @@ public class CapteursViewController {
         individualHumidityChart.getYAxis().setLabel("Humidité (%)");
 
         roomSelector.setOnAction(event -> updateIndividualRoomData());
+
+        updateColorLegend();
     }
 
     public void initContext(Stage _cStage, CapteursController _p) {
@@ -140,7 +151,7 @@ public class CapteursViewController {
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> {
             Platform.runLater(this::updateData);
-        }, 0, 5, TimeUnit.SECONDS); // Mise à jour toutes les 5 secondes
+        }, 0, 10, TimeUnit.SECONDS); // Mise à jour toutes les 10 secondes
     }
 
     private void updateData() {
@@ -150,176 +161,57 @@ public class CapteursViewController {
                 System.out.println("Le fichier donnees.json n'existe pas.");
                 return;
             }
-
+    
             Reader reader = Files.newBufferedReader(path);
             JsonArray dataArray = JsonParser.parseReader(reader).getAsJsonArray();
             reader.close();
-
+    
             if (dataArray.size() == 0) {
                 System.out.println("Le fichier donnees.json est vide.");
                 return;
             }
-
+    
             sensorDataList.clear();
-
+    
             for (int i = 0; i < dataArray.size(); i++) {
                 JsonObject data = dataArray.get(i).getAsJsonObject();
-
+    
                 String room = data.has("room") ? data.get("room").getAsString() : "Inconnu";
-
+    
                 if (data.has("temperature") && data.get("temperature").isJsonArray()) {
                     String type = "Température";
                     double value = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
                     sensorDataList.add(new SensorData(room, type, value));
                 }
-
+    
                 if (data.has("humidity") && data.get("humidity").isJsonArray()) {
                     String type = "Humidité";
                     double value = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
                     sensorDataList.add(new SensorData(room, type, value));
                 }
-
+    
                 if (data.has("co2") && data.get("co2").isJsonArray()) {
                     String type = "CO₂";
                     double value = data.get("co2").getAsJsonArray().get(0).getAsDouble();
                     sensorDataList.add(new SensorData(room, type, value));
                 }
-
+    
                 if (data.has("pressure") && data.get("pressure").isJsonArray()) {
                     String type = "Pression";
                     double value = data.get("pressure").getAsJsonArray().get(0).getAsDouble();
                     sensorDataList.add(new SensorData(room, type, value));
                 }
-
-                // Ajoutez le traitement pour les autres types de données
             }
-
+    
         } catch (Exception e) {
             System.err.println("Erreur lors de la mise à jour des données: " + e.getMessage());
             e.printStackTrace();
         }
+        updateCharts();
+        updateColorLegend();
     }
 
-    @FXML
-    private void showAllData() {
-        try {
-            Path path = Paths.get("../donnees.json");
-            if (!Files.exists(path)) {
-                System.out.println("Le fichier donnees.json n'existe pas.");
-                return;
-            }
-
-            Reader reader = Files.newBufferedReader(path);
-            JsonArray dataArray = JsonParser.parseReader(reader).getAsJsonArray();
-            reader.close();
-
-            if (dataArray.size() == 0) {
-                System.out.println("Le fichier donnees.json est vide.");
-                return;
-            }
-
-            temperatureChart.getData().clear();
-            humidityChart.getData().clear();
-            co2Chart.getData().clear();
-            pressureChart.getData().clear();
-            // Effacez les données des autres graphiques
-
-            tempSeriesMap.clear();
-            humiditySeriesMap.clear();
-            co2SeriesMap.clear();
-            pressureSeriesMap.clear();
-            // Effacez les autres maps de séries
-
-            LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
-            LocalDateTime cutoff = now.minusHours(2);
-
-            for (int i = 0; i < dataArray.size(); i++) {
-                JsonObject data = dataArray.get(i).getAsJsonObject();
-
-                if (!data.has("room")) continue;
-
-                String room = data.get("room").getAsString();
-
-                String dateStr = data.has("date") ? data.get("date").getAsString() : null;
-                if (dateStr == null) continue;
-
-                LocalDateTime dataTime;
-                try {
-                    dataTime = LocalDateTime.parse(dateStr, DATE_FORMATTER);
-                } catch (DateTimeParseException e) {
-                    continue;
-                }
-
-                if (dataTime.isBefore(cutoff)) continue;
-
-                long elapsedSeconds = Duration.between(startTimeInstant, dataTime.atZone(ZoneId.systemDefault()).toInstant()).getSeconds();
-
-                if (data.has("temperature") && data.get("temperature").isJsonArray()) {
-                    double temperature = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> tempSeries = tempSeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        temperatureChart.getData().add(series);
-                        return series;
-                    });
-                    tempSeries.getData().add(new XYChart.Data<>(elapsedSeconds, temperature));
-                    if (tempSeries.getData().size() > MAX_POINTS) {
-                        tempSeries.getData().remove(0);
-                    }
-                }
-
-                if (data.has("humidity") && data.get("humidity").isJsonArray()) {
-                    double humidity = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> humiditySeries = humiditySeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        humidityChart.getData().add(series);
-                        return series;
-                    });
-                    humiditySeries.getData().add(new XYChart.Data<>(elapsedSeconds, humidity));
-                    if (humiditySeries.getData().size() > MAX_POINTS) {
-                        humiditySeries.getData().remove(0);
-                    }
-                }
-
-                if (data.has("co2") && data.get("co2").isJsonArray()) {
-                    double co2 = data.get("co2").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> co2Series = co2SeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        co2Chart.getData().add(series);
-                        return series;
-                    });
-                    co2Series.getData().add(new XYChart.Data<>(elapsedSeconds, co2));
-                    if (co2Series.getData().size() > MAX_POINTS) {
-                        co2Series.getData().remove(0);
-                    }
-                }
-
-                if (data.has("pressure") && data.get("pressure").isJsonArray()) {
-                    double pressure = data.get("pressure").getAsJsonArray().get(0).getAsDouble();
-                    XYChart.Series<Number, Number> pressureSeries = pressureSeriesMap.computeIfAbsent(room, k -> {
-                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-                        series.setName(k);
-                        pressureChart.getData().add(series);
-                        return series;
-                    });
-                    pressureSeries.getData().add(new XYChart.Data<>(elapsedSeconds, pressure));
-                    if (pressureSeries.getData().size() > MAX_POINTS) {
-                        pressureSeries.getData().remove(0);
-                    }
-                }
-
-                // Traitez les autres types de données de la même manière
-            }
-
-            nettoyerDonnees(cutoff);
-
-        } catch (Exception e) {
-            System.err.println("Erreur lors de la mise à jour des données: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+    
 
     private void updateIndividualRoomData() {
         String selectedRoom = roomSelector.getSelectionModel().getSelectedItem();
@@ -343,49 +235,6 @@ public class CapteursViewController {
         // Ajoutez le code pour afficher les données individuelles des autres types si nécessaire
     }
 
-    private void nettoyerDonnees(LocalDateTime cutoff) {
-        for (Map.Entry<String, XYChart.Series<Number, Number>> entry : tempSeriesMap.entrySet()) {
-            XYChart.Series<Number, Number> series = entry.getValue();
-            series.getData().removeIf(data -> {
-                long elapsedSeconds = data.getXValue().longValue();
-                Instant dataInstant = startTimeInstant.plusSeconds(elapsedSeconds);
-                LocalDateTime dataTime = LocalDateTime.ofInstant(dataInstant, ZoneId.systemDefault());
-                return dataTime.isBefore(cutoff);
-            });
-        }
-
-        for (Map.Entry<String, XYChart.Series<Number, Number>> entry : humiditySeriesMap.entrySet()) {
-            XYChart.Series<Number, Number> series = entry.getValue();
-            series.getData().removeIf(data -> {
-                long elapsedSeconds = data.getXValue().longValue();
-                Instant dataInstant = startTimeInstant.plusSeconds(elapsedSeconds);
-                LocalDateTime dataTime = LocalDateTime.ofInstant(dataInstant, ZoneId.systemDefault());
-                return dataTime.isBefore(cutoff);
-            });
-        }
-
-        for (Map.Entry<String, XYChart.Series<Number, Number>> entry : co2SeriesMap.entrySet()) {
-            XYChart.Series<Number, Number> series = entry.getValue();
-            series.getData().removeIf(data -> {
-                long elapsedSeconds = data.getXValue().longValue();
-                Instant dataInstant = startTimeInstant.plusSeconds(elapsedSeconds);
-                LocalDateTime dataTime = LocalDateTime.ofInstant(dataInstant, ZoneId.systemDefault());
-                return dataTime.isBefore(cutoff);
-            });
-        }
-
-        for (Map.Entry<String, XYChart.Series<Number, Number>> entry : pressureSeriesMap.entrySet()) {
-            XYChart.Series<Number, Number> series = entry.getValue();
-            series.getData().removeIf(data -> {
-                long elapsedSeconds = data.getXValue().longValue();
-                Instant dataInstant = startTimeInstant.plusSeconds(elapsedSeconds);
-                LocalDateTime dataTime = LocalDateTime.ofInstant(dataInstant, ZoneId.systemDefault());
-                return dataTime.isBefore(cutoff);
-            });
-        }
-
-        // Nettoyez les données des autres séries de la même manière
-    }
 
     public void displayDialog() {
         this.cStage.showAndWait();
@@ -407,5 +256,158 @@ public class CapteursViewController {
     @FXML
     private void doQuitter() {
         this.cStage.close();
+    }
+
+
+    private void updateCharts() {
+        try {
+            Path path = Paths.get("../donnees.json");
+            if (!Files.exists(path)) {
+                System.out.println("Le fichier donnees.json n'existe pas.");
+                return;
+            }
+    
+            Reader reader = Files.newBufferedReader(path);
+            JsonArray dataArray = JsonParser.parseReader(reader).getAsJsonArray();
+            reader.close();
+    
+            if (dataArray.size() == 0) {
+                System.out.println("Le fichier donnees.json est vide.");
+                return;
+            }
+    
+            LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
+            LocalDateTime cutoff = now.minusHours(2);
+    
+            for (JsonElement element : dataArray) {
+                JsonObject data = element.getAsJsonObject();
+    
+                if (!data.has("room")) continue;
+    
+                String room = data.get("room").getAsString();
+    
+                String dateStr = data.has("date") ? data.get("date").getAsString() : null;
+                if (dateStr == null) continue;
+    
+                LocalDateTime dataTime;
+                try {
+                    dataTime = LocalDateTime.parse(dateStr, DATE_FORMATTER);
+                } catch (DateTimeParseException e) {
+                    continue;
+                }
+    
+                if (dataTime.isBefore(cutoff)) continue;
+    
+                long elapsedSeconds = Duration.between(startTimeInstant, dataTime.atZone(ZoneId.systemDefault()).toInstant()).getSeconds();
+    
+                // Mise à jour des séries pour chaque type de capteur
+                if (data.has("temperature") && data.get("temperature").isJsonArray()) {
+                    double temperature = data.get("temperature").getAsJsonArray().get(0).getAsDouble();
+                    XYChart.Series<Number, Number> tempSeries = tempSeriesMap.computeIfAbsent(room, k -> {
+                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                        series.setName(k);
+                        temperatureChart.getData().add(series);
+                        return series;
+                    });
+                    tempSeries.getData().add(new XYChart.Data<>(elapsedSeconds, temperature));
+                }
+    
+                if (data.has("humidity") && data.get("humidity").isJsonArray()) {
+                    double humidity = data.get("humidity").getAsJsonArray().get(0).getAsDouble();
+                    XYChart.Series<Number, Number> humiditySeries = humiditySeriesMap.computeIfAbsent(room, k -> {
+                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                        series.setName(k);
+                        humidityChart.getData().add(series);
+                        return series;
+                    });
+                    humiditySeries.getData().add(new XYChart.Data<>(elapsedSeconds, humidity));
+                }
+    
+                if (data.has("co2") && data.get("co2").isJsonArray()) {
+                    double co2 = data.get("co2").getAsJsonArray().get(0).getAsDouble();
+                    XYChart.Series<Number, Number> co2Series = co2SeriesMap.computeIfAbsent(room, k -> {
+                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                        series.setName(k);
+                        co2Chart.getData().add(series);
+                        return series;
+                    });
+                    co2Series.getData().add(new XYChart.Data<>(elapsedSeconds, co2));
+                }
+    
+                if (data.has("pressure") && data.get("pressure").isJsonArray()) {
+                    double pressure = data.get("pressure").getAsJsonArray().get(0).getAsDouble();
+                    XYChart.Series<Number, Number> pressureSeries = pressureSeriesMap.computeIfAbsent(room, k -> {
+                        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+                        series.setName(k);
+                        pressureChart.getData().add(series);
+                        return series;
+                    });
+                    pressureSeries.getData().add(new XYChart.Data<>(elapsedSeconds, pressure));
+                }
+            }
+    
+            // Nettoyer les données plus anciennes que le cutoff
+            nettoyerDonnees(cutoff);
+    
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la mise à jour des graphiques: " + e.getMessage());
+            e.printStackTrace();
+        }
+        updateColorLegend();
+    }
+
+    private void nettoyerDonnees(LocalDateTime cutoff) {
+        nettoyerSerie(tempSeriesMap, cutoff);
+        nettoyerSerie(humiditySeriesMap, cutoff);
+        nettoyerSerie(co2SeriesMap, cutoff);
+        nettoyerSerie(pressureSeriesMap, cutoff);
+    }
+    
+    private void nettoyerSerie(Map<String, XYChart.Series<Number, Number>> seriesMap, LocalDateTime cutoff) {
+        for (XYChart.Series<Number, Number> series : seriesMap.values()) {
+            series.getData().removeIf(data -> {
+                long elapsedSeconds = data.getXValue().longValue();
+                Instant dataInstant = startTimeInstant.plusSeconds(elapsedSeconds);
+                LocalDateTime dataTime = LocalDateTime.ofInstant(dataInstant, ZoneId.systemDefault());
+                return dataTime.isBefore(cutoff);
+            });
+        }
+    }
+
+    private void updateColorLegend() {
+        colorLegendContainer.getChildren().clear();
+        for (String room : tempSeriesMap.keySet()) {
+            XYChart.Series<Number, Number> series = tempSeriesMap.get(room);
+            if (series != null && series.getNode() != null) {
+                String color = extractColorFromSeries(series);
+                Rectangle colorBox = new Rectangle(10, 10, Color.web(color));
+                Text roomText = new Text(room);
+                HBox legendItem = new HBox(5, colorBox, roomText);
+                colorLegendContainer.getChildren().add(legendItem);
+            }
+        }
+    }
+
+    private String extractColorFromSeries(XYChart.Series<Number, Number> series) {
+        // Obtenir la classe CSS par défaut de la série
+        String defaultColorStyleClass = series.getNode().getStyleClass().stream()
+                .filter(style -> style.startsWith("default-color"))
+                .findFirst()
+                .orElse("");
+
+        // Définir les couleurs par défaut utilisées par JavaFX
+        Map<String, String> defaultColorMap = new HashMap<>();
+        defaultColorMap.put("default-color0", "#f3622d");
+        defaultColorMap.put("default-color1", "#fba71b");
+        defaultColorMap.put("default-color2", "#57b757");
+        defaultColorMap.put("default-color3", "#41a9c9");
+        defaultColorMap.put("default-color4", "#888888");
+        defaultColorMap.put("default-color5", "#a2ab58");
+        defaultColorMap.put("default-color6", "#3264c8");
+        defaultColorMap.put("default-color7", "#994499");
+        defaultColorMap.put("default-color8", "#a2b9d5");
+        defaultColorMap.put("default-color9", "#ff8e6c");
+
+        return defaultColorMap.getOrDefault(defaultColorStyleClass, "couleur inconnue");
     }
 }
