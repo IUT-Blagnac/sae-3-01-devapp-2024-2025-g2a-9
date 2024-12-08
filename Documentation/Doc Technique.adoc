@@ -117,5 +117,6 @@ Classes principales :
      - L'application lancera automatiquement le script prg.py
      - Les données seront écrites dans donnees.json et alert.json
      - L'interface se rafraîchira selon la fréquence configurée
+     - Sur linux lancer depuis le jar depuis le repertoire Application avec java --module-path target/dependencies --add-modules javafx.controls,javafx.fxml,javafx.graphics -jar target/NauticGest-1.0.jar, attention de bien avoir javafx-graphics-17-linux.jar sinon le prendre ici : https://repo1.maven.org/maven2/org/openjfx/javafx-graphics/17/
 
 Note : Assurez-vous que les chemins relatifs entre l'application Java et le script Python sont correctement configurés ("../config.ini", "../donnees.json", etc.)
