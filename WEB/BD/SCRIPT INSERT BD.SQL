@@ -2,14 +2,14 @@
 --       AUTO_INCREMENT RESET
 -- ----------------------------------------------------------------------------- 
 
-ALTER TABLE CATEGORIE AUTO_INCREMENT = 1
-ALTER TABLE POINTRELAIS AUTO_INCREMENT = 1
-ALTER TABLE UTILISATEUR AUTO_INCREMENT = 1
-ALTER TABLE PRODUIT AUTO_INCREMENT = 1
-ALTER TABLE ENSEMBLE AUTO_INCREMENT = 1
-ALTER TABLE PAIEMENT AUTO_INCREMENT = 1
-ALTER TABLE COMMANDE AUTO_INCREMENT = 1
-ALTER TABLE AVIS AUTO_INCREMENT = 1
+ALTER TABLE CATEGORIE AUTO_INCREMENT = 1;
+ALTER TABLE POINTRELAIS AUTO_INCREMENT = 1;
+ALTER TABLE UTILISATEUR AUTO_INCREMENT = 1;
+ALTER TABLE PRODUIT AUTO_INCREMENT = 1;
+ALTER TABLE ENSEMBLE AUTO_INCREMENT = 1;
+ALTER TABLE PAIEMENT AUTO_INCREMENT = 1;
+ALTER TABLE COMMANDE AUTO_INCREMENT = 1;
+ALTER TABLE AVIS AUTO_INCREMENT = 1;
 
 
 -- ----------------------------------------------------------------------------- 
@@ -100,11 +100,11 @@ VALUES
 ('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', 'jacco1234', 'CLIENT'),
 ('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecilePass321', 'CLIENT');
 
--- Insertion de 10 UTILISATEURs ADMIN
-INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, MAIL, PASSWORD) 
+-- Insertion de 2 UTILISATEURs ADMIN
+INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, MAIL, PASSWORD, DROIT) 
 VALUES 
 ('MR', 'Nonne', 'Laurent', 'laurent.nonne@mail.com', 'pass1234', 'ADMIN'),
-('MME', 'Teste', 'Olivier', 'olivier.teste@mail.com', 'mdp5678', 'ADMIN'),
+('MR', 'Teste', 'Olivier', 'olivier.teste@mail.com', 'mdp5678', 'ADMIN');
 
 
 -- ----------------------------------------------------------------------------- 
