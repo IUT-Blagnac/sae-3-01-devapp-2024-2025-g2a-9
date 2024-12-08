@@ -100,11 +100,11 @@ VALUES
 ('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', 'jacco1234', 'CLIENT'),
 ('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecilePass321', 'CLIENT');
 
--- Insertion de 10 UTILISATEURs ADMIN
+-- Insertion de 2 UTILISATEURs ADMIN
 INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, MAIL, PASSWORD) 
 VALUES 
 ('MR', 'Nonne', 'Laurent', 'laurent.nonne@mail.com', 'pass1234', 'ADMIN'),
-('MME', 'Teste', 'Olivier', 'olivier.teste@mail.com', 'mdp5678', 'ADMIN'),
+('MME', 'Teste', 'Olivier', 'olivier.teste@mail.com', 'mdp5678', 'ADMIN');
 
 
 -- ----------------------------------------------------------------------------- 
