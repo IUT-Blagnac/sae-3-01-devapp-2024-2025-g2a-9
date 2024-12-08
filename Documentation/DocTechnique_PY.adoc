@@ -1,0 +1,97 @@
+= Documentation technique pour le script Python de gestion MQTT
+:author: Votre Nom
+:date: 2024-12-08
+:revnumber: 1.0
+
+== Introduction
+Ce document décrit la structure et les fonctionnalités du script Python de gestion MQTT. Il explique également les étapes nécessaires pour installer et exécuter ce script.
+
+== Structure du script
+
+=== 1. Vérification et lecture de la configuration
+- Vérifie l'existence du fichier `config.ini` dans le répertoire courant.
+- Lit les paramètres essentiels depuis `config.ini`, y compris :
+  - Adresse du serveur MQTT.
+  - Topics auxquels s'abonner.
+  - Fichiers de sortie et d'alertes.
+  - Seuils pour diverses mesures (ex. température, humidité).
+  - Variables spécifiques aux capteurs et panneaux solaires.
+  - Liste des salles à surveiller.
+
+=== 2. Gestion des données et seuils
+- Définition des seuils et variables à surveiller.
+- Fonction `verifier_donnees` :
+  - Vérifie les données reçues par rapport aux seuils.
+  - Retourne les valeurs accompagnées de leur statut de dépassement (`True` ou `False`).
+
+=== 3. Écriture des données
+- Fonction `ecrire_donnees` :
+  - Regroupe les nouvelles données et alertes.
+  - Écrit ces informations dans deux fichiers JSON :
+    - Fichier principal : toutes les données.
+    - Fichier d'alertes : uniquement les valeurs ayant dépassé un seuil.
+
+=== 4. Traitement des messages MQTT
+- Fonction `on_message` :
+  - Analyse les messages reçus.
+  - Vérifie les seuils pour les capteurs et les panneaux solaires.
+  - Stocke les données en attente pour une écriture périodique.
+
+=== 5. Connexion et abonnement MQTT
+- Configure la connexion au serveur MQTT.
+- S'abonne aux topics spécifiés.
+- Boucle d'écoute infinie avec gestion des interruptions par clavier.
+
+== Étapes d'installation
+
+=== Prérequis
+1. Installer Python 3.6 ou une version ultérieure.
+2. Installer les bibliothèques nécessaires avec la commande : pip install paho-mqtt
+3. Vérifiez que le fichier `config.ini` est présent dans le même répertoire que le script. Le fichier doit contenir les sections suivantes :
+- `[MQTT]` : Configuration du serveur et des topics.
+- `[OUTPUT]` : Fichiers de sortie et fréquence d'écriture.
+- `[seuils_capteur]` : Seuils pour les variables des capteurs.
+- `[seuils_solaredge]` : Seuils pour les panneaux solaires.
+- `[variables]` : Variables à surveiller pour les capteurs et les panneaux solaires.
+- `[salles]` : Liste des salles à inclure.
+
+=== Configuration exemple de `config.ini`
+```ini
+[MQTT]
+server = mqtt.example.com
+topics = topic1, topic2
+
+[OUTPUT]
+file = donnees.json
+alert = alertes.json
+frequence = 60
+
+[seuils_capteur]
+temperature = 35
+humidity = 60
+
+[seuils_solaredge]
+puissance_min = 500
+
+[variables]
+variable_capteur = global
+variable_solaredge = global
+
+[salles]
+rooms = salle1, salle2
+
+== Étapes de lancement
+
+Placez le script Python et le fichier config.ini dans le même répertoire.
+Lancez le script avec la commande suivante : python3 script.py
+
+Le script se connectera au serveur MQTT, s'abonnera aux topics, et commencera à traiter les messages.
+
+== Gestion des interruptions
+
+Si le script est arrêté manuellement (CTRL+C), il effectuera une dernière écriture des données en attente avant de se terminer.
+== Dépannage
+
+Erreur de configuration introuvable : Vérifiez que config.ini est présent et correctement configuré.
+Erreur de connexion au serveur MQTT : Assurez-vous que l'adresse du serveur est correcte et que le serveur est en cours d'exécution.
+Données non écrites : Vérifiez les permissions d'écriture sur les fichiers de sortie (donnees.json, alertes.json).
