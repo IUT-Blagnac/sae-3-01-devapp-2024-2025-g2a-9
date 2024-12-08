@@ -1,10 +1,22 @@
-= Documentation technique pour le script Python de gestion MQTT
-:author: Votre Nom
-:date: 2024-12-08
-:revnumber: 1.0
+= Document Technique - Script Python
+:toc-title: Sommaire
+:toc: macro
+
+**Script python pour l'interface graphique : NauticGestApp**  +
+**Version :** 1.0  +
+**Date :** 07 Décembre 2024  +
+**Groupe :** 2A9  +
+*Projet :* SAE DevApp (S3.01)
+
+'''
+
+toc::[]
+
+'''
+
 
 == Introduction
-Ce document décrit la structure et les fonctionnalités du script Python de gestion MQTT. Il explique également les étapes nécessaires pour installer et exécuter ce script.
+Ce document décrit la structure et les fonctionnalités du script Python. Il explique également les étapes nécessaires pour installer et exécuter ce script.
 
 == Structure du script
 
@@ -45,53 +57,20 @@ Ce document décrit la structure et les fonctionnalités du script Python de ges
 == Étapes d'installation
 
 === Prérequis
-1. Installer Python 3.6 ou une version ultérieure.
-2. Installer les bibliothèques nécessaires avec la commande : pip install paho-mqtt
-3. Vérifiez que le fichier `config.ini` est présent dans le même répertoire que le script. Le fichier doit contenir les sections suivantes :
-- `[MQTT]` : Configuration du serveur et des topics.
-- `[OUTPUT]` : Fichiers de sortie et fréquence d'écriture.
-- `[seuils_capteur]` : Seuils pour les variables des capteurs.
-- `[seuils_solaredge]` : Seuils pour les panneaux solaires.
-- `[variables]` : Variables à surveiller pour les capteurs et les panneaux solaires.
-- `[salles]` : Liste des salles à inclure.
-
-=== Configuration exemple de `config.ini`
-```ini
-[MQTT]
-server = mqtt.example.com
-topics = topic1, topic2
-
-[OUTPUT]
-file = donnees.json
-alert = alertes.json
-frequence = 60
-
-[seuils_capteur]
-temperature = 35
-humidity = 60
-
-[seuils_solaredge]
-puissance_min = 500
-
-[variables]
-variable_capteur = global
-variable_solaredge = global
-
-[salles]
-rooms = salle1, salle2
+1. Installer Python 3 ou une version supérieur.
+2. Installer le module paho-mqtt avec la commande : pip install paho-mqtt
+3. Vérifiez que le fichier `config.ini` est présent dans le même répertoire que le script.
 
 == Étapes de lancement
 
 Placez le script Python et le fichier config.ini dans le même répertoire.
 Lancez le script avec la commande suivante : python3 script.py
 
-Le script se connectera au serveur MQTT, s'abonnera aux topics, et commencera à traiter les messages.
-
-== Gestion des interruptions
-
+Le script se connectera au serveur MQTT, s'abonnera aux topics, et commencera à traiter les messages. +
 Si le script est arrêté manuellement (CTRL+C), il effectuera une dernière écriture des données en attente avant de se terminer.
-== Dépannage
+
+== Erreurs rencontrées
 
 Erreur de configuration introuvable : Vérifiez que config.ini est présent et correctement configuré.
 Erreur de connexion au serveur MQTT : Assurez-vous que l'adresse du serveur est correcte et que le serveur est en cours d'exécution.
-Données non écrites : Vérifiez les permissions d'écriture sur les fichiers de sortie (donnees.json, alertes.json).
+Données non écrites : Vérifiez les permissions d'écriture sur les fichiers de sortie (donnees.json, alert.json).
