@@ -101,10 +101,10 @@ VALUES
 ('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecilePass321', 'CLIENT');
 
 -- Insertion de 2 UTILISATEURs ADMIN
-INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, MAIL, PASSWORD) 
+INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, MAIL, PASSWORD, DROIT) 
 VALUES 
 ('MR', 'Nonne', 'Laurent', 'laurent.nonne@mail.com', 'pass1234', 'ADMIN'),
-('MME', 'Teste', 'Olivier', 'olivier.teste@mail.com', 'mdp5678', 'ADMIN');
+('MR', 'Teste', 'Olivier', 'olivier.teste@mail.com', 'mdp5678', 'ADMIN');
 
 
 -- ----------------------------------------------------------------------------- 
