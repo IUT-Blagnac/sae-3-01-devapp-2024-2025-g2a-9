@@ -1,0 +1,284 @@
+[
+    {
+        "lastUpdateTime": "2024-12-09 12:04:14",
+        "lifeTimeData": {
+            "energy": 3472127
+        },
+        "lastYearData": {
+            "energy": 2991097
+        },
+        "lastMonthData": {
+            "energy": 56691
+        },
+        "lastDayData": {
+            "energy": 627
+        },
+        "currentPower": [
+            321.8372,
+            true
+        ],
+        "measuredBy": "INVERTER",
+        "date": "2024-12-09 12:06:27"
+    },
+    {
+        "lastUpdateTime": "2024-12-09 12:04:14",
+        "lifeTimeData": {
+            "energy": 3472127
+        },
+        "lastYearData": {
+            "energy": 2991097
+        },
+        "lastMonthData": {
+            "energy": 56691
+        },
+        "lastDayData": {
+            "energy": 627
+        },
+        "currentPower": [
+            321.8372,
+            true
+        ],
+        "measuredBy": "INVERTER",
+        "date": "2024-12-09 12:07:08"
+    },
+    {
+        "temperature": [
+            17.8,
+            true
+        ],
+        "humidity": [
+            48,
+            false
+        ],
+        "activity": [
+            64,
+            true
+        ],
+        "co2": [
+            578,
+            true
+        ],
+        "tvoc": [
+            129,
+            false
+        ],
+        "illumination": [
+            74,
+            false
+        ],
+        "infrared": [
+            11,
+            true
+        ],
+        "infrared_and_visible": [
+            57,
+            true
+        ],
+        "pressure": [
+            992.1,
+            false
+        ],
+        "date": "2024-12-09 12:07:20",
+        "room": "C102"
+    },
+    {
+        "temperature": [
+            19.6,
+            true
+        ],
+        "humidity": [
+            48,
+            false
+        ],
+        "activity": [
+            194,
+            true
+        ],
+        "co2": [
+            978,
+            true
+        ],
+        "tvoc": [
+            326,
+            true
+        ],
+        "illumination": [
+            69,
+            false
+        ],
+        "infrared": [
+            14,
+            true
+        ],
+        "infrared_and_visible": [
+            60,
+            true
+        ],
+        "pressure": [
+            992.6,
+            false
+        ],
+        "date": "2024-12-09 12:07:33",
+        "room": "E007"
+    },
+    {
+        "temperature": [
+            18.4,
+            true
+        ],
+        "humidity": [
+            47,
+            false
+        ],
+        "activity": [
+            0,
+            false
+        ],
+        "co2": [
+            724,
+            true
+        ],
+        "tvoc": [
+            43,
+            false
+        ],
+        "illumination": [
+            4,
+            false
+        ],
+        "infrared": [
+            3,
+            true
+        ],
+        "infrared_and_visible": [
+            8,
+            false
+        ],
+        "pressure": [
+            991.2,
+            false
+        ],
+        "date": "2024-12-09 12:08:02",
+        "room": "B203"
+    },
+    {
+        "temperature": [
+            18.5,
+            true
+        ],
+        "humidity": [
+            47,
+            false
+        ],
+        "activity": [
+            0,
+            false
+        ],
+        "co2": [
+            446,
+            true
+        ],
+        "tvoc": [
+            117,
+            false
+        ],
+        "illumination": [
+            1,
+            false
+        ],
+        "infrared": [
+            1,
+            true
+        ],
+        "infrared_and_visible": [
+            1,
+            false
+        ],
+        "pressure": [
+            992,
+            false
+        ],
+        "date": "2024-12-09 12:08:02",
+        "room": "amphi1"
+    },
+    {
+        "temperature": [
+            17.4,
+            true
+        ],
+        "humidity": [
+            47,
+            false
+        ],
+        "activity": [
+            0,
+            false
+        ],
+        "co2": [
+            427,
+            true
+        ],
+        "tvoc": [
+            67,
+            false
+        ],
+        "illumination": [
+            62,
+            false
+        ],
+        "infrared": [
+            19,
+            true
+        ],
+        "infrared_and_visible": [
+            66,
+            true
+        ],
+        "pressure": [
+            990.6,
+            false
+        ],
+        "date": "2024-12-09 12:08:05",
+        "room": "E210"
+    },
+    {
+        "temperature": [
+            19.6,
+            true
+        ],
+        "humidity": [
+            47.5,
+            false
+        ],
+        "activity": [
+            261,
+            true
+        ],
+        "co2": [
+            1136,
+            true
+        ],
+        "tvoc": [
+            229,
+            true
+        ],
+        "illumination": [
+            64,
+            false
+        ],
+        "infrared": [
+            10,
+            true
+        ],
+        "infrared_and_visible": [
+            50,
+            false
+        ],
+        "pressure": [
+            991.3,
+            false
+        ],
+        "date": "2024-12-09 12:08:07",
+        "room": "E208"
+    }
+]
