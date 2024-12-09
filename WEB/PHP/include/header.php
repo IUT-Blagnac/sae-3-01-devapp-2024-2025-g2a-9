@@ -33,7 +33,7 @@
                 }
             ?>
             <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
-            <li><a class="nav-link" href="#"><i class="bi bi-cart"></i></a></li>
+            <li><a class="nav-link" href="panier.php"><i class="bi bi-cart"></i></a></li>
         </ul>
     </div>
 </header>
