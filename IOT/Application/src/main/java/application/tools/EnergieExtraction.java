@@ -55,8 +55,6 @@ public class EnergieExtraction {
             if (jsonObject.has("lastDayData") && jsonObject.get("lastDayData").getAsJsonObject().has("energy")) {
                 double energy = jsonObject.get("lastDayData").getAsJsonObject().get("energy").getAsDouble();
                 dataEnergies.add(new DataEnergie(date, energy));
-            } else {
-                System.out.println("Le champ 'energy' est manquant ou null pour la date: " + date);
             }
         }
     }
