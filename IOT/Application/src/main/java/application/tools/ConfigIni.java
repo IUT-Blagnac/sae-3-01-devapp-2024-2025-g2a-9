@@ -26,17 +26,17 @@ public class ConfigIni {
             String line;
             String currentSection = null;
             while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty() || line.startsWith("#")) {
+                line = line.trim(); //supprime les espaces en début et fin de ligne
+                if (line.isEmpty() || line.startsWith("#")) { //si ligne vide ou commentaire
                     continue;
                 }
-                if (line.startsWith("[") && line.endsWith("]")) {
-                    currentSection = line.substring(1, line.length() - 1);
-                    config.put(currentSection, new HashMap<>());
-                } else if (currentSection != null) {
-                    String[] parts = line.split("=", 2);
-                    if (parts.length == 2) {
-                        config.get(currentSection).put(parts[0].trim(), parts[1].trim());
+                if (line.startsWith("[") && line.endsWith("]")) { //si nouvelle section
+                    currentSection = line.substring(1, line.length() - 1); //on recup le nom de la section sans les crochets
+                    config.put(currentSection, new HashMap<>()); //nouvelle section dans le dict
+                } else if (currentSection != null) { //si on est dans une section
+                    String[] parts = line.split("=", 2); //on sépare la ligne en 2 parties
+                    if (parts.length == 2) { //si on a bien 2 parties
+                        config.get(currentSection).put(parts[0].trim(), parts[1].trim()); //on ajoute la clé et la valeur dans la section (en supprimant les espaces)
                     }
                 }
             }
@@ -90,6 +90,13 @@ public class ConfigIni {
         return config;
     }
 
+
+    /**
+     * Récupère une partie de la Map de configuration (la partie passée en paramètre)
+     * @param section
+     * @return la configuration de la section
+     * @autor Thomas
+     */
     public Map<String, String> getSectionConfig(String section) {
         return new HashMap<>(config.getOrDefault(section, new HashMap<>()));
     }
