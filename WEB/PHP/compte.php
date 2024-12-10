@@ -30,13 +30,47 @@
                         Voici vos informations personnelles :
                             <div class="card" style="width: 18rem;">
                                 <div class="card-body">
-                                    <h5 class="card-title">plus tard</h5>
-                                    <p class="card-text">on verra</p>
+                                    <h5 class="card-title">Informations générales</h5>
                                 </div>
-                            </div>    
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Nom</li>
+                                    <li class="list-group-item">Date de naissance</li>
+                                    <li class="list-group-item">Civilité</li>
+                                </ul>
+                            </div>
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Coordonnées</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">E-mail</li>
+                                    <li class="list-group-item">Numéro de téléphone</li>
+                                </ul>
+                            </div>
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Adresses</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <!-- For each adresses de livraison rattacher au client -->
+                                </ul>
+                            </div>   
                     </div>
                     <div class="tab-pane" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
-                        Choississez votre commande : 
+                        <div class="col d-flex justify-content-evenly">
+                            <p class="card-text">Choisissez votre commande : </p>
+                            <select name="commande" class="form-select w-25" aria-label="Default select example">
+                                <?php
+                                    $reqCommandes = $conn->prepare("SELECT * FROM COMMANDE WHERE idUtilisateur = ?;") ;
+                                    $reqCommandes->execute();
+                                    foreach($reqCommandes as $commande) {
+                                        $selected = (isset($_POST['commande']) && $_POST['commande'] == $commande['idCommande']) ? 'selected' : '';
+                                        echo "<option value='".$commande["idCommande"]."' $selected>".$commande["dateCommande"]."</option>";
+                                    }
+                                    $reqCommandes->closeCursor();
+                                ?>
+                            </select>
+                        </div>
                     </div>
                     <div class="tab-pane" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
                         Vos articles favoris :
