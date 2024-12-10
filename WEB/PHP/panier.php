@@ -30,8 +30,20 @@ require_once "./include/head.php";
                 // Augmenter la quantité de 1
                 $query = "UPDATE DETAILPANIER SET QUANTITEPANIER = QUANTITEPANIER + 1 WHERE IDUTILISATEUR = :user_id AND IDPRODUIT = :product_id";
             } elseif ($action == 'decrease') {
-                // Diminuer la quantité de 1 si elle est plus grande que 1
-                $query = "UPDATE DETAILPANIER SET QUANTITEPANIER = QUANTITEPANIER - 1 WHERE IDUTILISATEUR = :user_id AND IDPRODUIT = :product_id AND QUANTITEPANIER > 1";
+                // Vérifier la quantité avant de la diminuer (la quantité doit être plus grande que 1)
+                $reqCheck = $conn->prepare("SELECT QUANTITEPANIER FROM DETAILPANIER WHERE IDUTILISATEUR = :user_id AND IDPRODUIT = :product_id");
+                $reqCheck->execute(['user_id' => $user_id, 'product_id' => $product_id]);
+
+                $currentQuantity = $reqCheck->fetchColumn();
+
+                // Si la quantité est supérieure à 1, on peut la décrémenter
+                if ($currentQuantity > 1) {
+                    // Diminuer la quantité de 1
+                    $query = "UPDATE DETAILPANIER SET QUANTITEPANIER = QUANTITEPANIER - 1 WHERE IDUTILISATEUR = :user_id AND IDPRODUIT = :product_id";
+                } else {
+                    // Si la quantité est 1, il faut supprimer le produit du panier
+                    $query = "DELETE FROM DETAILPANIER WHERE IDUTILISATEUR = :user_id AND IDPRODUIT = :product_id";
+                }
             }
 
             // Préparer et exécuter la requête
@@ -40,6 +52,7 @@ require_once "./include/head.php";
                 $reqQuantite->execute(['user_id' => $user_id, 'product_id' => $product_id]);
             }
         }
+
 
         // Récupérer les produits du panier de l'utilisateur à partir de la base de données
         $query = "SELECT p.IDPRODUIT, p.NOMPRODUIT, p.PRIX, dp.QUANTITEPANIER 
