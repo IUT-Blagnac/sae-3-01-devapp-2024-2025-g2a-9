@@ -57,6 +57,7 @@ require_once "./include/head.php";
         // $stmt_total = $pdo->prepare($query_total);
         // $stmt_total->execute(['user_id' => $user_id]);
         // $total = $stmt_total->fetchColumn(); // Récupérer le résultat du total
+        //todo
     ?>
 
     
