@@ -12,7 +12,7 @@
           $reqCateg->execute();
           foreach($reqCateg as $categ) {
             echo "<li class=\"sidebar-item\">";
-              echo "<a href=\"#\" class=\"sidebar-link has-dropdown collapsed\" data-bs-toggle=\"collapse\" data-bs-target=\"#".$categ['NOMCATEGORIE']."\" aria-expanded=\"false\" aria-controls=\"".$categ['nomCategorie']."\">".$categ['nomCategorie']."</a>";
+              echo "<a href=\"#\" class=\"sidebar-link has-dropdown collapsed\" data-bs-toggle=\"collapse\" data-bs-target=\"#".$categ['NOMCATEGORIE']."\" aria-expanded=\"false\" aria-controls=\"".$categ['NOMCATEGORIE']."\">".$categ['NOMCATEGORIE']."</a>";
               echo "<ul id=\"".$categ['NOMCATEGORIE']."\" class=\"sidebar-dropdown list-unstyled collapse\">";
               $reqSousCateg = $conn->prepare("SELECT * FROM CATEGORIE WHERE IDCATEGPERE = ? ;") ;
               $reqSousCateg->execute([$categ['IDCATEGORIE']]);
