@@ -63,14 +63,20 @@
                                 <?php
                                     $reqCommandes = $conn->prepare("SELECT * FROM COMMANDE WHERE idUtilisateur = ?;") ;
                                     $reqCommandes->execute();
-                                    foreach($reqCommandes as $commande) {
-                                        $selected = (isset($_POST['commande']) && $_POST['commande'] == $commande['idCommande']) ? 'selected' : '';
+                                    foreach($reqCommandes as $index => $commande) {
+                                        if ($index == 0) {
+                                            $selected = 'selected'; // Marque la commande comme sélectionnée
+                                        } else {
+                                            $selected = ''; // Pour les autres commandes, pas de sélection
+                                        }
                                         echo "<option value='".$commande["idCommande"]."' $selected>".$commande["dateCommande"]."</option>";
                                     }
                                     $reqCommandes->closeCursor();
                                 ?>
                             </select>
                         </div>
+                        
+                        Detail de la commande
                     </div>
                     <div class="tab-pane" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
                         Vos articles favoris :
