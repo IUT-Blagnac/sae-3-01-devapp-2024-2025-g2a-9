@@ -4,8 +4,6 @@ require_once "./include/head.php";
 ?>
 <body>
     <?php
-    $pageH1 = "Mon Site E-Commerce";
-    $pageUnderTitle = "";
     require_once "./include/header.php";
     require_once "./include/menu.php";
     ?>
