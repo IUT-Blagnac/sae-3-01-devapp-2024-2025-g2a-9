@@ -9,70 +9,87 @@
     ?>
     <!-- Contenu principal -->
     <main role="main" class="container my-5">
-
+        <?php
+            $reqUser = $conn->prepare("SELECT * FROM UTILISATEUR WHERE idUtilisateur = ?;") ;
+            $reqUser->execute([$_SESSION['user']]);
+            if ($user = $reqUser->fetch()) {
+                $nom = htmlspecialchars($user['NOM']);
+                $prenom = htmlspecialchars($user['PRENOM']);
+                $dateN = htmlspecialchars($user['DATEN']);
+                $civilite = htmlspecialchars($user['CIVILITE']);
+                $email = htmlspecialchars($user['MAIL']);
+                $telephone = htmlspecialchars($user['TELEPHONE']);
+            }
+        ?>
         <div class="row gx-3 gx-lg-5">
             <div class="col-3 me-3 me-lg-5">
-                <ul class="nav nav-tabs nav-tabs-vertical" role="tablist">
-                    <li class="nav-item mb-2" role="presentation">
-                        <a class="nav-link active" id="infoPersoTab" data-bs-toggle="tab" href="#infoPersoPane" role="tab" aria-controls="infoPersoPane" aria-selected="true">Mes informations personnelles</a>
-                    </li>
-                    <li class="nav-item mb-2" role="presentation">
-                        <a class="nav-link" id="commandesTab" data-bs-toggle="tab" href="#commandesPane" role="tab" aria-controls="commandesPane" aria-selected="false">Mes commandes</a>
-                    </li>
-                    <li class="nav-item mb-2" role="presentation">
-                        <a class="nav-link" id="favorisTab" data-bs-toggle="tab" href="#favorisPane" role="tab" aria-controls="favorisPane" aria-selected="false">Mes produits favoris</a>
-                    </li>
-                </ul>
+                <!-- Card Utilisateur -->
+                <div class="card mb-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <i class="bi bi-person-circle fs-1 w-100 text-center"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Bonjour, <strong><?php echo "$prenom";?></strong></h5>
+                        <p class="card-text">Bienvenue sur votre espace personnel.</p>
+                    </div>
+                </div>
+                <!-- Boutons navigation (tab) -->
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link d-flex align-items-center mb-2 active" id="infoPersoTab" data-bs-toggle="tab" data-bs-target="#infoPersoPane" type="button" role="tab" aria-controls="infoPersoPane" aria-selected="true"><i class="bi bi-file-person me-3"></i>Informations personnelles</button>
+                    <button class="nav-link d-flex align-items-center mb-2" id="commandesTab" data-bs-toggle="tab" data-bs-target="#commandesPane" type="button" role="tab" aria-controls="commandesPane" aria-selected="false"><i class="bi bi-cart-check me-3"></i>Mes commandes</button>
+                    <button class="nav-link d-flex align-items-center mb-2" id="favorisTab" data-bs-toggle="tab" data-bs-target="#favorisPane" type="button" role="tab" aria-controls="favorisPane" aria-selected="false"><i class="bi bi-heart me-3"></i>Mes produits favoris</button>
+                </div>
             </div>
             <div class="col-8">
+                <!-- Contenu des tabs -->
                 <div class="tab-content" id="tab-content" aria-orientation="vertical">
-                    <div class="tab-pane active" id="infoPersoPane" role="tabpanel" aria-labelledby="infoPersoTab">
-                        <?php
-                            $reqUser = $conn->prepare("SELECT * FROM UTILISATEUR WHERE idUtilisateur = ?;") ;
-                            $reqUser->execute([$_SESSION['user']]);
-                            if ($user = $reqUser->fetch()) {
-                                $nom = htmlspecialchars($user['NOM']);
-                                $prenom = htmlspecialchars($user['PRENOM']);
-                                $dateN = htmlspecialchars($user['DATEN']);
-                                $civilite = htmlspecialchars($user['CIVILITE']);
-                                $email = htmlspecialchars($user['MAIL']);
-                                $telephone = htmlspecialchars($user['TELEPHONE']);
-                            }
-                        ?>
-                        <p class="card-text mb-5">Voici vos informations personnelles :</p>
+                    <!-- Tab infos personnelles -->
+                    <div class="tab-pane fade show active" id="infoPersoPane" role="tabpanel" aria-labelledby="infoPersoTab">
+                        <h2 class="mb-4">Voici vos informations personnelles :</h2>
+                        <!-- Les infos générales -->
                         <div class="card mb-2 w-75">
                             <div class="card-body">
                                 <h5 class="card-title">Informations générales</h5>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Nom : <?php echo "$prenom $nom"; ?></li>
-                                <li class="list-group-item">Date de naissance : <?php echo "$dateN"; ?></li>
-                                <li class="list-group-item">Civilité : <?php echo "$civilite"; ?></li>
+                                <li class="list-group-item"><strong>Nom : </strong><?php echo "$prenom $nom"; ?></li>
+                                <li class="list-group-item"><strong>Date de naissance : </strong><?php echo "$dateN"; ?></li>
+                                <li class="list-group-item"><strong>Civilité : </strong><?php echo "$civilite"; ?></li>
                             </ul>
                         </div>
+                        <!-- Les coordonnées -->
                         <div class="card mb-2 w-75">
                             <div class="card-body">
                                 <h5 class="card-title">Coordonnées</h5>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">E-mail : <?php echo "$email"; ?></li>
-                                <li class="list-group-item">Numéro de téléphone : <?php echo "$telephone"; ?></li>
+                                <li class="list-group-item"><strong>E-mail : </strong><?php echo "$email"; ?></li>
+                                <?php 
+                                    if (isset($telephone)) {
+                                        echo "<li class=\"list-group-item\"><strong>Numéro de téléphone : </strong>$telephone</li>";
+                                    }else {
+                                        echo "<li class=\"list-group-item\"><strong>Numéro de téléphone : </strong><p class=\"text-muted\" Aucun numméro attribué /p></li>";
+                                    }
+                                ?>
                             </ul>
                         </div>
+                        <!-- Les adresses de livraison si elles existent -->
                         <div class="card mb-2 w-75">
                             <div class="card-body">
                                 <h5 class="card-title">Adresses</h5>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <?php
-                                    $reqAdresses = $conn->prepare("SELECT adresseLivraison FROM COMMANDE WHERE idUtilisateur = ? AND adresseLivraison IS NOT NULL ORDER BY dateCommande;");
+                                    $reqAdresses = $conn->prepare("SELECT ADRESSELIVRAISON FROM COMMANDE WHERE IDUTILISATEUR = ? AND ADRESSELIVRAISON IS NOT NULL ORDER BY DATECOMMANDE;");
                                     $reqAdresses->execute([$_SESSION['user']]);
 
                                     $hasAddresses = false;
+                                    $iAdresse = 1;
                                     foreach ($reqAdresses as $commande) {
                                         $hasAddresses = true;
                                         $adresse = htmlspecialchars($commande['ADRESSELIVRAISON']);
-                                        echo "<li class='list-group-item'>Adresse : $adresse</li>";
+                                        echo "<li class='list-group-item'><strong>Adresse $iAdresse : </strong>$adresse</li>";
+                                        $iAdresse++;
                                     }
 
                                     if (!$hasAddresses) { // Si il n'y a pas d'adresse
@@ -84,13 +101,14 @@
                             </ul>
                         </div>   
                     </div>
-                    <div class="tab-pane" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
+                    <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
+                        <h2 class="mb-4">Vos commandes :</h2> 
                         <div class="col d-flex justify-content-between mb-5">
                             <p class="card-text">Choisissez votre commande :</p>
                             <form method="GET" id="commandeForm">
-                                <select name="commande" class="form-select w-25" aria-label="Liste des commandes" onchange="document.getElementById('commandeForm').submit();"> <!-- Pour avoir la commande sélectionné par défaut affiché -->
+                                <select name="commande" class="form-select w-100" aria-label="Liste des commandes" onchange="document.getElementById('commandeForm').submit();"> <!-- Pour avoir la commande sélectionné par défaut affiché -->
                                     <?php
-                                    $reqCommandes = $conn->prepare("SELECT * FROM COMMANDE WHERE idUtilisateur = ? ORDER BY dateCommande DESC;");
+                                    $reqCommandes = $conn->prepare("SELECT * FROM COMMANDE WHERE IDUTILISATEUR = ? ORDER BY DATECOMMANDE DESC;");
                                     $reqCommandes->execute([$_SESSION['user']]);
                                     
                                     $hasCommandes = false;
@@ -114,10 +132,10 @@
                             if ($hasCommandes) {
                             // Charger les détails de la commande sélectionnée
                             $reqDetail = $conn->prepare("
-                                SELECT P.nomProduit, P.prix, P.description, DC.quantiteCommandee 
+                                SELECT P.NOMPRODUIT, P.PRIX, P.DESCRIPTION, DC.QUANTITECOMMANDEE 
                                 FROM DETAILCOMMANDE DC 
-                                INNER JOIN PRODUIT P ON DC.idProduit = P.idProduit
-                                WHERE DC.idCommande = ?;
+                                INNER JOIN PRODUIT P ON DC.IDPRODUIT = P.IDPRODUIT
+                                WHERE DC.IDCOMMANDE = ?;
                             ");
                             $reqDetail->execute([$selectedCommande]);
                         
@@ -133,7 +151,7 @@
                                         echo "<strong>".htmlspecialchars($produit['NOMPRODUIT'])."</strong><br>";
                                         echo "Prix : ".number_format($produit['PRIX'], 2, ',', ' ')." €<br>";
                                         echo "Quantité : ".$produit['QUANTITECOMMANDEE']."<br>";
-                                        echo "Description : ".htmlspecialchars($produit['description']);
+                                        echo "Description : ".htmlspecialchars($produit['DESCRIPTION']);
                                     echo "</li>";
                                 }
                                 $reqDetail->closeCursor();
@@ -144,8 +162,8 @@
                             }
                         ?>
                     </div>
-                    <div class="tab-pane" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
-                        <p class="card-text mb-5">Vos articles favoris :</p>
+                    <div class="tab-pane fade" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
+                        <h2 class="mb-4">Vos articles favoris :</h2>
                     </div>
                 </div>
             </div>
