@@ -4,17 +4,16 @@
       <div class="col-md-9 text-center">
         
         <div class="footer-site-logo mb-4">
-          <a href="#">Nautic Horizon</a>
+          <a href="index.php">Nautic Horizon</a>
         </div>
 
         <ul class="list-unstyled footer-links mb-4">
-          <li><a href="#">About</a></li>
-          <li><a href="#">Services</a></li>
-          <li><a href="#">Press</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Legal</a></li>
-          <li><a href="#">Contact</a></li>
+            <li><a href="#">À propos</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Carrières</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Contact</a></li>
         </ul>
 
         <div class="copyright">

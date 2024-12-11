@@ -118,10 +118,15 @@ require_once "./include/head.php";
             <div class="panier-items">
                 <?php foreach ($panier as $produit): ?>
                     <div class="panier-item">
-                        <img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" alt="<?= htmlspecialchars($produit['NOMPRODUIT']); ?>" class="panier-item-image">
+                        <img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" 
+                        alt="<?= htmlspecialchars($produit['NOMPRODUIT']); ?>" 
+                        class="panier-item-image"
+                        onclick="window.location.href='detailProd.php?id=<?= htmlspecialchars($produit['IDPRODUIT']); ?>'">
+
                         <div class="panier-item-details">
-                            <h2><?= htmlspecialchars($produit['NOMPRODUIT']); ?></h2>
+                            <h2 onclick="window.location.href='detailProd.php?id=<?= htmlspecialchars($produit['IDPRODUIT']); ?>'"><?= htmlspecialchars($produit['NOMPRODUIT']); ?></h2>
                         </div>
+
                         <div class="panier-item-price-quantity">
                             <p>Prix : <?= number_format($produit['PRIX'], 2, ',', ' '); ?>€</p>
                             <div class="quantity-buttons">
