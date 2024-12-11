@@ -12,14 +12,14 @@
           $reqCateg->execute();
           foreach($reqCateg as $categ) {
             echo "<li class=\"sidebar-item\">";
-              echo "<a href=\"#\" class=\"sidebar-link has-dropdown collapsed\" data-bs-toggle=\"collapse\" data-bs-target=\"#".$categ['NOMCATEGORIE']."\" aria-expanded=\"false\" aria-controls=\"".$categ['NOMCATEGORIE']."\">".$categ['NOMCATEGORIE']."</a>";
-              echo "<ul id=\"".$categ['NOMCATEGORIE']."\" class=\"sidebar-dropdown list-unstyled collapse\">";
-              $reqSousCateg = $conn->prepare("SELECT * FROM CATEGORIE WHERE IDCATEGPERE = ? ;") ;
-              $reqSousCateg->execute([$categ['IDCATEGORIE']]);
-              foreach($reqSousCateg as $sousCateg) {
-                echo "<li class=\"sidebar-item\"><a href=\"#\" class=\"sidebar-link\">".$sousCateg['NOMCATEGORIE']."</a></li>";
-              }
-              $reqSousCateg->closeCursor();
+              echo "<a href=\"#\" class=\"sidebar-link has-dropdown collapsed\" data-bs-toggle=\"collapse\" data-bs-target=\"#".$categ['IDCATEGORIE']."\" aria-expanded=\"false\" aria-controls=\"".$categ['IDCATEGORIE']."\">".$categ['NOMCATEGORIE']."</a>";
+              echo "<ul id=\"".$categ['IDCATEGORIE']."\" class=\"sidebar-dropdown list-unstyled collapse\">";
+                $reqSousCateg = $conn->prepare("SELECT * FROM CATEGORIE WHERE IDCATEGPERE = ? ;") ;
+                $reqSousCateg->execute([$categ['IDCATEGORIE']]);
+                foreach($reqSousCateg as $sousCateg) {
+                  echo "<li class=\"sidebar-item\"><a href=\"#\" class=\"sidebar-link\">".$sousCateg['NOMCATEGORIE']."</a></li>";
+                }
+                $reqSousCateg->closeCursor();
               echo "</ul>";
             echo "</li>";
           }   
