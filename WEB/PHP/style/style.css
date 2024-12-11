@@ -250,6 +250,7 @@ a.sidebar-link:hover {
 .footer .footer-site-logo a {
     color: black;
     text-decoration: none; /* Suppression du soulignement */
+    transition: color 0.3s; /* Animation douce pour le survol */
 }
 .footer .footer-site-logo a:hover {
     color: #4200ff;
@@ -311,11 +312,18 @@ a.sidebar-link:hover {
     height: auto; /* Garder le ratio de l'image */
     object-fit: contain; /* Ne pas déformer l'image */
     margin-right: 20px; /* Espacement entre l'image et le texte */
+    cursor: pointer;
 }
 
 .panier-item-details {
     flex-grow: 1; /* Cette section prend toute la place disponible entre l'image et le prix/quantité */
     text-align: center; /* Centrer le nom du produit */
+    cursor: pointer;
+    transition: color 0.3s; /* Animation douce pour le survol */
+}
+
+.panier-item-details:hover {
+    color: #4200ff;
 }
 
 .panier-item h2 {
