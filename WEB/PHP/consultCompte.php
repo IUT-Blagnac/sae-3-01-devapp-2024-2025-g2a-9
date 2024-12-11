@@ -53,7 +53,7 @@
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>Nom : </strong><?php echo "$prenom $nom"; ?></li>
-                                <li class="list-group-item"><strong>Date de naissance : </strong><?php echo "$dateN"; ?></li>
+                                <li class="list-group-item"><strong>Date de naissance : </strong><?php echo date('d/m/Y', strtotime($dateN)); ?></li>
                                 <li class="list-group-item"><strong>Civilité : </strong><?php echo "$civilite"; ?></li>
                             </ul>
                         </div>
@@ -103,33 +103,32 @@
                     </div>
                     <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
                         <h2 class="mb-4">Vos commandes :</h2> 
-                        <div class="col d-flex justify-content-between mb-5">
+                        <div class="col d-flex justify-content-between align-items-center mb-2">
                             <p class="card-text">Choisissez votre commande :</p>
                             <form method="GET" id="commandeForm">
                                 <select name="commande" class="form-select w-100" aria-label="Liste des commandes" onchange="document.getElementById('commandeForm').submit();"> <!-- Pour avoir la commande sélectionné par défaut affiché -->
                                     <?php
                                     $reqCommandes = $conn->prepare("SELECT * FROM COMMANDE WHERE IDUTILISATEUR = ? ORDER BY DATECOMMANDE DESC;");
                                     $reqCommandes->execute([$_SESSION['user']]);
-                                    
-                                    $hasCommandes = false;
+                                    $hasCommande = false;
                                     $selectedCommande = $_GET['commande'] ?? null; // Commande sélectionnée via le GET sinon null
                                     foreach ($reqCommandes as $index => $commande) {
-                                        $hasCommandes = true;
+                                        $hasCommande = true;
                                         // Définir la commande sélectionnée (dernière par défaut si aucune sélectionnée)
                                         $selected = ($selectedCommande == $commande['IDCOMMANDE'] || (!$selectedCommande && $index == 0)) ? 'selected' : '';
                                         if (!$selectedCommande && $index == 0) {
                                             $selectedCommande = $commande['IDCOMMANDE']; // Mettre à jour pour afficher la commande par défaut
                                         }
-                                        echo "<option value='".$commande['IDCOMMANDE']."' $selected>Commande du ".date('d/m/Y', strtotime($commande['DATECOMMANDE']))."</option>";
+                                        echo "<option value='" . $commande['IDCOMMANDE'] . "' $selected>Commande du " . date('d/m/Y', strtotime($commande['DATECOMMANDE'])) . "</option>";
                                     }
                                     $reqCommandes->closeCursor();
                                     ?>
                                 </select>
                             </form>
                         </div>
-                        <!-- Le détail de la commande (ou non si aucune commande) -->
-                        <?php
-                            if ($hasCommandes) {
+                        <!-- Si il y a une commande -->
+                        <?php if ($hasCommande) : ?>
+                            <?php
                             // Charger les détails de la commande sélectionnée
                             $reqDetail = $conn->prepare("
                                 SELECT P.NOMPRODUIT, P.PRIX, P.DESCRIPTION, DC.QUANTITECOMMANDEE 
@@ -138,30 +137,31 @@
                                 WHERE DC.IDCOMMANDE = ?;
                             ");
                             $reqDetail->execute([$selectedCommande]);
-                        
+                            ?>
                             
-                            echo "<div class=\"card mt-3\">";
-                                echo "<div class=\"card-body\">";
-                                    echo "<h5 class=\"card-title\">Détails de la commande</h5>";
-                                    echo "<p class=\"card-text\">Voici les articles de votre commande :</p>";
-                                echo "</div>";
-                                echo "<ul class=\"list-group list-group-flush\">";
-                                foreach ($reqDetail as $produit) {
-                                    echo "<li class=\"list-group-item\">";
-                                        echo "<strong>".htmlspecialchars($produit['NOMPRODUIT'])."</strong><br>";
-                                        echo "Prix : ".number_format($produit['PRIX'], 2, ',', ' ')." €<br>";
-                                        echo "Quantité : ".$produit['QUANTITECOMMANDEE']."<br>";
-                                        echo "Description : ".htmlspecialchars($produit['DESCRIPTION']);
-                                    echo "</li>";
-                                }
-                                $reqDetail->closeCursor();
-                                echo "</ul>";
-                            echo "</div>";
-                            } else {
-                                echo "<p>Aucune commande disponible pour l'instant.</p>";
-                            }
-                        ?>
-                    </div>
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Détails de la commande</h5>
+                                    <p class="card-text">Voici les articles de votre commande :</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <?php foreach ($reqDetail as $produit) : ?>
+                                        <li class="list-group-item">
+                                            <a href="detailProduit?id=<?php echo $produit['IDPRODUIT']; ?>"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a><br>
+                                            Prix du produit : <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €<br>
+                                            Quantité : <?php echo $produit['QUANTITECOMMANDEE']; ?><br>
+                                            Description : <?php echo htmlspecialchars($produit['DESCRIPTION']); ?><br>
+                                            Total pour ce produit : <?php echo number_format($produit['PRIX'], 2, ',', ' ') * $produit['QUANTITECOMMANDEE']; ?>
+                                        </li>
+                                    <?php 
+                                        endforeach; 
+                                        $reqDetail->closeCursor(); 
+                                    ?>
+                                </ul>
+                            </div>
+                        <?php else : ?>
+                            <p>Aucune commande disponible pour l'instant.</p>
+                        <?php endif; ?>
                     <div class="tab-pane fade" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
                         <h2 class="mb-4">Vos articles favoris :</h2>
                     </div>
