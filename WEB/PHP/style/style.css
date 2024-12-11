@@ -235,13 +235,49 @@ a.sidebar-link:hover {
     }
 }
 
-footer {
-    background-color: #343a40;
-    color: white;
-    padding: 20px 0;
+.footer {
+    padding: 2rem 0; /* Réduction du padding pour un design plus compact */
+    font-family: "Poppins", sans-serif;
+    background-color: #f8f9fa; /* Couleur douce pour le fond */
+    color: #333; /* Amélioration de la lisibilité */
+}
+.footer .footer-site-logo {
     text-align: center;
-    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem; /* Meilleure séparation visuelle */
+}
+.footer .footer-site-logo a {
+    color: black;
+    text-decoration: none; /* Suppression du soulignement */
+}
+.footer .footer-site-logo a:hover {
+    color: #4200ff;
+}
+.footer .footer-links {
+    padding: 0;
     margin: 0;
+    list-style: none; /* Suppression des puces */
+    display: flex;
+    justify-content: center; /* Centrer les liens */
+    flex-wrap: wrap; /* Permettre le retour à la ligne si nécessaire */
+}
+.footer .footer-links li {
+    margin: 0 10px; /* Espacement horizontal entre les liens */
+}
+.footer .footer-links li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s; /* Animation douce pour le survol */
+}
+.footer .footer-links li a:hover {
+    color: #4200ff;
+}
+.footer .copyright {
+    font-size: 1rem;
+    color: #999999;
+    margin-top: 1rem; /* Espacement du contenu principal */
 }
 
 
