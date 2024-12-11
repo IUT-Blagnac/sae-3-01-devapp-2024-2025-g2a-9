@@ -196,6 +196,7 @@ note : 1,7/3
 === retour semaine 49
 Mettre le lien directement vers le document actif. Pb date convocation ! Préciser qui est responsable de quel thème. Le sprint review est pour le client vous vous faites la rétropective de sprint. CR : chaque compte rendu est clairement identifié on ne recycle pas l'ancien du coup je n'ai pas de CR pour la réunion du 6/12 ! Il manque analyse des difficultés et réussites ainsi que le cr du rdv client.
 note : 0,73/3
+note appel offre : 12,52/20
 
 == Suivi de l'évaluation en GPO :
 
