@@ -31,9 +31,14 @@
                         echo '<li><a class="nav-link" href="compte.php">Compte</a></li>';
                     }
                 }
+
+                // Initialiser le panier dans la session s'il n'existe pas
+                if (!isset($_SESSION['panier'])) {
+                    $_SESSION['panier'] = []; // Stocke les articles sous forme de tableau associatif
+                }
             ?>
             <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
-            <li><a class="nav-link" href="#"><i class="bi bi-cart"></i></a></li>
+            <li><a class="nav-link" href="panier.php"><i class="bi bi-cart"></i></a></li>
         </ul>
     </div>
 </header>
