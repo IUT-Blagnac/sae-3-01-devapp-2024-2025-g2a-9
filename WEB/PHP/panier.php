@@ -121,10 +121,10 @@ require_once "./include/head.php";
                         <img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" 
                         alt="<?= htmlspecialchars($produit['NOMPRODUIT']); ?>" 
                         class="panier-item-image"
-                        onclick="window.location.href='detailProd.php?id=<?= htmlspecialchars($produit['IDPRODUIT']); ?>'">
+                        onclick="window.location.href='detailProduit.php?id=<?= htmlspecialchars($produit['IDPRODUIT']); ?>'">
 
                         <div class="panier-item-details">
-                            <h2 onclick="window.location.href='detailProd.php?id=<?= htmlspecialchars($produit['IDPRODUIT']); ?>'"><?= htmlspecialchars($produit['NOMPRODUIT']); ?></h2>
+                            <h2 onclick="window.location.href='detailProduit.php?id=<?= htmlspecialchars($produit['IDPRODUIT']); ?>'"><?= htmlspecialchars($produit['NOMPRODUIT']); ?></h2>
                         </div>
 
                         <div class="panier-item-price-quantity">
