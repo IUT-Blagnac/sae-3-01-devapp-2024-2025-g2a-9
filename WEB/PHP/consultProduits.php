@@ -39,14 +39,34 @@ require_once "./include/head.php";
         $prixMin = isset($_GET['prixMin']) ? $_GET['prixMin'] : null;
         $prixMax = isset($_GET['prixMax']) ? $_GET['prixMax'] : null;
 
+        // Si idCateg est défini, récupérer les catégories filles
+        $categories = [];
+        if ($idCateg) {
+            // Ajouter la catégorie actuelle
+            $categories[] = $idCateg;
+
+            // Récupérer les catégories filles
+            $queryCateg = $conn->prepare("SELECT IDCATEGORIE FROM CATEGORIE WHERE IDCATEGPERE = ?");
+            $queryCateg->execute([$idCateg]);
+            $childCategories = $queryCateg->fetchAll(PDO::FETCH_COLUMN);
+
+            // Ajouter les catégories filles si elles existent
+            if (!empty($childCategories)) {
+                $categories = array_merge($categories, $childCategories);
+            }
+        }
+
         // Requête pour récupérer les produits en fonction des filtres
         $queryStr = "SELECT * FROM PRODUIT WHERE 1=1";
         $params = [];
 
-        if ($idCateg) {
-            $queryStr .= " AND IDCATEGORIE = ?";
-            $params[] = $idCateg;
+        // Modifier la condition pour inclure les produits des catégories filles
+        if (!empty($categories)) {
+            $placeholders = implode(',', array_fill(0, count($categories), '?'));
+            $queryStr .= " AND IDCATEGORIE IN ($placeholders)";
+            $params = array_merge($params, $categories);
         }
+
         if ($energie) {
             $queryStr .= " AND ENERGIE = ?";
             $params[] = $energie;
@@ -111,30 +131,35 @@ require_once "./include/head.php";
                 </div>
             </form>
         </div>
-        <div class="row">
-            <?php foreach ($produits as $produit): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 product-card">
-                        <!-- L'image redirige vers la page détail produit -->
-                        <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>">
-                            <img src="https://static.wikia.nocookie.net/lego/images/7/73/70618_-_2.jpg/revision/latest?cb=20170727200641&path-prefix=fr" 
-                                 class="card-img-top" 
-                                 alt="<?php echo htmlspecialchars($produit['NOMPRODUIT']); ?>">
-                        </a>
-                        <div class="card-body">
-                            <!-- Le titre du produit redirige également -->
-                            <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="text-decoration: none; color: inherit;">
-                                <h5 class="card-title"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></h5>
+
+        <?php if (count($produits) == 0): ?>
+            <p class="text-center">Aucun bateau correspondant aux filtres n'a été trouvé.</p>
+        <?php else: ?>
+            <div class="row">
+                <?php foreach ($produits as $produit): ?>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 product-card">
+                            <!-- L'image redirige vers la page détail produit -->
+                            <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>">
+                                <img src="https://static.wikia.nocookie.net/lego/images/7/73/70618_-_2.jpg/revision/latest?cb=20170727200641&path-prefix=fr" 
+                                     class="card-img-top" 
+                                     alt="<?php echo htmlspecialchars($produit['NOMPRODUIT']); ?>">
                             </a>
-                            <p class="card-text">Prix : <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" class="btn btn-primary">Voir Détails</a>
+                            <div class="card-body">
+                                <!-- Le titre du produit redirige également -->
+                                <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="text-decoration: none; color: inherit;">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></h5>
+                                </a>
+                                <p class="card-text">Prix : <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" class="btn btn-primary">Voir Détails</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 
     <script>
