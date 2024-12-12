@@ -38,6 +38,7 @@ require_once "./include/head.php";
         $taille = isset($_GET['taille']) ? $_GET['taille'] : null;
         $prixMin = isset($_GET['prixMin']) ? $_GET['prixMin'] : null;
         $prixMax = isset($_GET['prixMax']) ? $_GET['prixMax'] : null;
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
 
         // Si idCateg est défini, récupérer les catégories filles
         $categories = [];
@@ -89,6 +90,13 @@ require_once "./include/head.php";
             $params[] = $prixMaxTol;
         }
 
+        // Après avoir construit $queryStr et $params, ajouter la clause ORDER BY si nécessaire
+        if ($sort === 'asc') {
+            $queryStr .= " ORDER BY PRIX ASC";
+        } elseif ($sort === 'desc') {
+            $queryStr .= " ORDER BY PRIX DESC";
+        }
+
         $query = $conn->prepare($queryStr);
         $query->execute($params);
         $produits = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -125,6 +133,14 @@ require_once "./include/head.php";
                 <div class="col-md-3">
                     <label for="prixMax" class="form-label">Prix Maximum</label>
                     <input type="number" id="prixMax" name="prixMax" class="form-control" min="<?php echo $prixRange['minPrix']; ?>" max="<?php echo $prixRange['maxPrix']; ?>" value="<?php echo htmlspecialchars($prixMax); ?>">
+                </div>
+                <div class="col-md-3">
+                    <label for="sort" class="form-label">Trier par prix</label>
+                    <select id="sort" name="sort" class="form-select">
+                        <option value="">Par défaut</option>
+                        <option value="asc" <?php if ($sort === 'asc') echo 'selected'; ?>>Croissant</option>
+                        <option value="desc" <?php if ($sort === 'desc') echo 'selected'; ?>>Décroissant</option>
+                    </select>
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Filtrer</button>
