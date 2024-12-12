@@ -6,8 +6,8 @@
         </button>
 
         <!-- Barre de recherche -->
-        <form class="search-form flex-grow-1">
-            <input class="search-input form-control" type="search" placeholder="Rechercher" aria-label="Search">
+        <form class="search-form flex-grow-1" method="GET" action="consultProduits.php" id="searchForm">
+            <input class="search-input form-control" type="search" name="recherche" placeholder="Rechercher" aria-label="Search" id="searchInput">
         </form>
 
         <!-- Logo et nom de l'entreprise -->
