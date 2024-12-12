@@ -337,3 +337,33 @@ footer {
     background-color: transparent !important;  /* Supprime l'arrière-plan au clic */
     transform: scale(1.1);
 }
+
+/* Style général des avis */
+.product-reviews {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.review {
+    border-bottom: 1px solid #eee;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.review strong {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.review .rating {
+    color: #f4c150; /* Couleur pour les étoiles */
+    font-size: 1.2rem;
+}
+
+.review .comment {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #555;
+}

@@ -91,6 +91,21 @@ require_once "./include/head.php";
         $reqFav->execute(['userId' => $userId, 'productId' => $productId]);
         $isInFav = $reqFav->fetch() ? true : false;
     }
+
+    // Requête pour récupérer les avis du produit
+    $queryAvis = $conn->prepare("
+        SELECT 
+            A.COMMENTAIRE, 
+            A.NOTE, 
+            A.DATEAVIS, 
+            U.NOM
+        FROM AVIS A, UTILISATEUR U
+        WHERE A.IDUTILISATEUR = U.IDUTILISATEUR
+        AND A.IDPRODUIT = :productId
+        ORDER BY A.DATEAVIS DESC
+    ");
+    $queryAvis->execute(['productId' => $productId]);
+    $avisList = $queryAvis->fetchAll();
 ?>
 <!-- Contenu principal -->
 <main role="main" class="container my-5">
@@ -150,6 +165,24 @@ require_once "./include/head.php";
                 <?php endif; ?>
             </div>
         </div>
+    </div>
+
+    <!-- Section affichage des avis -->
+    <div class="product-reviews mt-5">
+        <h2>Avis des utilisateurs</h2>
+
+        <?php if (empty($avisList)): ?>
+            <p class="text-muted">Aucun avis pour ce produit pour le moment.</p>
+        <?php else: ?>
+            <?php foreach ($avisList as $avis): ?>
+                <div class="review mb-4">
+                    <strong><?= htmlspecialchars($avis['NOM']); ?></strong>
+                    <span class="text-muted">(<?= date('d/m/Y', strtotime($avis['DATEAVIS'])); ?>)</span>
+                    <p class="rating">Note : <?= str_repeat('★', intval($avis['NOTE'])); ?><?= str_repeat('☆', 5 - intval($avis['NOTE'])); ?></p>
+                    <p class="comment"><?= htmlspecialchars($avis['COMMENTAIRE']); ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 </main>
 
