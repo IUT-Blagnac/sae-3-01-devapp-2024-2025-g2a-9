@@ -14,10 +14,11 @@
             echo "<li class=\"sidebar-item\">";
               echo "<a href=\"#\" class=\"sidebar-link has-dropdown collapsed\" data-bs-toggle=\"collapse\" data-bs-target=\"#".$categ['IDCATEGORIE']."\" aria-expanded=\"false\" aria-controls=\"".$categ['IDCATEGORIE']."\">".$categ['NOMCATEGORIE']."</a>";
               echo "<ul id=\"".$categ['IDCATEGORIE']."\" class=\"sidebar-dropdown list-unstyled collapse\">";
+                echo "<li class=\"sidebar-item\"><a href=\"consultProduits.php?idCateg=".$categ['IDCATEGORIE']."\" class=\"sidebar-link\">Afficher tout les produits</a></li>";  
                 $reqSousCateg = $conn->prepare("SELECT * FROM CATEGORIE WHERE IDCATEGPERE = ? ;") ;
                 $reqSousCateg->execute([$categ['IDCATEGORIE']]);
                 foreach($reqSousCateg as $sousCateg) {
-                  echo "<li class=\"sidebar-item\"><a href=\"#\" class=\"sidebar-link\">".$sousCateg['NOMCATEGORIE']."</a></li>";
+                  echo "<li class=\"sidebar-item\"><a href=\"consultProduits.php?idCateg=".$sousCateg['IDCATEGORIE']."\" class=\"sidebar-link\">".$sousCateg['NOMCATEGORIE']."</a></li>";
                 }
                 $reqSousCateg->closeCursor();
               echo "</ul>";
