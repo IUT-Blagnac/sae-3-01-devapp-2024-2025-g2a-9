@@ -1,0 +1,76 @@
+= Document Technique - Script Python
+:toc-title: Sommaire
+:toc: macro
+
+**Script python pour l'interface graphique : NauticGestApp**  +
+**Version :** 1.0  +
+**Date :** 07 Décembre 2024  +
+**Groupe :** 2A9  +
+*Projet :* SAE DevApp (S3.01)
+
+'''
+
+toc::[]
+
+'''
+
+
+== Introduction
+Ce document décrit la structure et les fonctionnalités du script Python. Il explique également les étapes nécessaires pour installer et exécuter ce script.
+
+== Structure du script
+
+=== 1. Vérification et lecture de la configuration
+- Vérifie l'existence du fichier `config.ini` dans le répertoire courant.
+- Lit les paramètres essentiels depuis `config.ini`, y compris :
+  - Adresse du serveur MQTT.
+  - Topics auxquels s'abonner.
+  - Fichiers de sortie et d'alertes.
+  - Seuils pour diverses mesures (ex. température, humidité).
+  - Variables spécifiques aux capteurs et panneaux solaires.
+  - Liste des salles à surveiller.
+
+=== 2. Gestion des données et seuils
+- Définition des seuils et variables à surveiller.
+- Fonction `verifier_donnees` :
+  - Vérifie les données reçues par rapport aux seuils.
+  - Retourne les valeurs accompagnées de leur statut de dépassement (`True` ou `False`).
+
+=== 3. Écriture des données
+- Fonction `ecrire_donnees` :
+  - Regroupe les nouvelles données et alertes.
+  - Écrit ces informations dans deux fichiers JSON :
+    - Fichier principal : toutes les données.
+    - Fichier d'alertes : uniquement les valeurs ayant dépassé un seuil.
+
+=== 4. Traitement des messages MQTT
+- Fonction `on_message` :
+  - Analyse les messages reçus.
+  - Vérifie les seuils pour les capteurs et les panneaux solaires.
+  - Stocke les données en attente pour une écriture périodique.
+
+=== 5. Connexion et abonnement MQTT
+- Configure la connexion au serveur MQTT.
+- S'abonne aux topics spécifiés.
+- Boucle d'écoute infinie avec gestion des interruptions par clavier.
+
+== Étapes d'installation
+
+=== Prérequis
+1. Installer Python 3 ou une version supérieur.
+2. Installer le module paho-mqtt avec la commande : pip install paho-mqtt
+3. Vérifiez que le fichier `config.ini` est présent dans le même répertoire que le script.
+
+== Étapes de lancement
+
+Placez le script Python et le fichier config.ini dans le même répertoire.
+Lancez le script avec la commande suivante : python3 script.py
+
+Le script se connectera au serveur MQTT, s'abonnera aux topics, et commencera à traiter les messages. +
+Si le script est arrêté manuellement (CTRL+C), il effectuera une dernière écriture des données en attente avant de se terminer.
+
+== Erreurs rencontrées
+
+Erreur de configuration introuvable : Vérifiez que config.ini est présent et correctement configuré.
+Erreur de connexion au serveur MQTT : Assurez-vous que l'adresse du serveur est correcte et que le serveur est en cours d'exécution.
+Données non écrites : Vérifiez les permissions d'écriture sur les fichiers de sortie (donnees.json, alert.json).
