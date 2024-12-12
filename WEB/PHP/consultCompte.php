@@ -83,26 +83,24 @@
                                     $reqAdresses = $conn->prepare("SELECT ADRESSELIVRAISON FROM COMMANDE WHERE IDUTILISATEUR = ? AND ADRESSELIVRAISON IS NOT NULL ORDER BY DATECOMMANDE;");
                                     $reqAdresses->execute([$_SESSION['user']]);
 
-                                    $hasAddresses = false;
-                                    $iAdresse = 1;
-                                    foreach ($reqAdresses as $commande) {
-                                        $hasAddresses = true;
-                                        $adresse = htmlspecialchars($commande['ADRESSELIVRAISON']);
-                                        echo "<li class='list-group-item'><strong>Adresse $iAdresse : </strong>$adresse</li>";
-                                        $iAdresse++;
-                                    }
+                                    $commandes = $reqAdresses->fetchAll();
 
-                                    if (!$hasAddresses) { // Si il n'y a pas d'adresse
+                                    if (!empty($commandes)) {
+                                        foreach ($commandes as $index => $commande) {
+                                            echo "<li class='list-group-item'><strong>Adresse ".($index + 1)." : </strong>" . htmlspecialchars($commande['ADRESSELIVRAISON']) . "</li>";
+                                        }
+                                    } else {
                                         echo "<li class='list-group-item text-muted'>Aucune adresse disponible.</li>";
-                                    }
-
+                                    }                                    
                                     $reqAdresses->closeCursor();
                                 ?>
                             </ul>
                         </div>   
                     </div>
+                    <!-- Tab commandes -->
                     <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
                         <h2 class="mb-4">Vos commandes :</h2> 
+                        <!-- Selection de la commande -->
                         <div class="col d-flex justify-content-between align-items-center mb-3">
                             <p class="card-text">Choisissez votre commande :</p>
                             <form method="GET" id="commandeForm">
@@ -134,6 +132,7 @@
                                 </select>
                             </form>
                         </div>
+                        <!-- Affichage de la commande selectionnée -->
                         <?php if (!empty($selectedCommande)) : ?>
                             <?php
                             // Extraire les données de la commande sélectionnée
@@ -165,7 +164,7 @@
                                 }
                             }
                             ?>
-
+                            <!-- Le détail de la commande -->
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Détails de la commande</h5>
@@ -208,8 +207,50 @@
                             <p>Aucune commande disponible pour l'instant.</p>
                         <?php endif; ?>
                     </div>
+                    <!-- Tab favoris -->
                     <div class="tab-pane fade" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
                         <h2 class="mb-4">Vos articles favoris :</h2>
+                        <?php
+                            $reqFavoris = $conn->prepare("SELECT * FROM FAVORIS WHERE idUtilisateur = ?;") ;
+                            $reqFavoris->execute([$_SESSION['user']]);
+                        ?>
+                        <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Favoris</h5>
+                                    <p class="card-text">
+                                        Voici les produits que vous avez définis favoris.<br> 
+                                        Vous pouvez supprimer un produit de vos favoris directement depuis sa page.
+                                    </p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <?php 
+                                        $favoris = $reqFavoris->fetchAll();
+                                        if (!empty($favoris)) {
+                                            foreach ($favoris as $fav) {
+                                                echo "<li class=\"list-group-item\">";
+                                                $reqProduits = $conn->prepare("SELECT * FROM PRODUIT WHERE IDPRODUIT = ?;") ;
+                                                $reqProduits->execute([$fav['IDPRODUIT']]);
+                                            }
+                                        } else {
+                                            echo "<li class='list-group-item text-muted'>Aucune produits favoris.</li>";
+                                        } 
+                                    ?>
+                                        
+                                            <div class="d-flex justify-content-start">
+                                                <div class="me-4">
+                                                    <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>"><img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" style="max-width: 100px; height:auto;"/></a>
+                                                </div>
+                                                <div>
+                                                    <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br>
+                                                    <a href="#">Donnez votre avis</a>
+                                                    <?php echo number_format($produit['PRIX'] * $produit['QUANTITECOMMANDEE'], 2, ',', ' '); ?> €<br>
+                                                    Quantité : <?php echo $produit['QUANTITECOMMANDEE']; ?><br>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                     </div>
                 </div>
             </div>
