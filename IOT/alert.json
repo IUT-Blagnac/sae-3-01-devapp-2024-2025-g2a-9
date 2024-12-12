@@ -1,0 +1,62 @@
+[
+    {
+        "currentPower": 321.8372,
+        "date": "2024-12-09 12:06:27",
+        "room": ""
+    },
+    {
+        "currentPower": 321.8372,
+        "date": "2024-12-09 12:07:08",
+        "room": ""
+    },
+    {
+        "temperature": 17.8,
+        "activity": 64,
+        "co2": 578,
+        "infrared": 11,
+        "infrared_and_visible": 57,
+        "date": "2024-12-09 12:07:20",
+        "room": "C102"
+    },
+    {
+        "temperature": 19.6,
+        "activity": 194,
+        "co2": 978,
+        "tvoc": 326,
+        "infrared": 14,
+        "infrared_and_visible": 60,
+        "date": "2024-12-09 12:07:33",
+        "room": "E007"
+    },
+    {
+        "temperature": 18.4,
+        "co2": 724,
+        "infrared": 3,
+        "date": "2024-12-09 12:08:02",
+        "room": "B203"
+    },
+    {
+        "temperature": 18.5,
+        "co2": 446,
+        "infrared": 1,
+        "date": "2024-12-09 12:08:02",
+        "room": "amphi1"
+    },
+    {
+        "temperature": 17.4,
+        "co2": 427,
+        "infrared": 19,
+        "infrared_and_visible": 66,
+        "date": "2024-12-09 12:08:05",
+        "room": "E210"
+    },
+    {
+        "temperature": 19.6,
+        "activity": 261,
+        "co2": 1136,
+        "tvoc": 229,
+        "infrared": 10,
+        "date": "2024-12-09 12:08:07",
+        "room": "E208"
+    }
+]
