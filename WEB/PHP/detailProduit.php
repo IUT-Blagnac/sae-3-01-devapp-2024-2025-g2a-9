@@ -25,25 +25,29 @@ require_once "./include/head.php";
     }
 
     $isInCart = false;
-
+    $isInFav = false;
+    
+    // Utilisateur connection verif
     if (isset($_SESSION['user'])) {
-        // Vérifier dans la base de données pour un utilisateur connecté
         $userId = $_SESSION['user'];
-        $query = $conn->prepare("SELECT 1 FROM DETAILPANIER WHERE IDUTILISATEUR = :userId AND IDPRODUIT = :productId");
-        $query->execute(['userId' => $userId, 'productId' => $produit['IDPRODUIT']]);
-        $isInCart = $query->fetch() ? true : false;
+
+        // Vérifier panier dans la base de données pour un utilisateur connecté
+        $reqPanier = $conn->prepare("SELECT 1 FROM DETAILPANIER WHERE IDUTILISATEUR = :userId AND IDPRODUIT = :productId");
+        $reqPanier->execute(['userId' => $userId, 'productId' => $produit['IDPRODUIT']]);
+        $isInCart = $reqPanier->fetch() ? true : false;
+
+        // Vérifier favori dans la base de données pour un utilisateur connecté
+        $reqFav = $conn->prepare("SELECT 1 FROM FAVORI WHERE IDUTILISATEUR = :userId AND IDPRODUIT = :productId");
+        $reqFav->execute(['userId' => $userId, 'productId' => $produit['IDPRODUIT']]);
+        $isInFav = $reqFav->fetch() ? true : false;
     } else {
         // Vérifier dans la session pour un utilisateur non connecté
         $isInCart = isset($_SESSION['panier'][$produit['IDPRODUIT']]);
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_au_panier') {
-        $productId = intval($_POST['id']);
-    
-        if (isset($_SESSION['user'])) {
-            // Utilisateur connecté : ajout à la base de données
-            $userId = $_SESSION['user'];
-    
+    // Traitement Ajouter au panier
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_au_panier') {    
+        if (isset($userId)) {
             if (!$isInCart) {
                 // Ajouter le produit au panier
                 $query = $conn->prepare("INSERT INTO DETAILPANIER (IDUTILISATEUR, IDPRODUIT, QUANTITEPANIER) VALUES (:userId, :productId, 1)");
@@ -57,6 +61,35 @@ require_once "./include/head.php";
                 $isInCart = true;
             }
         }
+    }
+
+    // Traitement Ajouter / Enlever favori
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_favori') {    
+        if (isset($userId)) {
+            if (!$isInFav) {
+                // Ajouter le produit aux favoris
+                $dateFavori = date('Y/m/d');
+                $query = $conn->prepare("INSERT INTO FAVORI (IDUTILISATEUR, IDPRODUIT, DATEFAVORI) VALUES (:userId, :productId, :dateFavori)");
+                $query->execute(['userId' => $userId, 'productId' => $productId, 'dateFavori' => $dateFavori]);
+                $isInFav = true;
+            }
+        }
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'enlever_favori'){
+        if (isset($userId)) {
+            if ($isInFav) {
+                // Enlever le produit des favoris
+                $query = $conn->prepare("DELETE FROM FAVORI WHERE IDUTILISATEUR = :userId AND IDPRODUIT = :productId");
+                $query->execute(['userId' => $userId, 'productId' => $productId]);
+                $isInFav = false;
+            }
+        }
+    }
+
+    // Vérification de l'état des favoris (après ajout ou retrait)
+    if (isset($userId)) {
+        $reqFav = $conn->prepare("SELECT 1 FROM FAVORI WHERE IDUTILISATEUR = :userId AND IDPRODUIT = :productId");
+        $reqFav->execute(['userId' => $userId, 'productId' => $productId]);
+        $isInFav = $reqFav->fetch() ? true : false;
     }
 ?>
 <!-- Contenu principal -->
@@ -82,16 +115,40 @@ require_once "./include/head.php";
             <p class="product-description mt-4">Taille : <?= htmlspecialchars($produit['TAILLE']); ?></p>
             <p class="product-description mt-4">Type d'énergie : <?= htmlspecialchars($produit['ENERGIE']); ?></p>
             <p class="product-description mt-4">Quantité disponible en stock : <?= htmlspecialchars($produit['STOCKDISPONIBLE']); ?></p>
-            
-            <?php if ($isInCart): ?>
-                <button class="btn btn-secondary btn-lg mt-2" disabled>Article déjà dans le panier</button>
-            <?php else: ?>
-                <form action="" method="POST" class="mt-4">
-                    <input type="hidden" name="action" value="ajouter_au_panier">
-                    <input type="hidden" name="id" value="<?= htmlspecialchars($produit['IDPRODUIT']); ?>">
-                    <button type="submit" class="btn btn-primary btn-lg">Ajouter au panier</button>
-                </form>
-            <?php endif; ?>
+
+            <div class="d-flex align-items-center">
+                <!-- Bouton Ajouter au panier -->
+                <?php if ($isInCart): ?>
+                    <button class="btn btn-secondary btn-lg mt-4" disabled>Article déjà dans le panier</button>
+                <?php else: ?>
+                    <form action="" method="POST" class="mt-4">
+                        <input type="hidden" name="action" value="ajouter_au_panier">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($produit['IDPRODUIT']); ?>">
+                        <button type="submit" class="btn btn-primary btn-lg">Ajouter au panier</button>
+                    </form>
+                <?php endif; ?>
+
+                <!-- Bouton Favori -->
+                <?php if (isset($userId)): ?>
+                    <?php if (!$isInFav): ?>
+                        <form action="" method="POST" class="mt-4">
+                            <input type="hidden" name="action" value="ajouter_favori">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($produit['IDPRODUIT']); ?>">
+                            <button type="submit" class="btn btn-outline-secondary btn-lg bouton-favori">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </form>
+                    <?php else: ?>
+                        <form action="" method="POST" class="mt-4">
+                            <input type="hidden" name="action" value="enlever_favori">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($produit['IDPRODUIT']); ?>">
+                            <button type="submit" class="btn btn-outline-secondary btn-lg bouton-favori">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </main>

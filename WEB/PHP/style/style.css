@@ -291,3 +291,49 @@ footer {
     color: blue; /* Couleur du texte au survol */
     text-decoration: none; /* Empêche le soulignement au survol */
 }
+
+/* Style général du bouton favori */
+.bouton-favori {
+    margin-left: 20px;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 0; /* pas de Bordure */
+    color: #007bff; /* Couleur du texte et de l'icône */
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Animation douce pour la transition de la couleur */
+}
+
+.bouton-favori:hover {
+    background-color: transparent;
+}
+
+.bouton-favori i {
+    transition: color 0.3s ease; /* Animation douce pour la transition de la couleur */
+}
+
+.bouton-favori i:hover {
+    color: red; /* Changer la couleur du texte et de l'icône */
+}
+
+/* Pour l'icône cœur vide */
+.bouton-favori .far {
+    color: #007bff;
+}
+
+/* Pour l'icône cœur plein */
+.bouton-favori .fas {
+    color: red; /* Rouge pour le cœur plein */
+}
+
+/* Supprimer la bordure et l'ombre au focus ou au clic */
+.bouton-favori:focus,
+.bouton-favori:active {
+    outline: none !important;  /* Supprime la bordure de focus */
+    box-shadow: none !important;  /* Supprime les ombres au focus */
+    background-color: transparent !important;  /* Supprime l'arrière-plan au clic */
+    transform: scale(1.1);
+}
