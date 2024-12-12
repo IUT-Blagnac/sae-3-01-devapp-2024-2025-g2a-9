@@ -103,65 +103,111 @@
                     </div>
                     <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
                         <h2 class="mb-4">Vos commandes :</h2> 
-                        <div class="col d-flex justify-content-between align-items-center mb-2">
+                        <div class="col d-flex justify-content-between align-items-center mb-3">
                             <p class="card-text">Choisissez votre commande :</p>
                             <form method="GET" id="commandeForm">
-                                <select name="commande" class="form-select w-100" aria-label="Liste des commandes" onchange="document.getElementById('commandeForm').submit();"> <!-- Pour avoir la commande sélectionné par défaut affiché -->
+                                <select name="commande" class="form-select w-100" aria-label="Liste des commandes" onchange="document.getElementById('commandeForm').submit();">
                                     <?php
                                     $reqCommandes = $conn->prepare("SELECT * FROM COMMANDE WHERE IDUTILISATEUR = ? ORDER BY DATECOMMANDE DESC;");
                                     $reqCommandes->execute([$_SESSION['user']]);
-                                    $hasCommande = false;
-                                    $selectedCommande = $_GET['commande'] ?? null; // Commande sélectionnée via le GET sinon null
+                                    $selectedCommande = $_GET['commande'] ?? null;
+
                                     foreach ($reqCommandes as $index => $commande) {
-                                        $hasCommande = true;
-                                        // Définir la commande sélectionnée (dernière par défaut si aucune sélectionnée)
-                                        $selected = ($selectedCommande == $commande['IDCOMMANDE'] || (!$selectedCommande && $index == 0)) ? 'selected' : '';
+                                        // Construire la valeur concaténé contenant les données de la commande
+                                        $commandeData = implode('|', [
+                                            $commande['IDCOMMANDE'],
+                                            $commande['IDPAIEMENT'],
+                                            $commande['DATECOMMANDE'],
+                                            $commande['MODELIVRAISON'],
+                                            $commande['ADRESSELIVRAISON'],
+                                            $commande['IDPOINTRELAIS']
+                                        ]);
+                                        // Marquer la commande sélectionnée par défaut
+                                        $selected = ($selectedCommande == $commandeData || (!$selectedCommande && $index == 0)) ? 'selected' : '';
                                         if (!$selectedCommande && $index == 0) {
-                                            $selectedCommande = $commande['IDCOMMANDE']; // Mettre à jour pour afficher la commande par défaut
+                                            $selectedCommande = $commandeData;
                                         }
-                                        echo "<option value='" . $commande['IDCOMMANDE'] . "' $selected>Commande du " . date('d/m/Y', strtotime($commande['DATECOMMANDE'])) . "</option>";
+                                        echo "<option value='$commandeData' $selected>Commande du " . date('d/m/Y', strtotime($commande['DATECOMMANDE'])) . "</option>";
                                     }
                                     $reqCommandes->closeCursor();
                                     ?>
                                 </select>
                             </form>
                         </div>
-                        <!-- Si il y a une commande -->
-                        <?php if ($hasCommande) : ?>
+                        <?php if (!empty($selectedCommande)) : ?>
                             <?php
-                            // Charger les détails de la commande sélectionnée
+                            // Extraire les données de la commande sélectionnée
+                            [$idCommande, $idPaiement, $dateCommande, $modeLivraison, $adresseLivraison, $idPointRelais] = explode('|', $selectedCommande);
+
+                            // Requete pour le total commande et le mode de paiement
+                            $reqPaiement = $conn->prepare("
+                            SELECT PRIXCOMMANDE, MODEPAIEMENT FROM PAIEMENT WHERE IDPAIEMENT = ?;");
+                            $reqPaiement->execute([$idPaiement]);
+                            if ($paiement = $reqPaiement->fetch()) {
+                                $prixCommande = $paiement['PRIXCOMMANDE'];
+                                $modePaiement = $paiement['MODEPAIEMENT'];
+                            }
+                            
+                            // Charger les détails de la commande
                             $reqDetail = $conn->prepare("
-                                SELECT P.NOMPRODUIT, P.PRIX, P.DESCRIPTION, DC.QUANTITECOMMANDEE 
+                                SELECT P.IDPRODUIT, P.NOMPRODUIT, P.PRIX, DC.QUANTITECOMMANDEE 
                                 FROM DETAILCOMMANDE DC 
                                 INNER JOIN PRODUIT P ON DC.IDPRODUIT = P.IDPRODUIT
-                                WHERE DC.IDCOMMANDE = ?;
-                            ");
-                            $reqDetail->execute([$selectedCommande]);
+                                WHERE DC.IDCOMMANDE = ?;");
+                            $reqDetail->execute([$idCommande]);
+
+                            // Requete pour connaitre l'adresse de livraison (celle du point relais ou du client)
+                            if ($modeLivraison !== "Domicile") {
+                                $reqPointRelais = $conn->prepare("SELECT ADRESSEPOINTRELAIS FROM POINTRELAIS WHERE IDPOINTRELAIS = ?;");
+                                $reqPointRelais->execute([$idPointRelais]);
+                                if ($relais = $reqPointRelais->fetch()) {
+                                    $adresseLivraison = $relais['ADRESSEPOINTRELAIS'];
+                                }
+                            }
                             ?>
-                            
-                            <div class="card mt-3">
+
+                            <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Détails de la commande</h5>
-                                    <p class="card-text">Voici les articles de votre commande :</p>
+                                    <p class="card-text">
+                                        Commande passée le <?php echo date('d/m/Y', strtotime($dateCommande)); ?><br>
+                                        <?php echo number_format($prixCommande, 2, ',', ' '); ?>€ payé via <?php echo htmlspecialchars($modePaiement); ?>.
+                                    </p>
                                 </div>
                                 <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <strong>Livraison
+                                        <?php if ($modeLivraison === "Domicile"): ?>
+                                            à domicile : </strong><?php echo htmlspecialchars($adresseLivraison); ?>.
+                                        <?php else: ?>
+                                            en point relais : </strong><?php echo htmlspecialchars($adresseLivraison); ?>.
+                                        <?php endif; ?>
+                                    </li>
                                     <?php foreach ($reqDetail as $produit) : ?>
                                         <li class="list-group-item">
-                                            <a href="detailProduit?id=<?php echo $produit['IDPRODUIT']; ?>"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a><br>
-                                            Prix du produit : <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €<br>
-                                            Quantité : <?php echo $produit['QUANTITECOMMANDEE']; ?><br>
-                                            Description : <?php echo htmlspecialchars($produit['DESCRIPTION']); ?><br>
-                                            Total pour ce produit : <?php echo number_format($produit['PRIX'], 2, ',', ' ') * $produit['QUANTITECOMMANDEE']; ?>
+                                            <div class="d-flex justify-content-start">
+                                                <div class="me-4">
+                                                    <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>"><img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" style="max-width: 100px; height:auto;"/></a>
+                                                </div>
+                                                <div>
+                                                    <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br>
+                                                    <a href="#">Donnez votre avis</a>
+                                                    <?php echo number_format($produit['PRIX'] * $produit['QUANTITECOMMANDEE'], 2, ',', ' '); ?> €<br>
+                                                    Quantité : <?php echo $produit['QUANTITECOMMANDEE']; ?><br>
+                                                </div>
+                                            </div>
                                         </li>
-                                    <?php 
-                                        endforeach; 
-                                        $reqDetail->closeCursor(); 
-                                    ?>
+                                    <?php endforeach; ?>
                                 </ul>
                             </div>
+                            <?php
+                            $reqDetail->closeCursor();
+                            if (isset($reqPointRelais)) $reqPointRelais->closeCursor();
+                            ?>
                         <?php else : ?>
                             <p>Aucune commande disponible pour l'instant.</p>
                         <?php endif; ?>
+                    </div>
                     <div class="tab-pane fade" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
                         <h2 class="mb-4">Vos articles favoris :</h2>
                     </div>

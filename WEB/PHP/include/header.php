@@ -25,8 +25,8 @@
                 if (!isset($_SESSION['user'])) { 
                     echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Se connecter</a></li>";
                 } else {
-                    if ($_SESSION['url'] == "compte.php") {
-                        echo '<li><a class="nav-link" href="deconnexion.php">Se déconnercter</a></li>';
+                    if ($_SESSION['url'] == "consultCompte.php") {
+                        echo '<li><a class="nav-link" href="deconnexion.php">Se déconnecter</a></li>';
                     } else {
                         echo '<li><a class="nav-link" href="consultCompte.php">Compte</a></li>';
                     }
