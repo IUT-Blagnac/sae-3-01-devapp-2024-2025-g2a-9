@@ -252,6 +252,7 @@ footer {
 .product-gallery {
     text-align: center;
     position: relative;
+    margin-top: 10px;
 }
 
 .product-gallery .main-image {
@@ -270,4 +271,23 @@ footer {
 .product-description {
     line-height: 1.6;
     color: #555;
+}
+
+.back-button_detailprod {
+    text-decoration: none; /* Supprime le soulignement par défaut */
+    color: black; /* Couleur du texte par défaut */
+    font-size: 20px; /* Taille du texte */
+    font-weight: normal; /* Poids du texte (optionnel) */
+    cursor: pointer; /* Curseur en forme de main */
+    transition: color 0.3s ease; /* Animation douce pour la transition de la couleur */
+}
+
+.back-button_detailprod i {
+    margin-right: 8px; /* Espacement entre l'icône et le texte */
+    font-size: 20px; /* Taille de l'icône */
+}
+
+.back-button_detailprod:hover {
+    color: blue; /* Couleur du texte au survol */
+    text-decoration: none; /* Empêche le soulignement au survol */
 }
