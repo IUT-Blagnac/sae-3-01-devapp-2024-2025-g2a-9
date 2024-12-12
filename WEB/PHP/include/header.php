@@ -23,17 +23,22 @@
                 session_start();
                 $_SESSION['url'] = basename($_SERVER['PHP_SELF']);// Enregistre le fichier php actuel
                 if (!isset($_SESSION['user'])) { 
-                    echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Compte</a></li>";
+                    echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Se connecter</a></li>";
                 } else {
-                    if ($_SESSION['url'] == "compte.php") {
-                        echo '<li><a class="nav-link" href="deconnexion.php">Déconnexion</a></li>';
+                    if ($_SESSION['url'] == "consultCompte.php") {
+                        echo '<li><a class="nav-link" href="deconnexion.php">Se déconnecter</a></li>';
                     } else {
-                        echo '<li><a class="nav-link" href="compte.php">Compte</a></li>';
+                        echo '<li><a class="nav-link" href="consultCompte.php">Compte</a></li>';
                     }
+                }
+
+                // Initialiser le panier dans la session s'il n'existe pas
+                if (!isset($_SESSION['panier'])) {
+                    $_SESSION['panier'] = []; // Stocke les articles sous forme de tableau associatif
                 }
             ?>
             <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
-            <li><a class="nav-link" href="#"><i class="bi bi-cart"></i></a></li>
+            <li><a class="nav-link" href="consultPanier.php"><i class="bi bi-cart"></i></a></li>
         </ul>
     </div>
 </header>

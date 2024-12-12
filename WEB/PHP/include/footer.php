@@ -1,29 +1,26 @@
-<footer class="bg-dark text-white">
-    <div class="container-fluid py-3">
-        <div class="row">
-            <div class="col-md-4">
-                <h5>À propos</h5>
-                <p>Nous sommes une entreprise dédiée à fournir les meilleurs produits et services pour nos clients.</p>
-            </div>
-            <div class="col-md-4">
-                <h5>Contact</h5>
-                <ul class="list-unstyled">
-                    <li>Email: contact@entreprise.com</li>
-                    <li>Téléphone: +33 1 23 45 67 89</li>
-                    <li>Adresse: 123 Rue Exemple, 75000 Paris, France</li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5>Suivez-nous</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-white">Facebook</a></li>
-                    <li><a href="#" class="text-white">Twitter</a></li>
-                    <li><a href="#" class="text-white">Instagram</a></li>
-                </ul>
-            </div>
+<footer class="footer bg-white border-top">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-9 text-center">
+        
+        <div class="footer-site-logo mb-4">
+          <a href="index.php">Nautic Horizon</a>
         </div>
-        <div class="text-center mt-3">
-            <p>&copy; 2023 Mon Site E-Commerce. Tous droits réservés.</p>
+
+        <ul class="list-unstyled footer-links mb-4">
+            <li><a href="#">À propos</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Carrières</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+
+        <div class="copyright">
+          <p class="mb-0"><small>© 2024 Nautic Horizon. All Rights Reserved.</small></p>
         </div>
+
+      </div>
     </div>
+  </div>
 </footer>

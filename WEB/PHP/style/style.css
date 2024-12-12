@@ -235,13 +235,50 @@ a.sidebar-link:hover {
     }
 }
 
-footer {
-    background-color: #343a40;
-    color: white;
-    padding: 20px 0;
+.footer {
+    padding: 2rem 0; /* Réduction du padding pour un design plus compact */
+    font-family: "Poppins", sans-serif;
+    background-color: #f8f9fa; /* Couleur douce pour le fond */
+    color: #333; /* Amélioration de la lisibilité */
+}
+.footer .footer-site-logo {
     text-align: center;
-    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem; /* Meilleure séparation visuelle */
+}
+.footer .footer-site-logo a {
+    color: black;
+    text-decoration: none; /* Suppression du soulignement */
+    transition: color 0.3s; /* Animation douce pour le survol */
+}
+.footer .footer-site-logo a:hover {
+    color: #4200ff;
+}
+.footer .footer-links {
+    padding: 0;
     margin: 0;
+    list-style: none; /* Suppression des puces */
+    display: flex;
+    justify-content: center; /* Centrer les liens */
+    flex-wrap: wrap; /* Permettre le retour à la ligne si nécessaire */
+}
+.footer .footer-links li {
+    margin: 0 10px; /* Espacement horizontal entre les liens */
+}
+.footer .footer-links li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s; /* Animation douce pour le survol */
+}
+.footer .footer-links li a:hover {
+    color: #4200ff;
+}
+.footer .copyright {
+    font-size: 1rem;
+    color: #999999;
+    margin-top: 1rem; /* Espacement du contenu principal */
 }
 
 
@@ -367,4 +404,142 @@ footer {
     margin-top: 10px;
     font-size: 1rem;
     color: #555;
+
+/* ----------------------------------------------------------------------------- 
+         PANIER
+   ----------------------------------------------------------------------------- */
+
+/* Styles généraux pour le panier */
+.panier-items {
+    display: flex;
+    flex-direction: column; /* Les produits seront alignés verticalement */
+    gap: 20px; /* Espacement entre les produits */
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.panier-item {
+    display: flex; /* Utilisation de Flexbox pour aligner les éléments horizontalement */
+    justify-content: space-between; /* Espacement égal entre les éléments */
+    align-items: center; /* Alignement vertical centré */
+    border: 1px solid #ccc; /* Bordure autour de chaque produit */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour donner du relief */
+    width: 100%; /* Chaque produit occupe toute la largeur disponible */
+}
+
+.panier-item-image {
+    width: 15%; /* Largeur de l'image */
+    height: auto; /* Garder le ratio de l'image */
+    object-fit: contain; /* Ne pas déformer l'image */
+    margin-right: 20px; /* Espacement entre l'image et le texte */
+    cursor: pointer;
+}
+
+.panier-item-details {
+    flex-grow: 1; /* Cette section prend toute la place disponible entre l'image et le prix/quantité */
+    text-align: center; /* Centrer le nom du produit */
+    cursor: pointer;
+    transition: color 0.3s; /* Animation douce pour le survol */
+}
+
+.panier-item-details:hover {
+    color: #4200ff;
+}
+
+.panier-item h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.panier-item p {
+    font-size: 1em;
+    margin: 5px 0;
+}
+
+.panier-item-price-quantity {
+    display: flex; /* Alignement horizontal pour le prix et la quantité */
+    flex-direction: column; /* Organiser les éléments en colonne */
+    align-items: flex-end; /* Aligner les éléments à droite */
+    text-align: right; /* Aligner le texte à droite */
+}
+
+/* Conteneur des boutons + et - */
+.quantity-buttons {
+    display: flex;
+    align-items: center;  /* Aligner les éléments au centre verticalement */
+    justify-content: center; /* Centrer horizontalement */
+    gap: 10px; /* Espacement entre la quantité et les boutons */
+    margin-top: 5px; /* Marge au-dessus */
+}
+
+/* Style des boutons + et - */
+.quantity-buttons button {
+    width: 40px;  /* Largeur fixe pour les boutons */
+    height: 40px;  /* Hauteur fixe pour les boutons */
+    font-size: 18px; /* Taille de la police */
+    border-radius: 5px; /* Coins arrondis */
+    background-color: #f0f0f0; /* Couleur de fond */
+    border: 1px solid #ccc; /* Bordure fine */
+    display: flex;
+    align-items: center;  /* Centrer le contenu des boutons */
+    justify-content: center; /* Centrer le contenu des boutons */
+    cursor: pointer;
+    outline: none; /* Enlever la bordure de focus par défaut */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Transition au survol */
+}
+
+/* Enlever la bordure de focus et ombre au focus */
+.quantity-buttons button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Style de la quantité affichée */
+.quantity {
+    font-size: 18px; /* Taille de la police */
+    font-weight: bold; /* Mettre en gras */
+    text-align: center; /* Centrer la quantité */
+    width: 40px; /* Largeur fixe pour la quantité, la même que les boutons */
+    display: inline-block; /* Pour qu'elle se place bien à côté des boutons */
+}
+
+/* Styles pour les petits écrans */
+@media (max-width: 768px) {
+    .panier-item {
+        flex-direction: column; /* Sur les petits écrans, disposer les éléments en colonne */
+        text-align: center;
+    }
+
+    .panier-item-image {
+        margin-bottom: 15px; /* Espacement sous l'image */
+    }
+
+    .panier-item-price-quantity {
+        flex-direction: row; /* Sur les écrans plus petits, aligner le prix et la quantité horizontalement */
+        justify-content: space-between;
+        width: 100%;
+    }
+}
+
+/* Styles pour les très petits écrans (mobiles) */
+@media (max-width: 480px) {
+    .panier-item {
+        padding: 10px; /* Réduire le padding sur les petits écrans */
+    }
+    
+    .panier-item h2 {
+        font-size: 1em; /* Réduire la taille du titre */
+    }
+
+    .panier-item p {
+        font-size: 0.9em; /* Réduire la taille du texte */
+    }
+
+    .panier-item-image {
+        width: 80px; /* Réduire la taille de l'image sur les petits écrans */
+    }
 }
