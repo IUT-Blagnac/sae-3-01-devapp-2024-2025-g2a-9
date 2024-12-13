@@ -74,9 +74,9 @@
                             </ul>
                         </div>
                         <!-- Les adresses de livraison si elles existent -->
-                        <div class="card mb-2 w-75">
+                        <div class="card mb-4 w-75">
                             <div class="card-body">
-                                <h5 class="card-title">Adresses</h5>
+                                <h5 class="card-title">Adresses de vos livraisons</h5>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <?php
@@ -95,7 +95,7 @@
                                     $reqAdresses->closeCursor();
                                 ?>
                             </ul>
-                        </div>   
+                        </div>
                     </div>
                     <!-- Tab commandes -->
                     <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
@@ -190,7 +190,7 @@
                                                 </div>
                                                 <div>
                                                     <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br>
-                                                    <a href="#">Donnez votre avis</a>
+                                                    <!-- Peut etre ajouté des étoiles pour les avis --><a href="#">Donnez votre avis</a><br>
                                                     <?php echo number_format($produit['PRIX'] * $produit['QUANTITECOMMANDEE'], 2, ',', ' '); ?> €<br>
                                                     Quantité : <?php echo $produit['QUANTITECOMMANDEE']; ?><br>
                                                 </div>
@@ -204,15 +204,16 @@
                             if (isset($reqPointRelais)) $reqPointRelais->closeCursor();
                             ?>
                         <?php else : ?>
-                            <p>Aucune commande disponible pour l'instant.</p>
+                            <p class="text-muted">Aucune commande disponible pour l'instant.</p>
                         <?php endif; ?>
                     </div>
                     <!-- Tab favoris -->
                     <div class="tab-pane fade" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
                         <h2 class="mb-4">Vos articles favoris :</h2>
                         <?php
-                            $reqFavoris = $conn->prepare("SELECT * FROM FAVORIS WHERE idUtilisateur = ?;") ;
+                            $reqFavoris = $conn->prepare("SELECT * FROM FAVORI WHERE idUtilisateur = ?;") ;
                             $reqFavoris->execute([$_SESSION['user']]);
+                            $favoris = $reqFavoris->fetchAll();
                         ?>
                         <div class="card">
                                 <div class="card-body">
@@ -223,32 +224,33 @@
                                     </p>
                                 </div>
                                 <ul class="list-group list-group-flush">
-                                    <?php 
-                                        $favoris = $reqFavoris->fetchAll();
-                                        if (!empty($favoris)) {
-                                            foreach ($favoris as $fav) {
-                                                echo "<li class=\"list-group-item\">";
-                                                $reqProduits = $conn->prepare("SELECT * FROM PRODUIT WHERE IDPRODUIT = ?;") ;
-                                                $reqProduits->execute([$fav['IDPRODUIT']]);
-                                            }
-                                        } else {
-                                            echo "<li class='list-group-item text-muted'>Aucune produits favoris.</li>";
-                                        } 
-                                    ?>
-                                        
-                                            <div class="d-flex justify-content-start">
-                                                <div class="me-4">
-                                                    <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>"><img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" style="max-width: 100px; height:auto;"/></a>
+                                    <?php if (!empty($favoris)): ?>
+                                        <?php foreach ($favoris as $fav): ?>
+                                            <li class="list-group-item">
+                                            <?php 
+                                            $reqProduits = $conn->prepare("SELECT IDPRODUIT, NOMPRODUIT, PRIX FROM PRODUIT WHERE IDPRODUIT = ?;") ;
+                                            $reqProduits->execute([$fav['IDPRODUIT']]); 
+                                            ?>
+                                            <?php foreach ($reqProduits as $produit): ?>
+                                                <div class="d-flex justify-content-start">
+                                                    <div class="me-4">
+                                                        <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>"><img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" style="max-width: 100px; height:auto;"/></a>
+                                                    </div>
+                                                    <div>
+                                                        <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br><br>
+                                                        <!-- Peut etre ajouté des étoiles pour les avis -->
+                                                        <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €<br>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br>
-                                                    <a href="#">Donnez votre avis</a>
-                                                    <?php echo number_format($produit['PRIX'] * $produit['QUANTITECOMMANDEE'], 2, ',', ' '); ?> €<br>
-                                                    Quantité : <?php echo $produit['QUANTITECOMMANDEE']; ?><br>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    <?php endforeach; ?>
+                                            </li>
+                                            <?php endforeach; ?>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <li class="list-group-item text-muted">Aucun produits favoris.</li>";
+                                    <?php endif; ?>
+                                            
+
+                                            
                                 </ul>
                             </div>
                     </div>
