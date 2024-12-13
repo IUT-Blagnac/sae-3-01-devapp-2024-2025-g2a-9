@@ -74,35 +74,33 @@
                             </ul>
                         </div>
                         <!-- Les adresses de livraison si elles existent -->
-                        <div class="card mb-2 w-75">
+                        <div class="card mb-4 w-75">
                             <div class="card-body">
-                                <h5 class="card-title">Adresses</h5>
+                                <h5 class="card-title">Adresses de vos livraisons</h5>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <?php
                                     $reqAdresses = $conn->prepare("SELECT ADRESSELIVRAISON FROM COMMANDE WHERE IDUTILISATEUR = ? AND ADRESSELIVRAISON IS NOT NULL ORDER BY DATECOMMANDE;");
                                     $reqAdresses->execute([$_SESSION['user']]);
 
-                                    $hasAddresses = false;
-                                    $iAdresse = 1;
-                                    foreach ($reqAdresses as $commande) {
-                                        $hasAddresses = true;
-                                        $adresse = htmlspecialchars($commande['ADRESSELIVRAISON']);
-                                        echo "<li class='list-group-item'><strong>Adresse $iAdresse : </strong>$adresse</li>";
-                                        $iAdresse++;
-                                    }
+                                    $commandes = $reqAdresses->fetchAll();
 
-                                    if (!$hasAddresses) { // Si il n'y a pas d'adresse
+                                    if (!empty($commandes)) {
+                                        foreach ($commandes as $index => $commande) {
+                                            echo "<li class='list-group-item'><strong>Adresse ".($index + 1)." : </strong>" . htmlspecialchars($commande['ADRESSELIVRAISON']) . "</li>";
+                                        }
+                                    } else {
                                         echo "<li class='list-group-item text-muted'>Aucune adresse disponible.</li>";
-                                    }
-
+                                    }                                    
                                     $reqAdresses->closeCursor();
                                 ?>
                             </ul>
-                        </div>   
+                        </div>
                     </div>
+                    <!-- Tab commandes -->
                     <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
                         <h2 class="mb-4">Vos commandes :</h2> 
+                        <!-- Selection de la commande -->
                         <div class="col d-flex justify-content-between align-items-center mb-3">
                             <p class="card-text">Choisissez votre commande :</p>
                             <form method="GET" id="commandeForm">
@@ -134,6 +132,7 @@
                                 </select>
                             </form>
                         </div>
+                        <!-- Affichage de la commande selectionnée -->
                         <?php if (!empty($selectedCommande)) : ?>
                             <?php
                             // Extraire les données de la commande sélectionnée
@@ -165,7 +164,7 @@
                                 }
                             }
                             ?>
-
+                            <!-- Le détail de la commande -->
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Détails de la commande</h5>
@@ -191,7 +190,7 @@
                                                 </div>
                                                 <div>
                                                     <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br>
-                                                    <a href="#">Donnez votre avis</a>
+                                                    <!-- Peut etre ajouté des étoiles pour les avis --><a href="#">Donnez votre avis</a><br>
                                                     <?php echo number_format($produit['PRIX'] * $produit['QUANTITECOMMANDEE'], 2, ',', ' '); ?> €<br>
                                                     Quantité : <?php echo $produit['QUANTITECOMMANDEE']; ?><br>
                                                 </div>
@@ -205,11 +204,55 @@
                             if (isset($reqPointRelais)) $reqPointRelais->closeCursor();
                             ?>
                         <?php else : ?>
-                            <p>Aucune commande disponible pour l'instant.</p>
+                            <p class="text-muted">Aucune commande disponible pour l'instant.</p>
                         <?php endif; ?>
                     </div>
+                    <!-- Tab favoris -->
                     <div class="tab-pane fade" id="favorisPane" role="tabpanel" aria-labelledby="favorisTab">
                         <h2 class="mb-4">Vos articles favoris :</h2>
+                        <?php
+                            $reqFavoris = $conn->prepare("SELECT * FROM FAVORI WHERE idUtilisateur = ?;") ;
+                            $reqFavoris->execute([$_SESSION['user']]);
+                            $favoris = $reqFavoris->fetchAll();
+                        ?>
+                        <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Favoris</h5>
+                                    <p class="card-text">
+                                        Voici les produits que vous avez définis favoris.<br> 
+                                        Vous pouvez supprimer un produit de vos favoris directement depuis sa page.
+                                    </p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <?php if (!empty($favoris)): ?>
+                                        <?php foreach ($favoris as $fav): ?>
+                                            <li class="list-group-item">
+                                            <?php 
+                                            $reqProduits = $conn->prepare("SELECT IDPRODUIT, NOMPRODUIT, PRIX FROM PRODUIT WHERE IDPRODUIT = ?;") ;
+                                            $reqProduits->execute([$fav['IDPRODUIT']]); 
+                                            ?>
+                                            <?php foreach ($reqProduits as $produit): ?>
+                                                <div class="d-flex justify-content-start">
+                                                    <div class="me-4">
+                                                        <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>"><img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" style="max-width: 100px; height:auto;"/></a>
+                                                    </div>
+                                                    <div>
+                                                        <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br><br>
+                                                        <!-- Peut etre ajouté des étoiles pour les avis -->
+                                                        <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €<br>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <?php endforeach; ?>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <li class="list-group-item text-muted">Aucun produits favoris.</li>";
+                                    <?php endif; ?>
+                                            
+
+                                            
+                                </ul>
+                            </div>
                     </div>
                 </div>
             </div>
