@@ -15,6 +15,7 @@
             if ($user = $reqUser->fetch()) {
                 $nom = htmlspecialchars($user['NOM']);
                 $prenom = htmlspecialchars($user['PRENOM']);
+                $pays = htmlspecialchars($user['PAYS']);
                 $dateN = htmlspecialchars($user['DATEN']);
                 $civilite = htmlspecialchars($user['CIVILITE']);
                 $email = htmlspecialchars($user['MAIL']);
@@ -53,7 +54,13 @@
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>Nom : </strong><?php echo "$prenom $nom"; ?></li>
-                                <li class="list-group-item"><strong>Date de naissance : </strong><?php echo date('d/m/Y', strtotime($dateN)); ?></li>
+                                <?php 
+                                    if (isset($dateN)) {
+                                        echo "<li class=\"list-group-item\"><strong>Date de naissance : </strong>".date('d/m/Y', strtotime($dateN))."</li>";
+                                    }else {
+                                        echo "<li class=\"list-group-item\"><strong>Date de naissance : </strong><p class=\"text-muted\" Aucune date donnée /p></li>";
+                                    }
+                                ?>
                                 <li class="list-group-item"><strong>Civilité : </strong><?php echo "$civilite"; ?></li>
                             </ul>
                         </div>
@@ -69,6 +76,13 @@
                                         echo "<li class=\"list-group-item\"><strong>Numéro de téléphone : </strong>$telephone</li>";
                                     }else {
                                         echo "<li class=\"list-group-item\"><strong>Numéro de téléphone : </strong><p class=\"text-muted\" Aucun numméro attribué /p></li>";
+                                    }
+                                ?>
+                                <?php 
+                                    if (isset($pays)) {
+                                        echo "<li class=\"list-group-item\"><strong>Pays : </strong>$pays</li>";
+                                    }else {
+                                        echo "<li class=\"list-group-item\"><strong>Pays : </strong><p class=\"text-muted\" Aucun pays/p></li>";
                                     }
                                 ?>
                             </ul>
@@ -96,6 +110,7 @@
                                 ?>
                             </ul>
                         </div>
+                        <a class="btn btn-primary" href="modifierCompte.php" role="button">Changer mes infomations personnelles</a>
                     </div>
                     <!-- Tab commandes -->
                     <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
