@@ -29,6 +29,15 @@ $result = $reqAdresses->fetchAll(PDO::FETCH_ASSOC);
             // Créez la carte
             var map = L.map('map').setView([46.603354, 1.888334], 6); // Vue initiale sur la France
 
+            // Définir les limites maximales de la carte (bornes de la carte)
+            var maxBounds = L.latLngBounds(
+                L.latLng(41.0, -5.0),  // Latitude minimale, longitude minimale (coin sud-ouest)
+                L.latLng(51.0, 9.5)    // Latitude maximale, longitude maximale (coin nord-est)
+            );
+
+            // Appliquer ces bornes à la carte pour empêcher le déplacement au-delà
+            map.setMaxBounds(maxBounds);
+
             // Désactivez le zoom par molette par défaut
             map.scrollWheelZoom.disable();
 
@@ -48,7 +57,8 @@ $result = $reqAdresses->fetchAll(PDO::FETCH_ASSOC);
 
             // Ajoutez une couche de tuiles
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-                maxZoom: 19,
+                maxZoom: 19,    // Zoom maximum
+                minZoom: 3,     // Zoom minimum (ajoutez cette ligne)
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
             
