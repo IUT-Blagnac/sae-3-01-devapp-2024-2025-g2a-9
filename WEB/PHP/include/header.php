@@ -10,6 +10,22 @@
             <input class="search-input form-control" type="search" name="recherche" placeholder="Rechercher" aria-label="Search" id="searchInput">
         </form>
 
+        <audio id="audioPlayer" src="javascript/videoplayback.m4a"></audio>
+        <script>
+            const searchInput = document.getElementById("searchInput");
+            const audioPlayer = document.getElementById("audioPlayer");
+
+            searchInput.addEventListener("input", function () {
+                const searchValue = searchInput.value.toLowerCase().trim();
+                
+                if (searchValue === "enemy") {
+                    audioPlayer.play();
+                } else {
+                    audioPlayer.pause();
+                }
+            });
+        </script>
+
         <!-- Logo et nom de l'entreprise -->
         <div class="header-brand ms-3">
             <a href="index.php"><img src="image/logoNautic.png" alt="Logo" class="header-logo"></a>
