@@ -34,7 +34,7 @@
 
         <!-- Liens à droite -->
         <ul class="header-links list-unstyled d-flex align-items-center ms-auto">
-            <li><a class="nav-link" href="#">Magasins</a></li>
+            <li><a class="nav-link" href="consultMagasins.php">Magasins</a></li>
             <?php
                 session_start();
                 $_SESSION['url'] = basename($_SERVER['PHP_SELF']);// Enregistre le fichier php actuel
