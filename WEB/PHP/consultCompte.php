@@ -47,70 +47,134 @@
                     <!-- Tab infos personnelles -->
                     <div class="tab-pane fade show active" id="infoPersoPane" role="tabpanel" aria-labelledby="infoPersoTab">
                         <h2 class="mb-4">Voici vos informations personnelles :</h2>
-                        <!-- Les infos générales -->
-                        <div class="card mb-2 w-75">
-                            <div class="card-body">
-                                <h5 class="card-title">Informations générales</h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>Nom : </strong><?php echo "$prenom $nom"; ?></li>
-                                <?php 
-                                    if (isset($dateN)) {
-                                        echo "<li class=\"list-group-item\"><strong>Date de naissance : </strong>".date('d/m/Y', strtotime($dateN))."</li>";
-                                    }else {
-                                        echo "<li class=\"list-group-item\"><strong>Date de naissance : </strong><p class=\"text-muted\" Aucune date donnée /p></li>";
-                                    }
-                                ?>
-                                <li class="list-group-item"><strong>Civilité : </strong><?php echo "$civilite"; ?></li>
-                            </ul>
-                        </div>
-                        <!-- Les coordonnées -->
-                        <div class="card mb-2 w-75">
-                            <div class="card-body">
-                                <h5 class="card-title">Coordonnées</h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>E-mail : </strong><?php echo "$email"; ?></li>
-                                <?php 
-                                    if (isset($telephone)) {
-                                        echo "<li class=\"list-group-item\"><strong>Numéro de téléphone : </strong>$telephone</li>";
-                                    }else {
-                                        echo "<li class=\"list-group-item\"><strong>Numéro de téléphone : </strong><p class=\"text-muted\" Aucun numméro attribué /p></li>";
-                                    }
-                                ?>
-                                <?php 
-                                    if (isset($pays)) {
-                                        echo "<li class=\"list-group-item\"><strong>Pays : </strong>$pays</li>";
-                                    }else {
-                                        echo "<li class=\"list-group-item\"><strong>Pays : </strong><p class=\"text-muted\" Aucun pays/p></li>";
-                                    }
-                                ?>
-                            </ul>
-                        </div>
-                        <!-- Les adresses de livraison si elles existent -->
-                        <div class="card mb-4 w-75">
-                            <div class="card-body">
-                                <h5 class="card-title">Adresses de vos livraisons</h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <?php
-                                    $reqAdresses = $conn->prepare("SELECT ADRESSELIVRAISON FROM COMMANDE WHERE IDUTILISATEUR = ? AND ADRESSELIVRAISON IS NOT NULL ORDER BY DATECOMMANDE;");
-                                    $reqAdresses->execute([$_SESSION['user']]);
+                            <?php
+                                if(isset($_GET['msgErreur'])){
+                                    echo '<div class="alert alert-danger w-50" role="alert">';
+                                        echo '<strong>Un problème est survenu</strong><br>';
+                                        echo htmlentities($_GET['msgErreur']);
+                                    echo '</div>';
+                                }
+                                if(isset($_GET['msgSucces'])){
+                                    echo '<div class="alert alert-success w-50" role="alert">';
+                                        echo htmlentities($_GET['msgSucces']);
+                                    echo '</div>';
+                                }
+                            ?>
+                            <form method="post" action="modifierCompte.php">
+                                <input type="hidden" name="action" value="updateInfo">
+                                <!-- Les infos générales -->
+                                <div class="card mb-2 w-75">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Informations générales</h5>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <!-- Nom et prénom -->
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <strong class="me-2">Nom :</strong> 
+                                            <input type="text" name="nom" class="form-control w-50" value="<?php echo htmlspecialchars($nom); ?>">
+                                        </li>
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <strong class="me-2">Prénom :</strong> 
+                                            <input type="text" name="prenom" class="form-control w-50" value="<?php echo htmlspecialchars($prenom); ?>">
+                                        </li>
+                                        <!-- Date de naissance -->
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <strong class="me-2">Date de naissance :</strong>
+                                            <input type="date" name="dateN" class="form-control w-50" value="<?php echo isset($dateN) ? htmlspecialchars($dateN) : ''; ?>">
+                                        </li>
+                                        <!-- Civilité -->
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <strong class="me-2">Civilité :</strong>
+                                            <select name="civilite" class="form-select w-50">
+                                                <option value="MR" <?= $civilite === 'MR' ? 'selected' : '' ?>>Mr</option>
+                                                <option value="MME" <?= $civilite === 'MME' ? 'selected' : '' ?>>Mme</option>
+                                            </select>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Les coordonnées -->
+                                <div class="card mb-2 w-75">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Coordonnées</h5>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <!-- E-mail -->
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <strong class="me-2">E-mail :</strong>
+                                            <input type="email" name="email" class="form-control w-50" value="<?php echo htmlspecialchars($email); ?>" required>
+                                        </li>
+                                        <!-- Numéro de téléphone -->
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <strong class="me-2">Numéro de téléphone :</strong>
+                                            <input type="tel" name="telephone" class="form-control w-50" value="<?php echo isset($telephone) ? htmlspecialchars($telephone) : ''; ?>">
+                                        </li>
+                                        <!-- Pays -->
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <strong class="me-2">Pays :</strong>
+                                            <input type="text" name="pays" class="form-control w-50" value="<?php echo isset($pays) ? htmlspecialchars($pays) : ''; ?>">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Adresse -->
+                                <div class="card mb-2 w-75">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Adresse</h5>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <?php
+                                            // $reqAdresse = $conn->prepare("SELECT ADRESSE FROM UTILISATEUR WHERE IDUTILISATEUR = ?;");
+                                            // $reqAdresse->execute([$_SESSION['user']]);
 
-                                    $commandes = $reqAdresses->fetchAll();
-
-                                    if (!empty($commandes)) {
-                                        foreach ($commandes as $index => $commande) {
-                                            echo "<li class='list-group-item'><strong>Adresse ".($index + 1)." : </strong>" . htmlspecialchars($commande['ADRESSELIVRAISON']) . "</li>";
-                                        }
-                                    } else {
-                                        echo "<li class='list-group-item text-muted'>Aucune adresse disponible.</li>";
-                                    }                                    
-                                    $reqAdresses->closeCursor();
-                                ?>
-                            </ul>
-                        </div>
-                        <a class="btn btn-primary" href="modifierCompte.php" role="button">Changer mes infomations personnelles</a>
+                                            // if ($adresse = $reqAdresse->fetch()) {
+                                            //     echo "<li class=\"list-group-item\"><strong>Adresse : </strong>$adresse</li>";
+                                            //     // Décomposer l'adresse en champs individuels
+                                            //     list($part1, $part2) = explode(", ", $adresse);
+                                            //     $numRue = substr($part1, 0, strpos($part1, " "));
+                                            //     $libelleVoie = substr($part1, strpos($part1, " ") + 1);
+                                            //     $codePostal = substr($part2, 0, strpos($part2, " "));
+                                            //     $ville = substr($part2, strpos($part2, " ") + 1);
+                                            ?>
+                                                <!-- <li class="list-group-item d-flex align-items-center">
+                                                    <strong>Numéro de rue :</strong>
+                                                    <input type="text" name="numRue" class="form-control w-50" value="<?php //echo htmlspecialchars($numRue) ?>">
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <strong>Libellé de voie :</strong>
+                                                    <input type="text" name="libelleVoie" class="form-control w-50" value="<?php //echo htmlspecialchars($libelleVoie) ?>">
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <strong>Code postal :</strong>
+                                                    <input type="text" name="codePostal" class="form-control w-50" value="<?php //echo htmlspecialchars($codePostal) ?>">
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <strong>Ville :</strong>
+                                                    <input type="text" name="ville" class="form-control w-50" value="<?php //echo htmlspecialchars($ville) ?>">
+                                                </li> -->
+                                            <?php //} else { ?>
+                                                <!-- <li class="list-group-item d-flex align-items-center">
+                                                    <strong>Numéro de rue :</strong>
+                                                    <input type="text" name="numRue" class="form-control w-50" value="">
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <strong>Libellé de voie :</strong>
+                                                    <input type="text" name="libelleVoie" class="form-control w-50" value="">
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <strong>Code postal :</strong>
+                                                    <input type="text" name="codePostal" class="form-control w-50" value="">
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <strong>Ville :</strong>
+                                                    <input type="text" name="ville" class="form-control w-50" value="">
+                                                </li> -->
+                                            <?php //} ?>
+                                    </ul>
+                                </div>
+                                <div class="d-flex justify-content-start mt-4">
+                                    <button type="submit" name="submit" class="btn btn-primary w-35 me-5">Modifier mes informations</button>
+                                    <a href="modifierCompte.php" class="btn btn-primary w-35 ms-5">Modifier le mot de passe</a>
+                                </div>
+                            </form>
                     </div>
                     <!-- Tab commandes -->
                     <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
