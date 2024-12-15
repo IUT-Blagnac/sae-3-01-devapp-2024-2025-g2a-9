@@ -87,18 +87,18 @@ INSERT INTO POINTRELAIS (ADRESSEPOINTRELAIS) VALUES ('Plage de Deauville, Deauvi
 -- ----------------------------------------------------------------------------- 
 
 -- Insertion de 10 UTILISATEURs
-INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, PAYS, DATEN, MAIL, TELEPHONE, PASSWORD, DROIT) 
+INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, PAYS, DATEN, MAIL, TELEPHONE, ADRESSE, PASSWORD, DROIT) 
 VALUES 
-('MR', 'Durand', 'Pierre', 'France', '1985-06-15', 'pierre.durand@mail.com', '0123456789', 'pass1234', 'CLIENT'),
-('MME', 'Lemoine', 'Marie', 'France', '1990-03-22', 'marie.lemoine@mail.com', '0987654321', 'mdp5678', 'CLIENT'),
-('MR', 'Martin', 'François', 'France', '1982-11-05', 'francois.martin@mail.com', '0612345678', 'motdepasse01', 'CLIENT'),
-('MME', 'Bouvier', 'Isabelle', 'Belgique', '1975-07-30', 'isabelle.bouvier@mail.com', '0323456789', 'password123', 'CLIENT'),
-('MR', 'Dupont', 'Jean', 'France', '1995-01-12', 'jean.dupont@mail.com', '0789654321', 'securePass456', 'CLIENT'),
-('MME', 'Blanchard', 'Claire', 'France', '1988-09-18', 'claire.blanchard@mail.com', '0612348901', 'clairePass789', 'CLIENT'),
-('MR', 'Leclerc', 'Julien', 'Canada', '1983-02-20', 'julien.leclerc@mail.com', '5141234567', 'motdepasse456', 'CLIENT'),
-('MME', 'Garnier', 'Sophie', 'France', '1992-12-03', 'sophie.garnier@mail.com', '0551234567', 'sophiePass123', 'CLIENT'),
-('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', 'jacco1234', 'CLIENT'),
-('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecilePass321', 'CLIENT');
+('MR', 'Durand', 'Pierre', 'France', '1985-06-15', 'pierre.durand@mail.com', '0123456789', '12, rue de Paris, 75001, Paris', 'pass1234', 'CLIENT'),
+('MME', 'Lemoine', 'Marie', 'France', '1990-03-22', 'marie.lemoine@mail.com', '0987654321', '25, avenue Victor Hugo, 75016, Paris', 'mdp5678', 'CLIENT'),
+('MR', 'Martin', 'François', 'France', '1982-11-05', 'francois.martin@mail.com', '0612345678', '8, impasse des Lilas, 69007, Lyon', 'motdepasse01', 'CLIENT'),
+('MME', 'Bouvier', 'Isabelle', 'Belgique', '1975-07-30', 'isabelle.bouvier@mail.com', '0323456789', '10, rue des Flandres, 1000, Bruxelles', 'password123', 'CLIENT'),
+('MR', 'Dupont', 'Jean', 'France', '1995-01-12', 'jean.dupont@mail.com', '0789654321', '3, boulevard Haussmann, 75009, Paris', 'securePass456', 'CLIENT'),
+('MME', 'Blanchard', 'Claire', 'France', '1988-09-18', 'claire.blanchard@mail.com', '0612348901', '15, rue des Cerisiers, 31000, Toulouse', 'clairePass789', 'CLIENT'),
+('MR', 'Leclerc', 'Julien', 'Canada', '1983-02-20', 'julien.leclerc@mail.com', '5141234567', '98, rue Sainte-Catherine, H2X 2J7, Montréal', 'motdepasse456', 'CLIENT'),
+('MME', 'Garnier', 'Sophie', 'France', '1992-12-03', 'sophie.garnier@mail.com', '0551234567', '42, chemin des Roches, 33000, Bordeaux', 'sophiePass123', 'CLIENT'),
+('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', '17, rue de Bretagne, 35000, Rennes', 'jacco1234', 'CLIENT'),
+('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', '21, place de la République, 59000, Lille', 'cecilePass321', 'CLIENT');
 
 -- Insertion de 2 UTILISATEURs ADMIN
 INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, MAIL, PASSWORD, DROIT) 
