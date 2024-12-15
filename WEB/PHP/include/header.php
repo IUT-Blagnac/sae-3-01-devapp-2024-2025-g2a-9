@@ -11,7 +11,6 @@
         </form>
 
         <audio id="audioPlayer" src="javascript/videoplayback.m4a"></audio>
-
         <script>
             const searchInput = document.getElementById("searchInput");
             const audioPlayer = document.getElementById("audioPlayer");
@@ -26,8 +25,6 @@
                 }
             });
         </script>
-
-
         <!-- Logo et nom de l'entreprise -->
         <div class="header-brand ms-3">
             <a href="index.php"><img src="image/logoNautic.png" alt="Logo" class="header-logo"></a>
