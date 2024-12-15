@@ -21,46 +21,49 @@ require_once "./include/head.php";
         $dateN = trim($_POST['dateN']) ?? null;
         $telephone = trim($_POST['telephone']) ?? null;
 
-        // $numRue = trim($_POST['numRue']) ?? null;
-        // $libelleVoie = trim($_POST['libelleVoie']) ?? null;
-        // $codePostal = trim($_POST['codePostal']) ?? null;
-        // $ville = trim($_POST['ville']) ?? null;
+        $numRue = trim($_POST['numRue']) ?? null;
+        $libelleVoie = trim($_POST['libelleVoie']) ?? null;
+        $codePostal = trim($_POST['codePostal']) ?? null;
+        $ville = trim($_POST['ville']) ?? null;
 
-        // Vérifiez les champs obligatoires
-        if ($action === "updateInfo" && (!empty($prenom) && !empty($nom) && !empty($email))) {
-            // Mise à jour des informations générales
-            $reqUpdate = $conn->prepare("UPDATE UTILISATEUR 
-                SET CIVILITE = ?, NOM = ?, PRENOM = ?, PAYS = ?, DATEN = ?, MAIL = ?, TELEPHONE = ? 
-                WHERE IDUTILISATEUR = ?");
-            $reqUpdate->execute([$civilite, $nom, $prenom, $pays, $dateN, $email, $telephone, $_SESSION['user']]);
-            header("location:consultCompte.php?msgSucces=Modifications enregistrée.");
-            exit();
-        } else { 
-            header("location:consultCompte.php?msgErreur=Veuillez saisir les champs obligatoires.");
+        $adresseComplete = !empty($numRue) && !empty($libelleVoie) && !empty($codePostal) && !empty($ville) ?
+            "$numRue $libelleVoie, $codePostal $ville" :
+            null;
+        
+        if (($numRue && !$libelleVoie) || (!$numRue && $libelleVoie) || ($codePostal && !$ville) || (!$codePostal && $ville)) {
+            header("location:consultCompte.php?msgErreur=Veuillez remplir tous les champs de l'adresse.");
             exit();
         }
 
-        // $adresseComplete = !empty($numRue) && !empty($libelleVoie) && !empty($codePostal) && !empty($ville) ?
-        //     "$numRue $libelleVoie, $codePostal $ville" :
-        //     null;
-        
-        // if (($numRue && !$libelleVoie) || (!$numRue && $libelleVoie) || ($codePostal && !$ville) || (!$codePostal && $ville)) {
-        //     header("location:consultCompte.php?msgErreur=Veuillez remplir tous les champs de l'adresse.");
-        //     exit();
-        // }
+        // Vérifiez les champs obligatoires
+        if ($action === "updateInfo" && !empty($prenom) && !empty($nom) && !empty($email)) {
+            try {
+                // Appeler la procédure stockée pour mettre à jour les informations utilisateur
+                $reqUpdate = $conn->prepare("CALL ModifierUtilisateur(
+                    :idUtilisateur, :civilite, :nom, :prenom, :pays, :dateN, :email, :telephone, :adresse, NULL, FALSE
+                )");
+                $reqUpdate->execute([
+                    ':idUtilisateur' => $_SESSION['user'],
+                    ':civilite' => $civilite,
+                    ':nom' => $nom,
+                    ':prenom' => $prenom,
+                    ':pays' => $pays,
+                    ':dateN' => $dateN,
+                    ':email' => $email,
+                    ':telephone' => $telephone,
+                    ':adresse' => $adresseComplete,
+                ]);
 
-        // // Vérifiez les champs obligatoires
-        // if ($action === "updateInfo" && !empty($prenom) && !empty($nom) && !empty($email)) {
-        //     $reqUpdate = $conn->prepare("UPDATE UTILISATEUR 
-        //         SET CIVILITE = ?, NOM = ?, PRENOM = ?, PAYS = ?, DATEN = ?, MAIL = ?, TELEPHONE = ?, ADRESSE = ?
-        //         WHERE IDUTILISATEUR = ?");
-        //     $reqUpdate->execute([$civilite, $nom, $prenom, $pays, $dateN, $email, $telephone, $adresseComplete, $_SESSION['user']]);
-        //     header("location:consultCompte.php?msgSucces=Modifications enregistrée.");
-        //     exit();
-        // } else {
-        //     header("location:consultCompte.php?msgErreur=Veuillez saisir les champs obligatoires.");
-        //     exit();
-        // }
+                header("location:consultCompte.php?msgSucces=Modifications enregistrées.");
+                exit();
+            } catch (Exception $e) {
+                header("location:consultCompte.php?msgErreur=Erreur lors de la modification : " . $e->getMessage());
+                exit();
+            }
+        } else {
+            header("location:consultCompte.php?msgErreur=Veuillez saisir les champs obligatoires.");
+            exit();
+        }
 
         // Gestion du changement de mot de passe
         if ($action === "updatePassword") {
@@ -69,21 +72,30 @@ require_once "./include/head.php";
             $checkPwd = trim($_POST['check_password']) ?? null;
 
             if (!empty($oldPwd) && !empty($newPwd) && $newPwd === $checkPwd) {
-                // Vérifiez l'ancien mot de passe
-                $reqPwd = $conn->prepare("SELECT PASSWORD FROM UTILISATEUR WHERE IDUTILISATEUR = ?");
-                $reqPwd->execute([$_SESSION['user']]);
-                $userPwd = $reqPwd->fetch();
+                try {
+                    // Vérifiez l'ancien mot de passe
+                    $reqPwd = $conn->prepare("SELECT PASSWORD FROM UTILISATEUR WHERE IDUTILISATEUR = ?");
+                    $reqPwd->execute([$_SESSION['user']]);
+                    $userPwd = $reqPwd->fetch();
 
-                if ($userPwd && password_verify($oldPwd, $userPwd['PASSWORD'])) {
-                    // Mettre à jour le mot de passe
-                    $hashedPwd = password_hash($newPwd, PASSWORD_DEFAULT);
-                    $reqUpdatePwd = $conn->prepare("UPDATE UTILISATEUR SET PASSWORD = ? WHERE IDUTILISATEUR = ?");
-                    $reqUpdatePwd->execute([$hashedPwd, $_SESSION['user']]);
-                    
-                    header("location:consultCompte.php?msgSucces=Mot de passe modifié.");
-                    exit();
-                } else {
-                    header("location:modifierCompte.php?msgErreur=L'ancien mot de passe est incorrect.");
+                    if ($userPwd && password_verify($oldPwd, $userPwd['PASSWORD'])) {
+                        $hashedPwd = password_hash($newPwd, PASSWORD_DEFAULT);
+                        $reqUpdatePwd = $conn->prepare("CALL ModifierUtilisateur(
+                            :idUtilisateur, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, :password, TRUE
+                        )");
+                        $reqUpdatePwd->execute([
+                            ':idUtilisateur' => $_SESSION['user'],
+                            ':password' => $hashedPwd,
+                        ]);
+
+                        header("location:consultCompte.php?msgSucces=Mot de passe modifié.");
+                        exit();
+                    } else {
+                        header("location:modifierCompte.php?msgErreur=L'ancien mot de passe est incorrect.");
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    header("location:modifierCompte.php?msgErreur=Erreur lors de la modification : " . $e->getMessage());
                     exit();
                 }
             } else {

@@ -122,36 +122,36 @@
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <?php
-                                            // $reqAdresse = $conn->prepare("SELECT ADRESSE FROM UTILISATEUR WHERE IDUTILISATEUR = ?;");
-                                            // $reqAdresse->execute([$_SESSION['user']]);
+                                            $reqAdresse = $conn->prepare("SELECT ADRESSE FROM UTILISATEUR WHERE IDUTILISATEUR = ?;");
+                                            $reqAdresse->execute([$_SESSION['user']]);
 
-                                            // if ($adresse = $reqAdresse->fetch()) {
-                                            //     echo "<li class=\"list-group-item\"><strong>Adresse : </strong>$adresse</li>";
-                                            //     // Décomposer l'adresse en champs individuels
-                                            //     list($part1, $part2) = explode(", ", $adresse);
-                                            //     $numRue = substr($part1, 0, strpos($part1, " "));
-                                            //     $libelleVoie = substr($part1, strpos($part1, " ") + 1);
-                                            //     $codePostal = substr($part2, 0, strpos($part2, " "));
-                                            //     $ville = substr($part2, strpos($part2, " ") + 1);
+                                            if ($adresse = $reqAdresse->fetch()) {
+                                                echo "<li class=\"list-group-item\"><strong>Adresse : </strong>$adresse</li>";
+                                                // Décomposer l'adresse en champs individuels
+                                                list($part1, $part2) = explode(", ", $adresse);
+                                                $numRue = substr($part1, 0, strpos($part1, " "));
+                                                $libelleVoie = substr($part1, strpos($part1, " ") + 1);
+                                                $codePostal = substr($part2, 0, strpos($part2, " "));
+                                                $ville = substr($part2, strpos($part2, " ") + 1);
                                             ?>
-                                                <!-- <li class="list-group-item d-flex align-items-center">
+                                                <li class="list-group-item d-flex align-items-center">
                                                     <strong>Numéro de rue :</strong>
-                                                    <input type="text" name="numRue" class="form-control w-50" value="<?php //echo htmlspecialchars($numRue) ?>">
+                                                    <input type="text" name="numRue" class="form-control w-50" value="<?php echo htmlspecialchars($numRue) ?>">
                                                 </li>
                                                 <li class="list-group-item d-flex align-items-center">
                                                     <strong>Libellé de voie :</strong>
-                                                    <input type="text" name="libelleVoie" class="form-control w-50" value="<?php //echo htmlspecialchars($libelleVoie) ?>">
+                                                    <input type="text" name="libelleVoie" class="form-control w-50" value="<?php echo htmlspecialchars($libelleVoie) ?>">
                                                 </li>
                                                 <li class="list-group-item d-flex align-items-center">
                                                     <strong>Code postal :</strong>
-                                                    <input type="text" name="codePostal" class="form-control w-50" value="<?php //echo htmlspecialchars($codePostal) ?>">
+                                                    <input type="text" name="codePostal" class="form-control w-50" value="<?php echo htmlspecialchars($codePostal) ?>">
                                                 </li>
                                                 <li class="list-group-item d-flex align-items-center">
                                                     <strong>Ville :</strong>
-                                                    <input type="text" name="ville" class="form-control w-50" value="<?php //echo htmlspecialchars($ville) ?>">
-                                                </li> -->
-                                            <?php //} else { ?>
-                                                <!-- <li class="list-group-item d-flex align-items-center">
+                                                    <input type="text" name="ville" class="form-control w-50" value="<?php echo htmlspecialchars($ville) ?>">
+                                                </li>
+                                            <?php } else { ?>
+                                                <li class="list-group-item d-flex align-items-center">
                                                     <strong>Numéro de rue :</strong>
                                                     <input type="text" name="numRue" class="form-control w-50" value="">
                                                 </li>
@@ -166,8 +166,8 @@
                                                 <li class="list-group-item d-flex align-items-center">
                                                     <strong>Ville :</strong>
                                                     <input type="text" name="ville" class="form-control w-50" value="">
-                                                </li> -->
-                                            <?php //} ?>
+                                                </li>
+                                            <?php } ?>
                                     </ul>
                                 </div>
                                 <div class="d-flex justify-content-start mt-4">
