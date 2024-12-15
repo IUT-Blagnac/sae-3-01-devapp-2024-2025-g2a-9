@@ -125,47 +125,53 @@
                                             $reqAdresse = $conn->prepare("SELECT ADRESSE FROM UTILISATEUR WHERE IDUTILISATEUR = ?;");
                                             $reqAdresse->execute([$_SESSION['user']]);
 
-                                            if ($adresse = $reqAdresse->fetch()) {
-                                                echo "<li class=\"list-group-item\"><strong>Adresse : </strong>$adresse</li>";
+                                            if ($result = $reqAdresse->fetch()) {
+                                                $adresse = $result['ADRESSE'];
                                                 // Décomposer l'adresse en champs individuels
-                                                list($part1, $part2) = explode(", ", $adresse);
-                                                $numRue = substr($part1, 0, strpos($part1, " "));
-                                                $libelleVoie = substr($part1, strpos($part1, " ") + 1);
-                                                $codePostal = substr($part2, 0, strpos($part2, " "));
-                                                $ville = substr($part2, strpos($part2, " ") + 1);
+                                                list($numRue, $libelleVoie, $codePostal, $ville) = explode(", ", $adresse);
+
+                                                echo "<li class=\"list-group-item\"><strong>Adresse : </strong>$numRue $libelleVoie, $codePostal $ville</li>";
                                             ?>
                                                 <li class="list-group-item d-flex align-items-center">
-                                                    <strong>Numéro de rue :</strong>
-                                                    <input type="text" name="numRue" class="form-control w-50" value="<?php echo htmlspecialchars($numRue) ?>">
+                                                    <div>
+                                                        <strong>Numéro de rue :</strong>
+                                                        <input type="text" name="numRue" class="form-control w-25" value="<?php echo htmlspecialchars($numRue) ?>">
+                                                    </div>
+                                                    <div>
+                                                        <strong>Libellé de voie :</strong>
+                                                        <input type="text" name="libelleVoie" class="form-control w-100" value="<?php echo htmlspecialchars($libelleVoie) ?>">
+                                                    </div>  
                                                 </li>
                                                 <li class="list-group-item d-flex align-items-center">
-                                                    <strong>Libellé de voie :</strong>
-                                                    <input type="text" name="libelleVoie" class="form-control w-50" value="<?php echo htmlspecialchars($libelleVoie) ?>">
-                                                </li>
-                                                <li class="list-group-item d-flex align-items-center">
-                                                    <strong>Code postal :</strong>
-                                                    <input type="text" name="codePostal" class="form-control w-50" value="<?php echo htmlspecialchars($codePostal) ?>">
-                                                </li>
-                                                <li class="list-group-item d-flex align-items-center">
-                                                    <strong>Ville :</strong>
-                                                    <input type="text" name="ville" class="form-control w-50" value="<?php echo htmlspecialchars($ville) ?>">
+                                                    <div>
+                                                        <strong>Code postal :</strong>
+                                                        <input type="text" name="codePostal" class="form-control w-50" value="<?php echo htmlspecialchars($codePostal) ?>">
+                                                    </div>
+                                                    <div>
+                                                        <strong>Ville :</strong>
+                                                        <input type="text" name="ville" class="form-control w-100" value="<?php echo htmlspecialchars($ville) ?>">
+                                                    </div>  
                                                 </li>
                                             <?php } else { ?>
                                                 <li class="list-group-item d-flex align-items-center">
-                                                    <strong>Numéro de rue :</strong>
-                                                    <input type="text" name="numRue" class="form-control w-50" value="">
+                                                    <div>
+                                                        <strong>Numéro de rue :</strong>
+                                                        <input type="text" name="numRue" class="form-control w-25" value="">
+                                                    </div>
+                                                    <div>
+                                                        <strong>Libellé de voie :</strong>
+                                                        <input type="text" name="libelleVoie" class="form-control w-100" value="">
+                                                    </div>  
                                                 </li>
                                                 <li class="list-group-item d-flex align-items-center">
-                                                    <strong>Libellé de voie :</strong>
-                                                    <input type="text" name="libelleVoie" class="form-control w-50" value="">
-                                                </li>
-                                                <li class="list-group-item d-flex align-items-center">
-                                                    <strong>Code postal :</strong>
-                                                    <input type="text" name="codePostal" class="form-control w-50" value="">
-                                                </li>
-                                                <li class="list-group-item d-flex align-items-center">
-                                                    <strong>Ville :</strong>
-                                                    <input type="text" name="ville" class="form-control w-50" value="">
+                                                    <div>
+                                                        <strong>Code postal :</strong>
+                                                        <input type="text" name="codePostal" class="form-control w-50" value="">
+                                                    </div>
+                                                    <div>
+                                                        <strong>Ville :</strong>
+                                                        <input type="text" name="ville" class="form-control w-100" value="">
+                                                    </div>  
                                                 </li>
                                             <?php } ?>
                                     </ul>
@@ -295,43 +301,40 @@
                             $favoris = $reqFavoris->fetchAll();
                         ?>
                         <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Favoris</h5>
-                                    <p class="card-text">
-                                        Voici les produits que vous avez définis favoris.<br> 
-                                        Vous pouvez supprimer un produit de vos favoris directement depuis sa page.
-                                    </p>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <?php if (!empty($favoris)): ?>
-                                        <?php foreach ($favoris as $fav): ?>
-                                            <li class="list-group-item">
-                                            <?php 
-                                            $reqProduits = $conn->prepare("SELECT IDPRODUIT, NOMPRODUIT, PRIX FROM PRODUIT WHERE IDPRODUIT = ?;") ;
-                                            $reqProduits->execute([$fav['IDPRODUIT']]); 
-                                            ?>
-                                            <?php foreach ($reqProduits as $produit): ?>
-                                                <div class="d-flex justify-content-start">
-                                                    <div class="me-4">
-                                                        <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>"><img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" style="max-width: 100px; height:auto;"/></a>
-                                                    </div>
-                                                    <div>
-                                                        <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br><br>
-                                                        <!-- Peut etre ajouté des étoiles pour les avis -->
-                                                        <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €<br>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <?php endforeach; ?>
-                                        <?php endforeach; ?>
-                                    <?php else : ?>
-                                        <li class="list-group-item text-muted">Aucun produits favoris.</li>";
-                                    <?php endif; ?>
-                                            
-
-                                            
-                                </ul>
+                            <div class="card-body">
+                                <h5 class="card-title">Favoris</h5>
+                                <p class="card-text">
+                                    Voici les produits que vous avez définis favoris.<br> 
+                                    Vous pouvez supprimer un produit de vos favoris directement depuis sa page.
+                                </p>
                             </div>
+                            <ul class="list-group list-group-flush">
+                                <?php if (!empty($favoris)): ?>
+                                    <?php foreach ($favoris as $fav): ?>
+                                        <li class="list-group-item">
+                                        <?php 
+                                        $reqProduits = $conn->prepare("SELECT IDPRODUIT, NOMPRODUIT, PRIX FROM PRODUIT WHERE IDPRODUIT = ?;") ;
+                                        $reqProduits->execute([$fav['IDPRODUIT']]); 
+                                        ?>
+                                        <?php foreach ($reqProduits as $produit): ?>
+                                            <div class="d-flex justify-content-start">
+                                                <div class="me-4">
+                                                    <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>"><img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" style="max-width: 100px; height:auto;"/></a>
+                                                </div>
+                                                <div>
+                                                    <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br><br>
+                                                    <!-- Peut etre ajouté des étoiles pour les avis -->
+                                                    <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €<br>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <li class="list-group-item text-muted">Aucun produits favoris.</li>";
+                                <?php endif; ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

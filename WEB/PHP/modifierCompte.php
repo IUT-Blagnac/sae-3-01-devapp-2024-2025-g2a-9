@@ -27,7 +27,7 @@ require_once "./include/head.php";
         $ville = trim($_POST['ville']) ?? null;
 
         $adresseComplete = !empty($numRue) && !empty($libelleVoie) && !empty($codePostal) && !empty($ville) ?
-            "$numRue $libelleVoie, $codePostal $ville" :
+            "$numRue, $libelleVoie, $codePostal, $ville" :
             null;
         
         if (($numRue && !$libelleVoie) || (!$numRue && $libelleVoie) || ($codePostal && !$ville) || (!$codePostal && $ville)) {

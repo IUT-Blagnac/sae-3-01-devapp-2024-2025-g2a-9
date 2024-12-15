@@ -79,3 +79,61 @@ BEGIN
     END IF;
 END
 /
+
+-- ----------------------------------------------------------------------------- 
+--       Créer une commande
+-- ----------------------------------------------------------------------------- 
+DROP PROCEDURE IF EXISTS CreerCommande;/
+CREATE PROCEDURE CreerCommande(
+    IN p_idUtilisateur INT,
+    IN p_modelivraison VARCHAR(30),
+    IN p_adresseLivraison VARCHAR(50),
+    IN p_idPointRelais INT,
+    IN p_modePaiement VARCHAR(30)
+)
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE v_idCommande INT;
+    DECLARE v_idPaiement INT;
+    DECLARE v_idProduit INT;
+    DECLARE v_quantitePanier INT;
+    DECLARE v_prixCommande DECIMAL(10, 2);
+
+    DECLARE panierCursor CURSOR FOR
+    SELECT IDPRODUIT, QUANTITEPANIER
+    FROM DETAILPANIER
+    WHERE IDUTILISATEUR = p_idUtilisateur;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    CALL CalculerTotalPanier(p_idUtilisateur, v_prixCommande);
+    -- Insertion du paiement
+    INSERT INTO PAIEMENT (IDPAIEMENT, PRIXCOMMANDE, MODEPAIEMENT)
+    VALUES (p_idPaiement, v_prixCommande, p_modePaiement);
+    -- Récup de l'idPaiement
+    SET v_idPaiement = LAST_INSERT_ID();
+
+    -- Insertion de la commande
+    INSERT INTO COMMANDE (IDUTILISATEUR, IDPAIEMENT, DATECOMMANDE, MODELIVRAISON, ADRESSELIVRAISON, IDPOINTRELAIS)
+    VALUES (p_idUtilisateur, v_idPaiement, NOW(), p_modelivraison, p_adresseLivraison, p_idPointRelais);
+    -- Récup de l'idCommande
+    SET v_idCommande = LAST_INSERT_ID();
+
+    OPEN panierCursor;
+    read_loop: LOOP
+        FETCH panierCursor INTO v_idProduit, v_quantitePanier;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        INSERT INTO DETAILCOMMANDE (IDPRODUIT, IDCOMMANDE, QUANTITECOMMANDEE)
+        VALUES (v_idProduit, v_idCommande, v_quantitePanier);
+    END LOOP;
+
+    CLOSE panierCursor;
+
+    -- Vide le panier de l'utilisateur (commande réussi)
+    DELETE FROM DETAILPANIER
+    WHERE IDUTILISATEUR = p_idUtilisateur;
+END
+/
