@@ -1,7 +1,8 @@
 -- ----------------------------------------------------------------------------- 
 --       Calcul du montant total d'un panier (d'un utilisateur)
 -- ----------------------------------------------------------------------------- 
-CREATE OR REPLACE PROCEDURE `CalculerTotalPanier`(
+DROP PROCEDURE IF EXISTS CalculerTotalPanier;/
+CREATE PROCEDURE CalculerTotalPanier(
     IN user_id INT,
     OUT total DECIMAL(10, 2)
 )
@@ -22,7 +23,8 @@ END/
 -- ----------------------------------------------------------------------------- 
 --       Modifier un utilisateur
 -- ----------------------------------------------------------------------------- 
-CREATE OR REPLACE PROCEDURE 'ModifierUtilisateur'(
+DROP PROCEDURE IF EXISTS ModifierUtilisateur;/
+CREATE PROCEDURE ModifierUtilisateur(
     IN idUtilisateur INT,
     IN civilite VARCHAR(3),
     IN nom VARCHAR(50),
@@ -54,13 +56,13 @@ BEGIN
             ADRESSE = adresse
         WHERE IDUTILISATEUR = idUtilisateur;
     END IF;
-END
-/
+END/
 
 -- ----------------------------------------------------------------------------- 
 --       Calculer le nombre total de produits d'une commande
 -- ----------------------------------------------------------------------------- 
-CREATE OR REPLACE PROCEDURE 'CalculerTotalArticleCommande'(
+DROP PROCEDURE IF EXISTS CalculerTotalArticleCommande;/
+CREATE PROCEDURE CalculerTotalArticleCommande(
     IN idCommande INT,
     OUT total INT
 )
