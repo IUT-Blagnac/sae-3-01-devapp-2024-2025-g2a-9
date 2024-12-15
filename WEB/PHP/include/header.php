@@ -25,7 +25,6 @@
                 }
             });
         </script>
-
         <!-- Logo et nom de l'entreprise -->
         <div class="header-brand ms-3">
             <a href="index.php"><img src="image/logoNautic.png" alt="Logo" class="header-logo"></a>
@@ -34,14 +33,14 @@
 
         <!-- Liens à droite -->
         <ul class="header-links list-unstyled d-flex align-items-center ms-auto">
-            <li><a class="nav-link" href="#">Magasins</a></li>
+            <li><a class="nav-link" href="consultMagasins.php">Magasins</a></li>
             <?php
                 session_start();
                 $_SESSION['url'] = basename($_SERVER['PHP_SELF']);// Enregistre le fichier php actuel
                 if (!isset($_SESSION['user'])) { 
                     echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Se connecter</a></li>";
                 } else {
-                    if ($_SESSION['url'] == "consultCompte.php") {
+                    if ($_SESSION['url'] == "consultCompte.php" || $_SESSION['url'] == "modifierCompte.php") {
                         echo '<li><a class="nav-link" href="deconnexion.php">Se déconnecter</a></li>';
                     } else {
                         echo '<li><a class="nav-link" href="consultCompte.php">Compte</a></li>';
@@ -54,7 +53,7 @@
                 }
             ?>
             <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
-            <li><a class="nav-link" href="consultPanier.php"><i class="bi bi-cart"></i></a></li>
+            <li><a class="nav-link" href="panier.php"><i class="bi bi-cart"></i></a></li>
         </ul>
     </div>
 </header>
