@@ -16,10 +16,10 @@ $result = $reqAdresses->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
     <!-- Contenu principal -->
-    <main role="main">
+    <main role="main" style="display: flex; flex-direction: column; height: 100%;">
         
         <!-- Carte OpenStreetMap -->
-        <div id="map" style="height: 100vh; width: 100%;"></div>
+        <div id="map" style="flex: 1; width: 100%;"></div>
 
         <!-- Intégration de Leaflet (OpenStreetMap) -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -99,8 +99,5 @@ $result = $reqAdresses->fetchAll(PDO::FETCH_ASSOC);
             ?>
         </script>
     </main>
-
-    <!-- Pied de page -->
-    <?php require_once "./include/footer.php"; ?>
 </body>
 </html>
