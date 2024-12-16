@@ -120,16 +120,31 @@ BEGIN
     SET v_idCommande = LAST_INSERT_ID();
 
     OPEN panierCursor;
-    read_loop: LOOP
-        FETCH panierCursor INTO v_idProduit, v_quantitePanier;
-        IF done THEN
-            LEAVE read_loop;
-        END IF;
+        read_loop: LOOP
+            FETCH panierCursor INTO v_idProduit, v_quantitePanier;
+            IF done THEN
+                LEAVE read_loop;
+            END IF;
 
-        INSERT INTO DETAILCOMMANDE (IDPRODUIT, IDCOMMANDE, QUANTITECOMMANDEE)
-        VALUES (v_idProduit, v_idCommande, v_quantitePanier);
-    END LOOP;
+            -- Vérifier le stock disponible
+            SELECT STOCK INTO v_stockProduit
+            FROM PRODUIT
+            WHERE IDPRODUIT = v_idProduit;
 
+            -- Si le stock est suffisant, procéder à l'insertion dans DETAILCOMMANDE
+            IF v_stockProduit >= v_quantitePanier THEN
+                INSERT INTO DETAILCOMMANDE (IDPRODUIT, IDCOMMANDE, QUANTITECOMMANDEE)
+                VALUES (v_idProduit, v_idCommande, v_quantitePanier);
+
+                -- Mise à jour du stock après la commande
+                UPDATE PRODUIT
+                SET STOCK = STOCK - v_quantitePanier
+                WHERE IDPRODUIT = v_idProduit;
+            ELSE
+                -- Si le stock est insuffisant, gérer l'erreur (par exemple, on peut lever une exception ou stopper la procédure)
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuffisant pour le produit: ' || v_idProduit;
+            END IF;
+        END LOOP;
     CLOSE panierCursor;
 
     -- Vide le panier de l'utilisateur (commande réussi)
