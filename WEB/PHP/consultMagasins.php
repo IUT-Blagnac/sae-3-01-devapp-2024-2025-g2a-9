@@ -17,6 +17,13 @@ $result = $reqAdresses->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Contenu principal -->
     <main role="main" style="display: flex; flex-direction: column; height: 100%;">
+
+        <!-- Fenêtre de détails flottante -->
+        <div id="details-box" style="display: none;">
+            <button id="close-details" style="float: right;">&times;</button>
+            <h2>Détails du point relais</h2>
+            <p id="details">Double-cliquez sur un point relais pour voir les détails ici.</p>
+        </div>
         
         <!-- Carte OpenStreetMap -->
         <div id="map" style="flex: 1; width: 100%;"></div>
@@ -62,11 +69,30 @@ $result = $reqAdresses->fetchAll(PDO::FETCH_ASSOC);
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
             
+            map.zoomControl.remove();
 
             // Ajoutez des boutons "+" et "-" pour zoomer/dézoomer
             L.control.zoom({
                 position: 'topright'
             }).addTo(map);
+
+            // Récupérer et afficher la boîte de détails
+            function showDetails(details) {
+                const detailsBox = document.getElementById("details-box");
+                const detailsContent = document.getElementById("details");
+
+                detailsBox.style.display = "block";
+                detailsContent.innerHTML = details;
+            }
+
+            // Fermer la boîte de détails
+            document.getElementById("close-details").addEventListener("click", function () {
+                const detailsBox = document.getElementById("details-box");
+                detailsBox.style.display = "none";
+            });
+
+            // Remplacez par votre clé API OpenCage
+            const apiKey = '433d051140a4440681e75e610ea8565d'; // Remplacez avec votre clé API
 
             // Récupérer les points relais depuis PHP et les placer sur la carte
             <?php
@@ -74,18 +100,27 @@ $result = $reqAdresses->fetchAll(PDO::FETCH_ASSOC);
                 $adresse = addslashes($pointRelais['ADRESSEPOINTRELAIS']); // Sécuriser l'adresse
             ?>
                 (function(adresse) {
-                    var geocodeUrl = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(adresse);
+                    var geocodeUrl = 'https://api.opencagedata.com/geocode/v1/json?q=' + encodeURIComponent(adresse) + '&key=' + apiKey;
 
-                    // Récupérer les coordonnées via Nominatim
+                    // Récupérer les coordonnées via OpenCage Geocoder
                     fetch(geocodeUrl)
                         .then(response => response.json())
                         .then(data => {
-                            if (data && data[0]) {
-                                var lat = parseFloat(data[0].lat);
-                                var lon = parseFloat(data[0].lon);
+                            if (data.results && data.results[0]) {
+                                var lat = data.results[0].geometry.lat;
+                                var lon = data.results[0].geometry.lng;
                                 // Ajouter un marqueur sur la carte avec les coordonnées
-                                L.marker([lat, lon]).addTo(map)
+                                var marker = L.marker([lat, lon]).addTo(map)
                                     .bindPopup('<b>' + adresse + '</b>'); // Affiche l'adresse correcte
+
+                                marker.on('dblclick', function () {
+                                    const details = `
+                                        <h3>${adresse}</h3>
+                                        <p>Horaires: 9h - 18h</p>
+                                        <p>Contact: 01 23 45 67 89</p>
+                                    `;
+                                    showDetails(details);
+                                });
                             } else {
                                 console.log("Aucune donnée trouvée pour l'adresse: " + adresse);
                             }
@@ -93,10 +128,41 @@ $result = $reqAdresses->fetchAll(PDO::FETCH_ASSOC);
                         .catch(error => {
                             console.error('Erreur de géocodage:', error);
                         });
-                })('<?php echo $adresse; ?>'); // IIFE (Immediately Invoked Function Expression) pour chaque itération
+                })('<?php echo $adresse; ?>');
             <?php
             }
             ?>
+
+            // Rendre la fenêtre de détails déplaçable
+            const detailsBox = document.getElementById("details-box");
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            detailsBox.addEventListener('mousedown', function (e) {
+                // Initialisation des valeurs de déplacement
+                isDragging = true;
+                offsetX = e.clientX - detailsBox.getBoundingClientRect().left;
+                offsetY = e.clientY - detailsBox.getBoundingClientRect().top;
+                
+                // Empêcher le texte de se sélectionner pendant le déplacement
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', function (e) {
+                if (isDragging) {
+                    // Calcul du nouveau positionnement de la fenêtre
+                    const newX = e.clientX - offsetX;
+                    const newY = e.clientY - offsetY;
+
+                    // Appliquer la nouvelle position à la fenêtre
+                    detailsBox.style.left = `${newX}px`;
+                    detailsBox.style.top = `${newY}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', function () {
+                isDragging = false; // Arrêter le déplacement lorsqu'on relâche la souris
+            });
         </script>
     </main>
 </body>
