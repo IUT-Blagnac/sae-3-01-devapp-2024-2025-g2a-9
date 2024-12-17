@@ -20,6 +20,7 @@
                 $civilite = htmlspecialchars($user['CIVILITE']);
                 $email = htmlspecialchars($user['MAIL']);
                 $telephone = htmlspecialchars($user['TELEPHONE']);
+                $adresse = htmlspecialchars($user['ADRESSE']);
             }
         ?>
         <div class="row gx-3 gx-lg-5">
@@ -122,11 +123,7 @@
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <?php
-                                            $reqAdresse = $conn->prepare("SELECT ADRESSE FROM UTILISATEUR WHERE IDUTILISATEUR = ?;");
-                                            $reqAdresse->execute([$_SESSION['user']]);
-
-                                            if ($result = $reqAdresse->fetch()) {
-                                                $adresse = $result['ADRESSE'];
+                                            if ($adresse) { 
                                                 // Décomposer l'adresse en champs individuels
                                                 list($numRue, $libelleVoie, $codePostal, $ville) = explode(", ", $adresse);
 
@@ -177,8 +174,8 @@
                                     </ul>
                                 </div>
                                 <div class="d-flex justify-content-start mt-4">
-                                    <button type="submit" name="submit" class="btn btn-primary w-35 me-5">Modifier mes informations</button>
-                                    <a href="modifierCompte.php" class="btn btn-primary w-35 ms-5">Modifier le mot de passe</a>
+                                    <button type="submit" name="submit" class="btn btn-primary rounded-pill w-35 me-5">Modifier mes informations</button>
+                                    <a href="modifierCompte.php" class="btn btn-primary rounded-pill w-35 ms-5">Modifier le mot de passe</a>
                                 </div>
                             </form>
                     </div>
