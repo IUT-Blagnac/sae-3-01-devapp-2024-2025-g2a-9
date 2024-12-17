@@ -27,31 +27,51 @@ require_once "./include/head.php";
         require_once "./include/header.php";
         require_once "./include/menu.php";
         require_once './include/connect.inc.php';
-        
+
+        // Récupérer l'ID de la catégorie depuis l'URL
+        $idCateg = isset($_GET['idCateg']) ? $_GET['idCateg'] : null;
+
         // Récupérer les filtres depuis l'URL
-        $idCategorie = isset($_GET['idCateg']) ? $_GET['idCateg'] : null;
-        $filtreEnergie = isset($_GET['energie']) ? $_GET['energie'] : null;
-        $filtreTaille = isset($_GET['taille']) ? $_GET['taille'] : null;
-        $filtrePrixMin = isset($_GET['prixMin']) && $_GET['prixMin'] !== '' ? $_GET['prixMin'] : null;
-        $filtrePrixMax = isset($_GET['prixMax']) && $_GET['prixMax'] !== '' ? $_GET['prixMax'] : null;
-        $ordreTri = isset($_GET['sort']) ? $_GET['sort'] : null;
-        
-        if ($idCategorie !== null) {
-            // Appeler la procédure pour obtenir les produits filtrés
-            $stmt = $conn->prepare("CALL ObtenirProduitsFiltres(:idCategorie, :filtreEnergie, :filtreTaille, :filtrePrixMin, :filtrePrixMax, :ordreTri)");
-            $stmt->bindValue(':idCategorie', $idCategorie, PDO::PARAM_INT);
-            $stmt->bindValue(':filtreEnergie', $filtreEnergie !== '' ? $filtreEnergie : null, PDO::PARAM_STR);
-            $stmt->bindValue(':filtreTaille', $filtreTaille !== '' ? $filtreTaille : null, PDO::PARAM_INT);
-            $stmt->bindValue(':filtrePrixMin', $filtrePrixMin, $filtrePrixMin !== null ? PDO::PARAM_STR : PDO::PARAM_NULL);
-            $stmt->bindValue(':filtrePrixMax', $filtrePrixMax, $filtrePrixMax !== null ? PDO::PARAM_STR : PDO::PARAM_NULL);
-            $stmt->bindValue(':ordreTri', $ordreTri !== '' ? $ordreTri : null, PDO::PARAM_STR);
-            $stmt->execute();
-            $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $stmt->closeCursor();
-        } else {
-            $produits = [];
+        $energie = isset($_GET['energie']) ? $_GET['energie'] : null;
+        $taille = isset($_GET['taille']) ? $_GET['taille'] : null;
+        $prixMin = isset($_GET['prixMin']) ? $_GET['prixMin'] : null;
+        $prixMax = isset($_GET['prixMax']) ? $_GET['prixMax'] : null;
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
+
+        // Récupérer les catégories filles si idCateg est défini
+        $categories = [];
+        if ($idCateg) {
+            $categories[] = $idCateg;
+            $queryCateg = $conn->prepare("SELECT IDCATEGORIE FROM CATEGORIE WHERE IDCATEGPERE = ?");
+            $queryCateg->execute([$idCateg]);
+            $childCategories = $queryCateg->fetchAll(PDO::FETCH_COLUMN);
+            if (!empty($childCategories)) {
+                $categories = array_merge($categories, $childCategories);
+            }
         }
-        
+        // Convertir les catégories en une chaîne pour passer en paramètre
+        $categoriesStr = !empty($categories) ? implode(',', $categories) : null;
+
+        // Convertir les paramètres en valeurs valides pour la procédure
+        $taille = is_numeric($taille) ? (int)$taille : null;
+        $prixMin = is_numeric($prixMin) ? (float)$prixMin : null;
+        $prixMax = is_numeric($prixMax) ? (float)$prixMax : null;
+        $categoriesStr = !empty($categories) ? implode(',', $categories) : null;
+
+        // Appeler la procédure stockée
+        $query = $conn->prepare("CALL ObtenirProduitsFiltres(?, ?, ?, ?, ?, ?)");
+        $query->execute([
+            $categoriesStr,
+            $energie ?: null, // Remplace une chaîne vide par NULL
+            $taille,
+            $prixMin,
+            $prixMax,
+            $sort ?: null // Remplace une chaîne vide par NULL
+        ]);
+        $produits = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+
+
         // Récupérer le prix minimum et maximum des produits
         $query = $conn->prepare("SELECT MIN(PRIX) as minPrix, MAX(PRIX) as maxPrix FROM PRODUIT");
         $query->execute();
@@ -62,39 +82,39 @@ require_once "./include/head.php";
         <h1 class="text-center">Nos Produits</h1>
         <div class="text-center mb-4">
             <form method="GET" class="row g-3">
-                <input type="hidden" name="idCateg" value="<?php echo $idCategorie; ?>">
+                <input type="hidden" name="idCateg" value="<?php echo $idCateg; ?>">
                 <div class="col-md-3">
                     <label for="energie" class="form-label">Énergie</label>
                     <select id="energie" name="energie" class="form-select">
                         <option value="">Toutes</option>
-                        <option value="Diesel" <?php echo $filtreEnergie === 'Diesel' ? 'selected' : ''; ?>>Diesel</option>
-                        <option value="Essence" <?php echo $filtreEnergie === 'Essence' ? 'selected' : ''; ?>>Essence</option>
-                        <option value="Electrique" <?php echo $filtreEnergie === 'Electrique' ? 'selected' : ''; ?>>Électrique</option>
-                        <option value="Manuel" <?php echo $filtreEnergie === 'Manuel' ? 'selected' : ''; ?>>Manuel</option>
+                        <option value="Diesel" <?php echo $energie === 'Diesel' ? 'selected' : ''; ?>>Diesel</option>
+                        <option value="Essence" <?php echo $energie === 'Essence' ? 'selected' : ''; ?>>Essence</option>
+                        <option value="Electrique" <?php echo $energie === 'Electrique' ? 'selected' : ''; ?>>Électrique</option>
+                        <option value="Manuel" <?php echo $energie === 'Manuel' ? 'selected' : ''; ?>>Manuel</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="taille" class="form-label">Taille (en mètres)</label>
-                    <input type="number" id="taille" name="taille" class="form-control" value="<?php echo htmlspecialchars($filtreTaille); ?>">
+                    <input type="number" id="taille" name="taille" class="form-control" value="<?php echo htmlspecialchars($taille); ?>">
                 </div>
                 <div class="col-md-3">
                     <label for="prixMin" class="form-label">Prix Minimum</label>
-                    <input type="number" id="prixMin" name="prixMin" class="form-control" min="<?php echo $prixRange['minPrix']; ?>" max="<?php echo $prixRange['maxPrix']; ?>" value="<?php echo htmlspecialchars($filtrePrixMin); ?>">
+                    <input type="number" id="prixMin" name="prixMin" class="form-control" min="<?php echo $prixRange['minPrix']; ?>" max="<?php echo $prixRange['maxPrix']; ?>" value="<?php echo htmlspecialchars($prixMin); ?>">
                 </div>
                 <div class="col-md-3">
                     <label for="prixMax" class="form-label">Prix Maximum</label>
-                    <input type="number" id="prixMax" name="prixMax" class="form-control" min="<?php echo $prixRange['minPrix']; ?>" max="<?php echo $prixRange['maxPrix']; ?>" value="<?php echo htmlspecialchars($filtrePrixMax); ?>">
+                    <input type="number" id="prixMax" name="prixMax" class="form-control" min="<?php echo $prixRange['minPrix']; ?>" max="<?php echo $prixRange['maxPrix']; ?>" value="<?php echo htmlspecialchars($prixMax); ?>">
                 </div>
                 <div class="col-md-3">
                     <label for="sort" class="form-label">Trier par prix</label>
                     <select id="sort" name="sort" class="form-select">
                         <option value="">Par défaut</option>
-                        <option value="asc" <?php if ($ordreTri === 'asc') echo 'selected'; ?>>Croissant</option>
-                        <option value="desc" <?php if ($ordreTri === 'desc') echo 'selected'; ?>>Décroissant</option>
+                        <option value="asc" <?php if ($sort === 'asc') echo 'selected'; ?>>Croissant</option>
+                        <option value="desc" <?php if ($sort === 'desc') echo 'selected'; ?>>Décroissant</option>
                     </select>
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Appliquer</button>
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
                 </div>
             </form>
         </div>
