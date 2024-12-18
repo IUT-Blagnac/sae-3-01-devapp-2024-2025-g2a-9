@@ -87,18 +87,18 @@ INSERT INTO POINTRELAIS (ADRESSEPOINTRELAIS) VALUES ('Plage de Deauville, Deauvi
 -- ----------------------------------------------------------------------------- 
 
 -- Insertion de 10 UTILISATEURs
-INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, PAYS, DATEN, MAIL, TELEPHONE, PASSWORD, DROIT) 
+INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, PAYS, DATEN, MAIL, TELEPHONE, ADRESSE, PASSWORD, DROIT) 
 VALUES 
-('MR', 'Durand', 'Pierre', 'France', '1985-06-15', 'pierre.durand@mail.com', '0123456789', 'pass1234', 'CLIENT'),
-('MME', 'Lemoine', 'Marie', 'France', '1990-03-22', 'marie.lemoine@mail.com', '0987654321', 'mdp5678', 'CLIENT'),
-('MR', 'Martin', 'François', 'France', '1982-11-05', 'francois.martin@mail.com', '0612345678', 'motdepasse01', 'CLIENT'),
-('MME', 'Bouvier', 'Isabelle', 'Belgique', '1975-07-30', 'isabelle.bouvier@mail.com', '0323456789', 'password123', 'CLIENT'),
-('MR', 'Dupont', 'Jean', 'France', '1995-01-12', 'jean.dupont@mail.com', '0789654321', 'securePass456', 'CLIENT'),
-('MME', 'Blanchard', 'Claire', 'France', '1988-09-18', 'claire.blanchard@mail.com', '0612348901', 'clairePass789', 'CLIENT'),
-('MR', 'Leclerc', 'Julien', 'Canada', '1983-02-20', 'julien.leclerc@mail.com', '5141234567', 'motdepasse456', 'CLIENT'),
-('MME', 'Garnier', 'Sophie', 'France', '1992-12-03', 'sophie.garnier@mail.com', '0551234567', 'sophiePass123', 'CLIENT'),
-('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', 'jacco1234', 'CLIENT'),
-('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', 'cecilePass321', 'CLIENT');
+('MR', 'Durand', 'Pierre', 'France', '1985-06-15', 'pierre.durand@mail.com', '0123456789', '12, rue de Paris, 75001, Paris', 'pass1234', 'CLIENT'),
+('MME', 'Lemoine', 'Marie', 'France', '1990-03-22', 'marie.lemoine@mail.com', '0987654321', '25, avenue Victor Hugo, 75016, Paris', 'mdp5678', 'CLIENT'),
+('MR', 'Martin', 'François', 'France', '1982-11-05', 'francois.martin@mail.com', '0612345678', '8, impasse des Lilas, 69007, Lyon', 'motdepasse01', 'CLIENT'),
+('MME', 'Bouvier', 'Isabelle', 'Belgique', '1975-07-30', 'isabelle.bouvier@mail.com', '0323456789', '10, rue des Flandres, 1000, Bruxelles', 'password123', 'CLIENT'),
+('MR', 'Dupont', 'Jean', 'France', '1995-01-12', 'jean.dupont@mail.com', '0789654321', '3, boulevard Haussmann, 75009, Paris', 'securePass456', 'CLIENT'),
+('MME', 'Blanchard', 'Claire', 'France', '1988-09-18', 'claire.blanchard@mail.com', '0612348901', '15, rue des Cerisiers, 31000, Toulouse', 'clairePass789', 'CLIENT'),
+('MR', 'Leclerc', 'Julien', 'Canada', '1983-02-20', 'julien.leclerc@mail.com', '5141234567', '98, rue Sainte-Catherine, H2X 2J7, Montréal', 'motdepasse456', 'CLIENT'),
+('MME', 'Garnier', 'Sophie', 'France', '1992-12-03', 'sophie.garnier@mail.com', '0551234567', '42, chemin des Roches, 33000, Bordeaux', 'sophiePass123', 'CLIENT'),
+('MR', 'Lemoine', 'Jacques', 'France', '1978-05-25', 'jacques.lemoine@mail.com', '0298765432', '17, rue de Bretagne, 35000, Rennes', 'jacco1234', 'CLIENT'),
+('MME', 'Robert', 'Cécile', 'France', '1986-08-17', 'cecile.robert@mail.com', '0321122334', '21, place de la République, 59000, Lille', 'cecilePass321', 'CLIENT');
 
 -- Insertion de 2 UTILISATEURs ADMIN
 INSERT INTO UTILISATEUR (CIVILITE, NOM, PRENOM, MAIL, PASSWORD, DROIT) 
@@ -111,143 +111,96 @@ VALUES
 --       TABLE : PRODUIT
 -- ----------------------------------------------------------------------------- 
 
--- Bateaux de transport
-
 -- Porte-conteneurs
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_porte_conteneurs = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Porte-conteneurs');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Porte-conteneurs GE-2000', 1500000.00, 'Porte-conteneurs de grande capacité, idéal pour les longues distances.', '200m', 'Diesel', 5, 10),
-('Porte-conteneurs EcoTrans', 2000000.00, 'Porte-conteneurs à faible consommation énergie, conçu pour le transport écologique.', '210m', 'Diesel', 3, 7);
+('Porte-conteneurs GE-2000', 1500000.00, 'Porte-conteneurs de grande capacité, idéal pour les longues distances.', '200m', 'Diesel', 5, 10, @id_porte_conteneurs),
+('Porte-conteneurs EcoTrans', 2000000.00, 'Porte-conteneurs à faible consommation énergie, conçu pour le transport écologique.', '210m', 'Diesel', 3, 7, @id_porte_conteneurs);
 
 -- Porte-avion
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_porte_avion = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Porte-avion');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Porte-avion Viper', 5000000.00, 'Porte-avion militaire haut de gamme pour aviation navale.', '300m', 'Essence', 2, 5),
-('Porte-avion Falcon', 6000000.00, 'Porte-avion ultra-moderne avec une capacité de stockage élevée pour les avions de chasse.', '310m', 'Essence', 4, 8);
+('Porte-avion Viper', 5000000.00, 'Porte-avion militaire haut de gamme pour aviation navale.', '300m', 'Essence', 2, 5, @id_porte_avion),
+('Porte-avion Falcon', 6000000.00, 'Porte-avion ultra-moderne avec une capacité de stockage élevée pour les avions de chasse.', '310m', 'Essence', 4, 8, @id_porte_avion);
 
 -- Tanker
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_tanker = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Tanker');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Tanker Alpha', 2000000.00, 'Tanker pour transport de pétrole, équipé avec un système de sécurité avancé.', '250m', 'Diesel', 6, 12),
-('Tanker Omega', 2500000.00, 'Tanker à grande capacité pour transport de produits chimiques.', '270m', 'Diesel', 3, 6);
+('Tanker Alpha', 2000000.00, 'Tanker pour transport de pétrole, équipé avec un système de sécurité avancé.', '250m', 'Diesel', 6, 12, @id_tanker),
+('Tanker Omega', 2500000.00, 'Tanker à grande capacité pour transport de produits chimiques.', '270m', 'Diesel', 3, 6, @id_tanker);
 
 -- Ferry
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_ferry = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Ferry');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Ferry Croisière', 1000000.00, 'Ferry rapide pour croisières en mer, avec un grand confort.', '180m', 'Electrique', 10, 20),
-('Ferry Maritime', 1200000.00, 'Ferry pour transport de passagers et véhicules sur de longues distances.', '200m', 'Electrique', 8, 15);
-
--- Bateaux de plaisance
+('Ferry Croisière', 1000000.00, 'Ferry rapide pour croisières en mer, avec un grand confort.', '180m', 'Electrique', 10, 20, @id_ferry),
+('Ferry Maritime', 1200000.00, 'Ferry pour transport de passagers et véhicules sur de longues distances.', '200m', 'Electrique', 8, 15, @id_ferry);
 
 -- Yacht
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_yacht = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Yacht');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Yacht Prestige 50', 3500000.00, 'Yacht de luxe avec tous les équipements modernes pour un confort maximal.', '50m', 'Diesel', 4, 8),
-('Yacht Royal 60', 4000000.00, 'Yacht de luxe avec plusieurs suites et une piscine intérieure.', '60m', 'Diesel', 2, 5);
+('Yacht Prestige 50', 3500000.00, 'Yacht de luxe avec tous les équipements modernes pour un confort maximal.', '50m', 'Diesel', 4, 8, @id_yacht),
+('Yacht Royal 60', 4000000.00, 'Yacht de luxe avec plusieurs suites et une piscine intérieure.', '60m', 'Diesel', 2, 5, @id_yacht);
 
 -- Voilier
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_voilier = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Voilier');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Voilier Classic', 500000.00, 'Voilier élégant avec un design classique et un excellent rapport qualité/prix.', '12m', 'Manuel', 10, 15),
-('Voilier Oceanic', 600000.00, 'Voilier robuste pour les expéditions océaniques, conçu pour les navigateurs expérimentés.', '15m', 'Manuel', 5, 10);
+('Voilier Classic', 500000.00, 'Voilier élégant avec un design classique et un excellent rapport qualité/prix.', '12m', 'Manuel', 10, 15, @id_voilier),
+('Voilier Oceanic', 600000.00, 'Voilier robuste pour les expéditions océaniques, conçu pour les navigateurs expérimentés.', '15m', 'Manuel', 5, 10, @id_voilier);
 
 -- Catamaran
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_catamaran = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Catamaran');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Catamaran Lux', 900000.00, 'Catamaran de luxe pour des croisières privées avec un confort exceptionnel.', '18m', 'Electrique', 7, 14),
-('Catamaran Speed', 800000.00, 'Catamaran rapide pour des courses maritimes excitantes.', '16m', 'Electrique', 6, 12);
+('Catamaran Lux', 900000.00, 'Catamaran de luxe pour des croisières privées avec un confort exceptionnel.', '18m', 'Electrique', 7, 14, @id_catamaran),
+('Catamaran Speed', 800000.00, 'Catamaran rapide pour des courses maritimes excitantes.', '16m', 'Electrique', 6, 12, @id_catamaran);
 
 -- Bateau de croisière
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_bateau_croisiere = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Bateau de croisière');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Croisière Horizon', 1500000.00, 'Bateau de croisière avec des cabines luxueuses et des équipements modernes.', '250m', 'Diesel', 3, 6),
-('Croisière Pacific', 1800000.00, 'Bateau de croisière offrant des croisières autour du monde, avec des restaurants et casinos.', '260m', 'Diesel', 4, 8);
-
--- Bateaux de loisirs
+('Croisière Horizon', 1500000.00, 'Bateau de croisière avec des cabines luxueuses et des équipements modernes.', '250m', 'Diesel', 3, 6, @id_bateau_croisiere),
+('Croisière Pacific', 1800000.00, 'Bateau de croisière offrant des croisières autour du monde, avec des restaurants et casinos.', '260m', 'Diesel', 4, 8, @id_bateau_croisiere);
 
 -- Jetski
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_jetski = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Jetski');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Jetski Turbo', 15000.00, 'Jetski haute performance pour des sensations fortes en mer.', '4m', 'Essence', 15, 30),
-('Jetski Speedster', 12000.00, 'Jetski rapide et économique, parfait pour des balades sur l\'eau.', '3.5m', 'Essence', 10, 20);
+('Jetski Turbo', 15000.00, 'Jetski haute performance pour des sensations fortes en mer.', '4m', 'Essence', 15, 30, @id_jetski),
+('Jetski Speedster', 12000.00, 'Jetski rapide et économique, parfait pour des balades sur l\'eau.', '3.5m', 'Essence', 10, 20, @id_jetski);
 
 -- Bateau sans permis
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_bateau_sans_permis = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Bateau sans permis');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Bateau Flottant', 5000.00, 'Petit bateau sans permis, idéal pour les promenades en famille.', '5m', 'Electrique', 25, 50),
-('Bateau Détente', 4500.00, 'Bateau sans permis, conçu pour une navigation tranquille sur les lacs et rivières.', '4.5m', 'Electrique', 30, 60);
+('Bateau Flottant', 5000.00, 'Petit bateau sans permis, idéal pour les promenades en famille.', '5m', 'Electrique', 25, 50, @id_bateau_sans_permis),
+('Bateau Détente', 4500.00, 'Bateau sans permis, conçu pour une navigation tranquille sur les lacs et rivières.', '4.5m', 'Electrique', 30, 60, @id_bateau_sans_permis);
 
 -- Bateau cabine
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_bateau_cabine = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Bateau cabine');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Bateau Cabin Cruiser', 30000.00, 'Bateau cabine moderne avec un grand espace pour les croisières.', '10m', 'Diesel', 8, 16),
-('Bateau Cabin Explorer', 35000.00, 'Bateau cabine avec plusieurs cabines, idéal pour des aventures longues.', '12m', 'Diesel', 5, 10);
+('Bateau Cabin Cruiser', 30000.00, 'Bateau cabine moderne avec un grand espace pour les croisières.', '10m', 'Diesel', 8, 16, @id_bateau_cabine),
+('Bateau Cabin Explorer', 35000.00, 'Bateau cabine avec plusieurs cabines, idéal pour des aventures longues.', '12m', 'Diesel', 5, 10, @id_bateau_cabine);
 
 -- Péniche
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_peniche = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Péniche');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Péniche Riviera', 25000.00, 'Péniche de luxe avec toutes les commodités modernes pour vivre sur l\'eau.', '15m', 'Diesel', 4, 8),
-('Péniche Classique', 22000.00, 'Péniche confortable pour des séjours prolongés sur les canaux.', '14m', 'Diesel', 6, 12);
+('Péniche Riviera', 25000.00, 'Péniche de luxe avec toutes les commodités modernes pour vivre sur l\'eau.', '15m', 'Diesel', 4, 8, @id_peniche),
+('Péniche Classique', 22000.00, 'Péniche confortable pour des séjours prolongés sur les canaux.', '14m', 'Diesel', 6, 12, @id_peniche);
 
 -- Hydroglisseur
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
+SET @id_hydroglisseur = (SELECT IDCATEGORIE FROM CATEGORIE WHERE NOMCATEGORIE = 'Hydroglisseur');
+INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE, IDCATEGORIE)
 VALUES
-('Hydroglisseur Racing', 35000.00, 'Hydroglisseur performant pour des courses sur eau à grande vitesse.', '7m', 'Essence', 3, 6),
-('Hydroglisseur Splash', 30000.00, 'Hydroglisseur rapide pour des sorties en mer et sensations extrêmes.', '6m', 'Essence', 4, 8);
-
--- Bateaux de pêche
-
--- Chalutier
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
-VALUES
-('Chalutier Marine', 500000.00, 'Chalutier robuste conçu pour une pêche en haute mer.', '25m', 'Diesel', 5, 10),
-('Chalutier Atlantic', 550000.00, 'Chalutier performant pour la pêche commerciale en mer.', '28m', 'Diesel', 4, 8);
-
--- Bolincheur
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
-VALUES
-('Bolincheur Excell', 400000.00, 'Bolincheur conçu pour la pêche de poissons pélagiques.', '18m', 'Diesel', 6, 12),
-('Bolincheur Elite', 450000.00, 'Bolincheur de haute performance avec des équipements avancés pour la pêche.', '20m', 'Diesel', 3, 6);
-
--- Caseyeur
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
-VALUES
-('Caseyeur Pacific', 300000.00, 'Caseyeur robuste pour la pêche au large, conçu pour résister aux conditions extrêmes.', '22m', 'Diesel', 5, 10),
-('Caseyeur Titan', 350000.00, 'Caseyeur puissant pour une pêche efficace dans les zones profondes.', '24m', 'Diesel', 4, 8);
-
--- Bateaux non motorisés
-
--- Canoë
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
-VALUES
-('Canoë Classic', 300.00, 'Canoë léger pour des balades sur des rivières tranquilles.', '4m', 'Manuel', 30, 60),
-('Canoë Sport', 350.00, 'Canoë conçu pour la performance en eaux vives.', '4.5m', 'Manuel', 25, 50);
-
--- Pédalo
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
-VALUES
-('Pédalo Relax', 500.00, 'Pédalo confortable pour des moments de détente en famille.', '4m', 'Manuel', 20, 40),
-('Pédalo Fun', 450.00, 'Pédalo ludique, idéal pour des sorties amusantes sur le lac.', '4m', 'Manuel', 25, 50);
-
--- Kayak
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
-VALUES
-('Kayak Explorer', 700.00, 'Kayak léger et maniable pour des aventures en eau calme.', '3m', 'Manuel', 15, 30),
-('Kayak Vitesse', 750.00, 'Kayak performant pour les sorties rapides sur rivière.', '3.5m', 'Manuel', 12, 25);
-
--- Bateaux spécialisés
-
--- Bateau offshore hydravion
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
-VALUES
-('Bateau Offshore Jet', 1000000.00, 'Bateau offshore avec hydravion intégré pour des courses en mer.', '20m', 'Essence', 3, 6),
-('Bateau Offshore Zéphyr', 1200000.00, 'Bateau spécialisé pour des courses et aventures en haute mer.', '22m', 'Essence', 2, 4);
-
--- Bateau en kit
-INSERT INTO PRODUIT (NOMPRODUIT, PRIX, DESCRIPTION, TAILLE, ENERGIE, STOCKDISPONIBLE, STOCKLIMITE)
-VALUES
-('Kit Bateau Nautica', 15000.00, 'Kit complet pour assembler votre propre bateau de plaisance.', '6m', 'Manuel', 10, 20),
-('Kit Bateau Explorer', 18000.00, 'Kit de montage pour un bateau de loisirs, idéal pour les débutants.', '7m', 'Manuel', 8, 16);
+('Hydroglisseur Lightning', 50000.00, 'Hydroglisseur de course, ultra rapide et conçu pour la compétition.', '8m', 'Essence', 3, 6, @id_hydroglisseur),
+('Hydroglisseur Wave', 55000.00, 'Hydroglisseur pour des courses de vitesse en mer avec un design innovant.', '9m', 'Essence', 2, 4, @id_hydroglisseur);
 
 
 -- ----------------------------------------------------------------------------- 

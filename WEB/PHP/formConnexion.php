@@ -16,11 +16,11 @@
 
     <body>
         <!-- Contenu principal -->
-        <main role="main" class="container my-5" style='margin-top: 20px;'>
+        <main role="main" class="container mt-10 my-5">
             <center>
                 <?php
                 if(isset($_GET['msgErreur'])){
-                    echo '<div class="alert alert-danger" role="alert">';
+                    echo '<div class="alert alert-danger w-50" role="alert">';
                     echo '<strong>Un problème est survenu</strong><br>';
                     echo htmlentities($_GET['msgErreur']);
                     echo '</div>';

@@ -1,0 +1,131 @@
+= Document Technique - Application IoT
+:toc-title: Sommaire
+:toc: macro
+
+**Application de surveillance des conditions atmosphériques : NauticGestion App**  +
+**Version :** 1.0  +
+**Date :** 07 Décembre 2024  +
+**Groupe :** 2A9  +
+*Projet :* SAE DevApp (S3.01)
+
+'''
+
+toc::[]
+
+'''
+
+== Présentation de l'application
+
+=== Description générale 
+L'application IoT permet la surveillance des conditions environnementales en temps réel via des capteurs AM107. Elle collecte et analyse les données de température, humidité, CO2 et autres métriques environnementales. L'application génère des alertes lorsque les seuils configurés sont dépassés et permet une visualisation des données historiques.
+
+=== Architecture générale
+L'application est divisée en deux composants principaux :
+
+1. **Script Python (prg.py)**
+- Gère la connexion MQTT au broker mqtt.iut-blagnac.fr
+- Collecte les données des capteurs AM107
+- Écrit les données dans des fichiers JSON (donnees.json et alert.json)
+- Génère les alertes selon les seuils configurés
+
+2. **Interface JavaFX**
+- Permet la configuration des paramètres (serveur MQTT, seuils, etc.)
+- Affiche les données en temps réel
+- Visualise l'historique des alertes
+- Gère la configuration via config.ini
+
+Pour l'interface JaveFx, nous avons utilisé une architecture MVC (Modèle-Vue-Contrôleur) permet une séparation claire des responsabilités : +
+- Les contrôleurs gèrent la logique métier (application.control) +
+- Les vues s'occupent de l'interface utilisateur et de l'affichage (application.view) +
+- Les modèles représentent les données (application.model)
+
+
+Nous avons aussi utilisé un package regroupant les outils utilisés pour le bon fonctionnement de l'application. Le package application.tools regroupe 2 classes.
+De plus les fichiers de vues (fxml) se trouvent dans le fichier resources/application/view après avoir parcouru Application/src/main. Un css est aussi présent mais n'a pas été utilisé. (Possibilité d'amélioration)
+
+== Implémentation
+
+=== Configuration (config.ini)
+Le fichier config.ini contient tous les paramètres de l'application :  +
+- Section MQTT : serveur et topics  +
+- Section variables : métriques à surveiller  +
+- Section seuils_capteur : valeurs limites pour les alertes  +
+- Section OUTPUT : configuration des fichiers de sortie
+
+=== Script Python (prg.py)
+Fonctionnalités principales :  +
+- Lecture de la configuration depuis config.ini  +
+- Connexion MQTT et souscription aux topics  +
+- Traitement des données reçues  +
+- Génération d'alertes  +
+- Écriture dans les fichiers JSON
+
+=== Interface Java
+Classes principales :
+
+1. Controllers
+- MenuController : Contrôleur principal gérant le lancement de l'application et les fenêtres
+- ConfigController : Gestion de la configuration (lecture/écriture config.ini, seuils...)
+- CapteursController : Contrôle des données des capteurs environnementaux
+- PanneauxController : Gestion des panneaux solaires et visualisation des données
+
+2. Views
+- ConfigViewController : Interface de configuration des paramètres 
+- PanneauxViewController : Affichage des données des panneaux en temps réel
+- CapteursViewController : Visualisation des données des capteurs
+- MenuViewController : Interface principale de navigation
+
+3. Models
+- Seuil : Modèle pour les valeurs limites des capteurs
+- DataEnergie : Données énergétiques des panneaux solaires
+
+4. Utils
+- ConfigIni : Gestion du fichier de configuration .ini
+- EnergieExtraction : Extraction et traitement des données énergétiques
+
++
+Pour en arriver là, nous avons utilisé des documentations concernant JavaFx, afin de découvrir certains composants essentiels ainsi que leurs utilisations : +
+- https://o7planning.org/11009/javafx + 
+- https://docs.oracle.com/javase/8/javafx/api/javafx +
+- https://jenkov.com/tutorials/javafx/index.html
+
+== Installation et Déploiement
+
+=== Prérequis
+- Python 3 avec les modules suivants : 
+    * paho-mqtt (pip install paho-mqtt)
+    * json (module intégré)
+    * configparser (module intégré)
+    * datetime (module intégré)
+- Java 17+ (télécharger depuis https://www.oracle.com/java/technologies/downloads/)
+- JavaFX (module intégré dans maven)
+
+=== Déploiement
+
+==== Structure des fichiers :
+     Le projet doit maintenir la structure suivante :
+     ``
+     IOT/
+     ├── Application/        # Application Java
+     ├── config.ini         # Fichier de configuration
+     ├── donnees.json       # Données des capteurs
+     ├── alert.json         # Alertes générées
+     └── prg.py            # Script Python
+     ``
+
+==== Configuration initiale :
+     - Cloner le dépôt depuis GitHub
+     - Vérifier que config.ini contient les bons paramètres :
+         * Serveur MQTT : mqtt.iut-blagnac.fr
+         * Topics : AM107/by-room/#
+         * Seuils des capteurs selon les besoins
+         * Fréquence de rafraîchissement
+
+==== Lancement :
+     - Exécuter l'application Java depuis le dossier Application
+     - L'application lancera automatiquement le script prg.py
+     - Les données seront écrites dans donnees.json et alert.json
+     - L'interface se rafraîchira selon la fréquence configurée
+     - Sur linux lancer depuis le jar depuis le repertoire Application avec java --module-path target/dependencies --add-modules javafx.controls,javafx.fxml,javafx.graphics -jar target/NauticGest-1.0.jar, attention de bien avoir javafx-graphics-17-linux.jar sinon le prendre ici : https://repo1.maven.org/maven2/org/openjfx/javafx-graphics/17/
+
+Note : Assurez-vous que les chemins relatifs entre l'application Java et le script Python sont correctement configurés ("../config.ini", "../donnees.json", etc.)
