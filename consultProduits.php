@@ -37,6 +37,7 @@ require_once "./include/head.php";
         $prixMin = isset($_GET['prixMin']) ? $_GET['prixMin'] : null;
         $prixMax = isset($_GET['prixMax']) ? $_GET['prixMax'] : null;
         $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
+        $recherche = isset($_GET['recherche']) ? $_GET['recherche'] : null;
 
         // Récupérer les catégories filles si idCateg est défini
         $categories = [];
