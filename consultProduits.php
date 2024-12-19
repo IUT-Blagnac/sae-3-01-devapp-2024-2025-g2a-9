@@ -1,9 +1,7 @@
 <!-- Page pour consulter les produits 
  on recupere aussi les articles faisant 5m de plus ou de moins que la taille demandée
- et les articles dont le prix est 20% plus bas ou plus haut que le prix demandé
+ et les articles dont le prix est 15% plus bas ou plus haut que le prix demandé
 -->
-
-
 
 <?php
 $pageTitle = "Produits";
@@ -38,40 +36,49 @@ require_once "./include/head.php";
         $taille = isset($_GET['taille']) ? $_GET['taille'] : null;
         $prixMin = isset($_GET['prixMin']) ? $_GET['prixMin'] : null;
         $prixMax = isset($_GET['prixMax']) ? $_GET['prixMax'] : null;
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
 
-        // Requête pour récupérer les produits en fonction des filtres
-        $queryStr = "SELECT * FROM PRODUIT WHERE 1=1";
-        $params = [];
-
+        // Récupérer les catégories filles si idCateg est défini
+        $categories = [];
         if ($idCateg) {
-            $queryStr .= " AND IDCATEGORIE = ?";
-            $params[] = $idCateg;
-        }
-        if ($energie) {
-            $queryStr .= " AND ENERGIE = ?";
-            $params[] = $energie;
-        }
-        if ($taille) {
-            $tailleMin = (int)$taille - 5;
-            $tailleMax = (int)$taille + 5;
-            $queryStr .= " AND CAST(REPLACE(TAILLE, 'm', '') AS UNSIGNED) BETWEEN ? AND ?";
-            $params[] = $tailleMin;
-            $params[] = $tailleMax;
-        }
-        if ($prixMin) {
-            $prixMinTol = $prixMin * 0.8;
-            $queryStr .= " AND PRIX >= ?";
-            $params[] = $prixMinTol;
-        }
-        if ($prixMax) {
-            $prixMaxTol = $prixMax * 1.2;
-            $queryStr .= " AND PRIX <= ?";
-            $params[] = $prixMaxTol;
+            $categories[] = $idCateg;
+            $queryCateg = $conn->prepare("SELECT IDCATEGORIE FROM CATEGORIE WHERE IDCATEGPERE = ?");
+            $queryCateg->execute([$idCateg]);
+            $childCategories = $queryCateg->fetchAll(PDO::FETCH_COLUMN);
+            if (!empty($childCategories)) {
+                $categories = array_merge($categories, $childCategories);
+            }
         }
 
-        $query = $conn->prepare($queryStr);
-        $query->execute($params);
+
+        // Récupérer les filtres depuis l'URL
+        $categoriesStr = isset($_GET['categories']) ? $_GET['categories'] : null;
+        $energie = isset($_GET['energie']) ? $_GET['energie'] : null;
+        $taille = isset($_GET['taille']) ? $_GET['taille'] : null;
+        $prixMin = isset($_GET['prixMin']) ? $_GET['prixMin'] : null;
+        $prixMax = isset($_GET['prixMax']) ? $_GET['prixMax'] : null;
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
+        $recherche = isset($_GET['recherche']) ? $_GET['recherche'] : null;
+
+        // Convertir les paramètres en valeurs valides pour la procédure
+        $taille = is_numeric($taille) ? (int)$taille : null;
+        $prixMin = is_numeric($prixMin) ? (float)$prixMin : null;
+        $prixMax = is_numeric($prixMax) ? (float)$prixMax : null;
+
+        // Appeler la procédure stockée
+        $query = $conn->prepare("CALL ObtenirProduitsFiltres(?, ?, ?, ?, ?, ?, ?)");
+        $query->execute([
+            $categoriesStr,
+            $energie ?: null, // Remplace une chaîne vide par NULL
+            $taille,
+            $prixMin,
+            $prixMax,
+            $sort ?: null, // Remplace une chaîne vide par NULL
+            $recherche ?: null // Remplace une chaîne vide par NULL
+        ]);
         $produits = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+
 
         // Récupérer le prix minimum et maximum des produits
         $query = $conn->prepare("SELECT MIN(PRIX) as minPrix, MAX(PRIX) as maxPrix FROM PRODUIT");
@@ -106,35 +113,46 @@ require_once "./include/head.php";
                     <label for="prixMax" class="form-label">Prix Maximum</label>
                     <input type="number" id="prixMax" name="prixMax" class="form-control" min="<?php echo $prixRange['minPrix']; ?>" max="<?php echo $prixRange['maxPrix']; ?>" value="<?php echo htmlspecialchars($prixMax); ?>">
                 </div>
+                <div class="col-md-3">
+                    <label for="sort" class="form-label">Trier par prix</label>
+                    <select id="sort" name="sort" class="form-select">
+                        <option value="">Par défaut</option>
+                        <option value="asc" <?php if ($sort === 'asc') echo 'selected'; ?>>Croissant</option>
+                        <option value="desc" <?php if ($sort === 'desc') echo 'selected'; ?>>Décroissant</option>
+                    </select>
+                </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Filtrer</button>
                 </div>
             </form>
         </div>
-        <div class="row">
-            <?php foreach ($produits as $produit): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 product-card">
-                        <!-- L'image redirige vers la page détail produit -->
-                        <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>">
-                            <img src="https://static.wikia.nocookie.net/lego/images/7/73/70618_-_2.jpg/revision/latest?cb=20170727200641&path-prefix=fr" 
-                                 class="card-img-top" 
-                                 alt="<?php echo htmlspecialchars($produit['NOMPRODUIT']); ?>">
-                        </a>
-                        <div class="card-body">
-                            <!-- Le titre du produit redirige également -->
-                            <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="text-decoration: none; color: inherit;">
-                                <h5 class="card-title"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></h5>
+
+        <?php if (count($produits) == 0): ?>
+            <p class="text-center">Aucun bateau correspondant aux filtres n'a été trouvé.</p>
+        <?php else: ?>
+            <div class="row">
+                <?php foreach ($produits as $produit): ?>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 product-card">
+                            <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>">
+                                <img src="https://static.wikia.nocookie.net/lego/images/7/73/70618_-_2.jpg/revision/latest?cb=20170727200641&path-prefix=fr" 
+                                     class="card-img-top" 
+                                     alt="<?php echo htmlspecialchars($produit['NOMPRODUIT']); ?>">
                             </a>
-                            <p class="card-text">Prix : <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" class="btn btn-primary">Voir Détails</a>
+                            <div class="card-body">
+                                <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="text-decoration: none; color: inherit;">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></h5>
+                                </a>
+                                <p class="card-text">Prix : <?php echo number_format($produit['PRIX'], 2, ',', ' '); ?> €</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" class="btn btn-primary">Voir Détails</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 
     <script>
