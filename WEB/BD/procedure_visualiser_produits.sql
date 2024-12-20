@@ -6,7 +6,8 @@ CREATE PROCEDURE ObtenirProduitsFiltres(
     IN p_taille INT,
     IN p_prixMin DECIMAL(10, 2),
     IN p_prixMax DECIMAL(10, 2),
-    IN p_sort VARCHAR(4)
+    IN p_sort VARCHAR(4),
+    IN p_recherche VARCHAR(255) -- Nouveau paramètre pour la recherche
 )
 BEGIN
     SET @query = 'SELECT * FROM PRODUIT WHERE 1=1';
@@ -38,6 +39,11 @@ BEGIN
     IF p_prixMax IS NOT NULL THEN
         SET @prixMaxTol = p_prixMax * 1.15;
         SET @query = CONCAT(@query, ' AND PRIX <= ', @prixMaxTol);
+    END IF;
+
+    -- Filtrer par recherche dans le nom et la description
+    IF p_recherche IS NOT NULL AND p_recherche != '' THEN
+        SET @query = CONCAT(@query, ' AND (NOMPRODUIT LIKE "%', p_recherche, '%" OR DESCRIPTION LIKE "%', p_recherche, '%")');
     END IF;
 
     -- Trier les résultats
