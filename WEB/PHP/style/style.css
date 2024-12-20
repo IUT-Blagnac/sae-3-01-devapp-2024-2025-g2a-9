@@ -545,3 +545,52 @@ a.sidebar-link:hover {
         width: 80px; /* Réduire la taille de l'image sur les petits écrans */
     }
 }
+
+
+/* ----------------------------------------------------------------------------- 
+         MAGASINS
+   ----------------------------------------------------------------------------- */
+
+/* Fenêtre de détails */
+#details-box {
+    width: 300px; /* Largeur fixe pour la boîte */
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    z-index: 1000;
+    display: none; /* Cachée par défaut */
+    margin-right: 10px; /* Un petit espace entre la carte et la boîte */
+    overflow-y: auto; /* Permet de défiler si le contenu est trop long */
+    position: absolute; /* Positionnement absolu pour pouvoir le déplacer */
+    cursor: move; /* Curseur de déplacement */
+}
+
+/* Titre de la fenêtre de détails */
+#details-box h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Contenu du texte dans la fenêtre */
+#details-box p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Bouton de fermeture */
+#close-details {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+#close-details:hover {
+    color: #333;
+}
+
