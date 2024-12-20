@@ -37,6 +37,7 @@ require_once "./include/head.php";
         $prixMin = isset($_GET['prixMin']) ? $_GET['prixMin'] : null;
         $prixMax = isset($_GET['prixMax']) ? $_GET['prixMax'] : null;
         $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
+        $recherche = isset($_GET['recherche']) ? $_GET['recherche'] : null; // Nouveau paramètre de recherche
 
         // Récupérer les catégories filles si idCateg est défini
         $categories = [];
@@ -59,14 +60,15 @@ require_once "./include/head.php";
         $categoriesStr = !empty($categories) ? implode(',', $categories) : null;
 
         // Appeler la procédure stockée
-        $query = $conn->prepare("CALL ObtenirProduitsFiltres(?, ?, ?, ?, ?, ?)");
+        $query = $conn->prepare("CALL ObtenirProduitsFiltres(?, ?, ?, ?, ?, ?, ?)"); // Ajout d'un argument supplémentaire
         $query->execute([
             $categoriesStr,
             $energie ?: null, // Remplace une chaîne vide par NULL
             $taille,
             $prixMin,
             $prixMax,
-            $sort ?: null // Remplace une chaîne vide par NULL
+            $sort ?: null, // Remplace une chaîne vide par NULL
+            $recherche ?: null // Paramètre de recherche
         ]);
         $produits = $query->fetchAll(PDO::FETCH_ASSOC);
         $query->closeCursor();
@@ -112,6 +114,10 @@ require_once "./include/head.php";
                         <option value="asc" <?php if ($sort === 'asc') echo 'selected'; ?>>Croissant</option>
                         <option value="desc" <?php if ($sort === 'desc') echo 'selected'; ?>>Décroissant</option>
                     </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="recherche" class="form-label">Recherche</label>
+                    <input type="text" id="recherche" name="recherche" class="form-control" value="<?php echo htmlspecialchars($recherche); ?>">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Filtrer</button>
