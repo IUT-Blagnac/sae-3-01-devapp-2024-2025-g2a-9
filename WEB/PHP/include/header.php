@@ -59,7 +59,7 @@
                 if (!isset($_SESSION['user'])) { 
                     echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Se connecter</a></li>";
                 } else {
-                    if ($_SESSION['url'] == "consultCompte.php" || $_SESSION['url'] == "modifierCompte.php") {
+                    if ($_SESSION['url'] == "consultCompte.php" || $_SESSION['url'] == "modifierCompte.php" || isset($_SESSION['admin'])) {
                         echo '<li><a class="nav-link" href="deconnexion.php">Se déconnecter</a></li>';
                     } else {
                         echo '<li><a class="nav-link" href="consultCompte.php">Compte</a></li>';
