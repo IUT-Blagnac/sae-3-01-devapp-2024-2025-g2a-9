@@ -32,10 +32,29 @@
         </div>
 
         <!-- Liens à droite -->
+        <?php session_start(); ?>
+
         <ul class="header-links list-unstyled d-flex align-items-center ms-auto">
-            <li><a class="nav-link" href="consultMagasins.php">Magasins</a></li>
             <?php
-                session_start();
+            if (isset($_SESSION['admin'])) { 
+            ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ADMIN
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                        <li><a class="dropdown-item" href="gestionCategories.php">Gestion catégories</a></li>
+                        <li><a class="dropdown-item" href="gestionClients.php">Gestion clients</a></li>
+                        <li><a class="dropdown-item" href="gestionProduits.php">Gestion produits</a></li>
+                    </ul>
+                </li>
+            <?php
+            }
+            ?>
+
+            <li><a class="nav-link" href="consultMagasins.php">Magasins</a></li>
+            
+            <?php
                 $_SESSION['url'] = basename($_SERVER['PHP_SELF']);// Enregistre le fichier php actuel
                 if (!isset($_SESSION['user'])) { 
                     echo "<li><a class=\"nav-link\" href=\"formConnexion.php\">Se connecter</a></li>";
