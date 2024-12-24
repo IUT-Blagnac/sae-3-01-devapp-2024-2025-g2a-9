@@ -99,11 +99,11 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 === Partie IoT (Tous les liens à changer)
 
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Application finale]
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/IOT/Application[Application finale]
 
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Utilisateur]
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/Documentation[Documentation Utilisateur]
 
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Technique] 
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/Documentation[Documentation Technique] 
 
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Cahier de Recettes (Tests)]
 
