@@ -131,7 +131,7 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 === Partie WEB
 
--> http://lien.du.site[Site Web]
+-> http://193.54.227.208/~R2024SAE3005/[Site Web]
 
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Utilisateur]
 
