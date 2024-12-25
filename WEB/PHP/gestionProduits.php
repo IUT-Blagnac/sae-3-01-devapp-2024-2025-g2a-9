@@ -157,7 +157,71 @@
                                     echo '</div>';
                                 }
                             ?>
-                            <!-- form pour ajouter -->
+                            
+                            <!-- form pour ajouter un produit -->
+                            <form method="POST" id="ajoutProduit">
+                                <input type="hidden" name="form_name" value="ajoutProduit">
+
+                                <div class="mb-3">
+                                    <label for="nomProduit" class="form-label">Nom du produit :</label>
+                                    <input type="text" name="nomProduit" id="nomProduit" class="form-control" required maxlength="30">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="categorie" class="form-label">Catégorie :</label>
+                                    <select name="idCategorie" id="categorie" class="form-select" required>
+                                        <?php
+                                        $reqCategories = $conn->prepare("SELECT IDCATEGORIE, NOMCATEGORIE FROM CATEGORIE;");
+                                        $reqCategories->execute();
+                                        foreach ($reqCategories as $categorie) {
+                                            $selected = ($categorie['IDCATEGORIE'] == $idCategorie) ? 'selected' : '';
+                                            echo "<option value=\"{$categorie['IDCATEGORIE']}\" $selected>{$categorie['NOMCATEGORIE']}</option>";
+                                        }
+                                        $reqCategories->closeCursor();
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="prix" class="form-label">Prix (€) :</label>
+                                    <input type="number" name="prix" id="prix" class="form-control" step="0.01" min="0" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description :</label>
+                                    <textarea name="description" id="description" class="form-control" maxlength="200"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="taille" class="form-label">Taille :</label>
+                                    <input type="text" name="taille" id="taille" class="form-control" maxlength="30">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="energie" class="form-label">Énergie :</label>
+                                    <select name="energie" id="energie" class="form-select" required>
+                                        <?php
+                                        $energies = ['Electrique', 'Diesel', 'Essence', 'Manuel'];
+                                        foreach ($energies as $energieOption) {
+                                            $selected = ($energieOption == isset($energie)) ? 'selected' : '';
+                                            echo "<option value=\"$energieOption\" $selected>$energieOption</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="stockDisponible" class="form-label">Stock disponible :</label>
+                                    <input type="number" name="stockDisponible" id="stockDisponible" class="form-control" min="1" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="stockLimite" class="form-label">Stock limite :</label>
+                                    <input type="number" name="stockLimite" id="stockLimite" class="form-control" min="1" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Ajouter le produit</button>
+                            </form>
                     </div>
 
                     <!-- Tab modification produit -->
@@ -288,7 +352,103 @@
                     <!-- Tab suppression produit -->
                     <div class="tab-pane fade" id="supprimerProdPane" role="tabpanel" aria-labelledby="supprimerProdTab">
                         <h2 class="mb-4">Supprimer un produit :</h2>
-                        
+                        <!-- Selection du produit -->
+                        <div class="col d-flex justify-content-between align-items-center mb-3">
+                            <p class="card-text">Choisissez votre produit :</p>
+                            <form method="POST" id="produitForm">
+                                <input type="hidden" name="form_name" value="produitForm">
+                                <select name="produit" class="form-select w-100" aria-label="Liste des produits" onchange="this.form.submit();">
+                                    <?php
+                                    $reqProduits = $conn->prepare("SELECT * FROM PRODUIT ORDER BY NOMPRODUIT ASC;");
+                                    $reqProduits->execute();
+                                    $selectedProduit = $_POST['produit'] ?? null;
+
+                                    foreach ($reqProduits as $produit) {
+                                        // Construire la valeur concaténée contenant les données du produit
+                                        $produitData = implode('|', [
+                                            $produit['IDPRODUIT'],
+                                            $produit['IDCATEGORIE'],
+                                            $produit['NOMPRODUIT'],
+                                            $produit['PRIX'],
+                                            $produit['DESCRIPTION'],
+                                            $produit['TAILLE'],
+                                            $produit['ENERGIE'],
+                                            $produit['STOCKDISPONIBLE'],
+                                            $produit['STOCKLIMITE']
+                                        ]);
+                                        // Marquer le produit sélectionné par défaut
+                                        $selected = ($selectedProduit == $produitData || (!$selectedProduit && $index == 0)) ? 'selected' : '';
+                                        if (!$selectedProduit && $index == 0) {
+                                            $selectedProduit = $produitData;
+                                        }
+
+                                        echo "<option value='$produitData' $selected>" . $produit['IDPRODUIT'] . " - " . htmlspecialchars($produit['NOMPRODUIT']) . "</option>";
+                                    }
+                                    $reqProduits->closeCursor();
+                                    ?>
+                                </select>
+                            </form>
+                        </div>
+                        <!-- Affichage du produit selectionné -->
+                        <?php if (!empty($selectedProduit)) : ?>
+                            <?php
+                                // Extraire les données du produit selectionné
+                                [$idProduit, $idCategorie, $nomProduit, $prix, $description, $taille, $energie, $stockDisponible, $stockLimite] = explode('|', $selectedProduit);
+                            ?>
+
+                            <!-- Formulaire pour supprimer le produit sélectionné -->
+                            <form method="POST" id="suppressionProduit">
+                                <input type="hidden" name="form_name" value="suppressionProduit">
+
+                                <div class="mb-3">
+                                    <label for="idProduit" class="form-label">ID Produit :</label>
+                                    <input type="text" name="idProduit" id="idProduit" class="form-control" value="<?= htmlspecialchars($idProduit) ?>" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="nomProduit" class="form-label">Nom du produit :</label>
+                                    <input type="text" name="nomProduit" id="nomProduit" class="form-control" value="<?= htmlspecialchars($nomProduit) ?>" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="prix" class="form-label">Prix (€) :</label>
+                                    <input type="number" name="prix" id="prix" class="form-control" step="0.01" min="0" value="<?= htmlspecialchars($prix) ?>" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description :</label>
+                                    <textarea name="description" id="description" class="form-control" maxlength="200" readonly><?= htmlspecialchars($description) ?></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="taille" class="form-label">Taille :</label>
+                                    <input type="text" name="taille" id="taille" class="form-control" value="<?= htmlspecialchars($taille) ?>" maxlength="30" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="energie" class="form-label">Énergie :</label>
+                                    <input type="text" name="taille" id="taille" class="form-control" value="<?= htmlspecialchars($energie) ?>" maxlength="30" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="stockDisponible" class="form-label">Stock disponible :</label>
+                                    <input type="number" name="stockDisponible" id="stockDisponible" class="form-control" min="1" value="<?= htmlspecialchars($stockDisponible) ?>" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="stockLimite" class="form-label">Stock limite :</label>
+                                    <input type="number" name="stockLimite" id="stockLimite" class="form-control" min="1" value="<?= htmlspecialchars($stockLimite) ?>" readonly>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Supprimer ce produit</button>
+                            </form>
+                            <?php if (isset($message)) : ?>
+                                <p class="mt-3"><?= htmlspecialchars($message) ?></p>
+                            <?php endif; ?>
+                            
+                        <?php else : ?>
+                            <p class="text-muted">Aucun produit disponible pour l'instant.</p>
+                        <?php endif; ?>
                         
                     </div>
                 </div>
