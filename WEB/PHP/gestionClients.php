@@ -46,7 +46,7 @@
             $reqmail = $conn->prepare("SELECT * FROM UTILISATEUR WHERE mail = ?") ;
             $reqmail->execute([$mail]);
 
-            if ($user = $reqmail->fetch()) {
+            if ($reqmail->rowCount() > 0) {
                 $message = "Compte déjà existant pour cette adresse";
             } else {
                 $password = password_hash($mdp, PASSWORD_DEFAULT);
@@ -54,6 +54,8 @@
                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'CLIENT')") ;
                 $req->execute([$nom, $prenom, $civilite, $dateN, $mail, $Numtel, $password, $pays, $adresse]);
                 $message = "Le client a été ajouté avec succès.";
+                $_SESSION['message'] = "Le client a été ajouté avec succès.";
+                $_SESSION['message_type'] = 'success';
             }
         }
     }
@@ -211,6 +213,13 @@
 
                             <button type="submit" class="btn btn-primary">Ajouter le client</button>
                         </form>
+
+                        <?php if (isset($message)) : ?>
+                            <div class="alert alert-success mt-3" role="alert">
+                                <?= htmlspecialchars($message) ?>
+                            </div>
+                        <?php endif; ?>
+
                     </div>
 
                     <!-- Tab modification client -->
