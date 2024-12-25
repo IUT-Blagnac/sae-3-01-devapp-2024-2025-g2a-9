@@ -36,8 +36,8 @@
                 </div>
                 <!-- Boutons navigation (tab) -->
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link d-flex align-items-center mb-2 active" id="infoPersoTab" data-bs-toggle="tab" data-bs-target="#infoPersoPane" type="button" role="tab" aria-controls="infoPersoPane" aria-selected="true"><i class="bi bi-file-person me-3"></i>Informations personnelles</button>
-                    <button class="nav-link d-flex align-items-center mb-2" id="commandesTab" data-bs-toggle="tab" data-bs-target="#commandesPane" type="button" role="tab" aria-controls="commandesPane" aria-selected="false"><i class="bi bi-cart-check me-3"></i>Mes commandes</button>
+                    <button class="nav-link d-flex align-items-center mb-2 <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'commandeForm') ? '' : 'active'; ?>" id="infoPersoTab" data-bs-toggle="tab" data-bs-target="#infoPersoPane" type="button" role="tab" aria-controls="infoPersoPane" aria-selected="true"><i class="bi bi-file-person me-3"></i>Informations personnelles</button>
+                    <button class="nav-link d-flex align-items-center mb-2 <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'commandeForm') ? 'active' : ''; ?>" id="commandesTab" data-bs-toggle="tab" data-bs-target="#commandesPane" type="button" role="tab" aria-controls="commandesPane" aria-selected="false"><i class="bi bi-cart-check me-3"></i>Mes commandes</button>
                     <button class="nav-link d-flex align-items-center mb-2" id="favorisTab" data-bs-toggle="tab" data-bs-target="#favorisPane" type="button" role="tab" aria-controls="favorisPane" aria-selected="false"><i class="bi bi-heart me-3"></i>Mes produits favoris</button>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                 <!-- Contenu des tabs -->
                 <div class="tab-content" id="tab-content" aria-orientation="vertical">
                     <!-- Tab infos personnelles -->
-                    <div class="tab-pane fade show active" id="infoPersoPane" role="tabpanel" aria-labelledby="infoPersoTab">
+                    <div class="tab-pane fade <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'commandeForm') ? '' : 'show active'; ?>" id="infoPersoPane" role="tabpanel" aria-labelledby="infoPersoTab">
                         <h2 class="mb-4">Voici vos informations personnelles :</h2>
                             <?php
                                 if(isset($_GET['msgErreur'])){
@@ -183,17 +183,18 @@
                             </form>
                     </div>
                     <!-- Tab commandes -->
-                    <div class="tab-pane fade" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
+                    <div class="tab-pane fade <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'commandeForm') ? 'show active' : ''; ?>" id="commandesPane" role="tabpanel" aria-labelledby="commandesTab">
                         <h2 class="mb-4">Vos commandes :</h2> 
                         <!-- Selection de la commande -->
                         <div class="col d-flex justify-content-between align-items-center mb-3">
                             <p class="card-text">Choisissez votre commande :</p>
-                            <form method="GET" id="commandeForm">
+                            <form method="POST" id="commandeForm">
+                                <input type="hidden" name="form_name" value="commandeForm">
                                 <select name="commande" class="form-select w-100" aria-label="Liste des commandes" onchange="document.getElementById('commandeForm').submit();">
                                     <?php
                                     $reqCommandes = $conn->prepare("SELECT * FROM COMMANDE WHERE IDUTILISATEUR = ? ORDER BY DATECOMMANDE DESC;");
                                     $reqCommandes->execute([$_SESSION['user']]);
-                                    $selectedCommande = $_GET['commande'] ?? null;
+                                    $selectedCommande = $_POST['commande'] ?? null;
 
                                     foreach ($reqCommandes as $index => $commande) {
                                         // Construire la valeur concaténé contenant les données de la commande
