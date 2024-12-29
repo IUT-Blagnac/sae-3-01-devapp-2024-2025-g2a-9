@@ -92,9 +92,9 @@
         }
     }
 
-    // suppression produit
+    // Suppression produit
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idProduit']) && isset($_POST['form_name']) && $_POST['form_name'] === 'suppressionProduit') {
-        $idProduit = $_POST['idProduit'];
+        $idProduit = (int)$_POST['idProduit']; // Conversion en entier pour éviter des problèmes de sécurité
 
         try {
             $deleteQuery = $conn->prepare("
@@ -102,13 +102,11 @@
                 WHERE IDPRODUIT = :idProduit
             ");
 
-            $deleteQuery->execute([
-                ':idProduit' => $idProduit
-            ]);
+            $deleteQuery->execute([':idProduit' => $idProduit]);
 
             $message = "Le produit a été supprimé avec succès.";
         } catch (PDOException $e) {
-            $message = "Erreur lors de la suppression du produit : " . $e->getMessage();
+            $message = "Erreur lors de la suppression du produit : " . htmlspecialchars($e->getMessage());
         }
     }
 
@@ -117,7 +115,24 @@
 
     <!-- Contenu principal -->
     <main role="main" class="container my-5">
-        
+        <?php if (isset($message)) : ?>
+            <?php 
+                // Extraire le premier mot du message
+                $firstWord = strtolower(explode(' ', $message)[0]);
+                
+                // Vérifier si le premier mot est 'erreur'
+                if ($firstWord === 'Erreur') {
+                    $alertClass = 'alert-danger'; // Rouge pour une erreur
+                } else {
+                    $alertClass = 'alert-success'; // Vert pour un message réussi
+                }
+            ?>
+            <center>
+                <strong>
+                    <p class="alert <?= $alertClass ?> mb-4"><?= htmlspecialchars($message) ?></p>
+                </strong>
+            </center>
+        <?php endif; ?>
         <div class="row gx-3 gx-lg-5">
             <div class="col-3 me-3 me-lg-5">
                 <!-- Card Utilisateur -->
@@ -354,101 +369,72 @@
                         <h2 class="mb-4">Supprimer un produit :</h2>
                         <!-- Selection du produit -->
                         <div class="col d-flex justify-content-between align-items-center mb-3">
-                            <p class="card-text">Choisissez votre produit :</p>
-                            <form method="POST" id="produitForm">
-                                <input type="hidden" name="form_name" value="produitForm">
-                                <select name="produit" class="form-select w-100" aria-label="Liste des produits" onchange="this.form.submit();">
-                                    <?php
-                                    $reqProduits = $conn->prepare("SELECT * FROM PRODUIT ORDER BY NOMPRODUIT ASC;");
-                                    $reqProduits->execute();
-                                    $selectedProduit = $_POST['produit'] ?? null;
+                            
+                            <?php if (!empty($selectedProduit)) : ?>
+                                <!-- Formulaire pour supprimer le produit sélectionné -->
+                                <form method="POST" id="suppressionProduit" class="w-100">
+                                    <input type="hidden" name="form_name" value="suppressionProduit">
+                                    
+                                    <label for="rechercheProduitInput" class="card-text">Recherchez un produit :</label>
+                                    <input 
+                                        list="produitList" 
+                                        id="rechercheProduitInput" 
+                                        name="idProduit" 
+                                        class="form-control form-control-lg w-100 mb-3" 
+                                        placeholder="Tapez pour rechercher..."
+                                        required
+                                    >
 
-                                    foreach ($reqProduits as $produit) {
-                                        // Construire la valeur concaténée contenant les données du produit
-                                        $produitData = implode('|', [
-                                            $produit['IDPRODUIT'],
-                                            $produit['IDCATEGORIE'],
-                                            $produit['NOMPRODUIT'],
-                                            $produit['PRIX'],
-                                            $produit['DESCRIPTION'],
-                                            $produit['TAILLE'],
-                                            $produit['ENERGIE'],
-                                            $produit['STOCKDISPONIBLE'],
-                                            $produit['STOCKLIMITE']
-                                        ]);
-                                        // Marquer le produit sélectionné par défaut
-                                        $selected = ($selectedProduit == $produitData || (!$selectedProduit && $index == 0)) ? 'selected' : '';
-                                        if (!$selectedProduit && $index == 0) {
-                                            $selectedProduit = $produitData;
+                                    <datalist id="produitList">
+                                        <?php
+                                        $reqProduits = $conn->prepare("SELECT IDPRODUIT, NOMPRODUIT FROM PRODUIT ORDER BY NOMPRODUIT ASC;");
+                                        $reqProduits->execute();
+
+                                        foreach ($reqProduits as $produit) {
+                                            echo "<option value='" . htmlspecialchars($produit['IDPRODUIT']) . "'>" 
+                                                . htmlspecialchars($produit['NOMPRODUIT']) . 
+                                                "</option>";
+                                        }
+                                        $reqProduits->closeCursor();
+                                        ?>
+                                    </datalist>
+
+                                    <button type="submit" class="btn btn-primary btn-lg mt-3">Supprimer ce produit</button>
+                                </form>
+
+                                <script>
+                                    document.getElementById('suppressionProduit').addEventListener('submit', function(event) {
+                                        const inputProduit = document.getElementById('rechercheProduitInput');
+                                        const produitList = document.getElementById('produitList');
+                                        const productId = inputProduit.value.trim();
+                                        
+                                        let validProduct = false;
+
+                                        // Parcourir toutes les options du datalist et vérifier si l'ID correspond
+                                        for (let option of produitList.options) {
+                                            if (option.value === productId) {
+                                                validProduct = true;
+                                                break;
+                                            }
                                         }
 
-                                        echo "<option value='$produitData' $selected>" . $produit['IDPRODUIT'] . " - " . htmlspecialchars($produit['NOMPRODUIT']) . "</option>";
-                                    }
-                                    $reqProduits->closeCursor();
-                                    ?>
-                                </select>
-                            </form>
-                        </div>
-                        <!-- Affichage du produit selectionné -->
-                        <?php if (!empty($selectedProduit)) : ?>
-                            <?php
-                                // Extraire les données du produit selectionné
-                                [$idProduit, $idCategorie, $nomProduit, $prix, $description, $taille, $energie, $stockDisponible, $stockLimite] = explode('|', $selectedProduit);
-                            ?>
-
-                            <!-- Formulaire pour supprimer le produit sélectionné -->
-                            <form method="POST" id="suppressionProduit">
-                                <input type="hidden" name="form_name" value="suppressionProduit">
-
-                                <div class="mb-3">
-                                    <label for="idProduit" class="form-label">ID Produit :</label>
-                                    <input type="text" name="idProduit" id="idProduit" class="form-control" value="<?= htmlspecialchars($idProduit) ?>" readonly>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="nomProduit" class="form-label">Nom du produit :</label>
-                                    <input type="text" name="nomProduit" id="nomProduit" class="form-control" value="<?= htmlspecialchars($nomProduit) ?>" readonly>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="prix" class="form-label">Prix (€) :</label>
-                                    <input type="number" name="prix" id="prix" class="form-control" step="0.01" min="0" value="<?= htmlspecialchars($prix) ?>" readonly>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">Description :</label>
-                                    <textarea name="description" id="description" class="form-control" maxlength="200" readonly><?= htmlspecialchars($description) ?></textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="taille" class="form-label">Taille :</label>
-                                    <input type="text" name="taille" id="taille" class="form-control" value="<?= htmlspecialchars($taille) ?>" maxlength="30" readonly>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="energie" class="form-label">Énergie :</label>
-                                    <input type="text" name="taille" id="taille" class="form-control" value="<?= htmlspecialchars($energie) ?>" maxlength="30" readonly>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="stockDisponible" class="form-label">Stock disponible :</label>
-                                    <input type="number" name="stockDisponible" id="stockDisponible" class="form-control" min="1" value="<?= htmlspecialchars($stockDisponible) ?>" readonly>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="stockLimite" class="form-label">Stock limite :</label>
-                                    <input type="number" name="stockLimite" id="stockLimite" class="form-control" min="1" value="<?= htmlspecialchars($stockLimite) ?>" readonly>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Supprimer ce produit</button>
-                            </form>
-                            <?php if (isset($message)) : ?>
-                                <p class="mt-3"><?= htmlspecialchars($message) ?></p>
+                                        if (!validProduct) {
+                                            alert("Ce produit n'existe pas dans la liste. Veuillez choisir un produit valide.");
+                                            event.preventDefault(); // Empêche l'envoi du formulaire si l'ID n'est pas valide
+                                        } else {
+                                            // Demander confirmation avant de soumettre le formulaire
+                                            const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce produit ?");
+                                            if (!confirmation) {
+                                                event.preventDefault(); // Empêche la suppression si l'utilisateur annule
+                                            }
+                                        }
+                                    });
+                                </script>
+                                
+                            <?php else : ?>
+                                <p class="text-muted">Aucun produit disponible pour l'instant.</p>
                             <?php endif; ?>
-                            
-                        <?php else : ?>
-                            <p class="text-muted">Aucun produit disponible pour l'instant.</p>
-                        <?php endif; ?>
+                        </div>
                         
                     </div>
                 </div>
