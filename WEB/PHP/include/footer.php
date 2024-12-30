@@ -8,7 +8,7 @@
         </div>
 
         <ul class="list-unstyled footer-links mb-4">
-            <li><a href="#">À propos</a></li>
+            <li><a href="apropos.php">À propos</a></li>
             <li><a href="#">Services</a></li>
             <li><a href="#">Carrières</a></li>
             <li><a href="#">FAQ</a></li>
