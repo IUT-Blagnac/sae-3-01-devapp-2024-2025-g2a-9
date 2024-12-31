@@ -17,7 +17,9 @@
         </ul>
 
         <div class="copyright">
-          <p class="mb-0"><small>© 2024 Nautic Horizon. All Rights Reserved.</small></p>
+            <p class="mb-0">
+                <small><a href="easteregg.php" style="text-decoration: none; color: inherit; cursor: not-allowed;">&copy;</a> 2024 Nautic Horizon. All Rights Reserved.</small>
+            </p>
         </div>
 
       </div>
