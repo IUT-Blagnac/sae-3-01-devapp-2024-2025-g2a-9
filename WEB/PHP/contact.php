@@ -6,6 +6,13 @@ require_once "./include/head.php";
 <?php
     require_once "./include/header.php";
     require_once "./include/menu.php";
+
+    // Vérifier si le paramètre GET 'message' existe et sa valeur est 'merci'
+    if (isset($_GET['message']) && $_GET['message'] == 'merci') {
+      $thankYouMessage = "Merci pour votre message !";
+    } else {
+      $thankYouMessage = "";
+    }
 ?>
 
 <style>
@@ -123,6 +130,66 @@ textarea.app-form-control {
   color:rgb(0, 70, 145);
 }
 
+/* Style du message de remerciement */
+.thank-you-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 7rem;
+}
+
+/* Style du texte */
+.thank-you-message h2 {
+  color: #fff;
+  font-size: 5em;
+  font-weight: bold;
+  margin: 0;
+  position: absolute;
+}
+
+
+.thank-you-message h2:nth-child(1) {
+	color: transparent;
+	-webkit-text-stroke: 2px #03a9f4;
+}
+
+.thank-you-message h2:nth-child(2) {
+	color: #03a9f4;
+	animation: animate 4s ease-in-out infinite;
+}
+
+@keyframes animate {
+	0%,
+	100% {
+		clip-path: polygon(
+			0% 45%,
+			16% 44%,
+			33% 50%,
+			54% 60%,
+			70% 61%,
+			84% 59%,
+			100% 52%,
+			100% 100%,
+			0% 100%
+		);
+	}
+
+	50% {
+		clip-path: polygon(
+			0% 60%,
+			15% 65%,
+			34% 66%,
+			51% 62%,
+			67% 50%,
+			84% 45%,
+			100% 46%,
+			100% 100%,
+			0% 100%
+		);
+	}
+}
+
 @media screen and (max-width: 520px) {
   .screen-body {
     flex-direction: column;
@@ -159,6 +226,13 @@ textarea.app-form-control {
     <!-- Contenu principal -->
     <main role="main" class="container my-5">
         <div class="background">
+            <?php if ($thankYouMessage): ?>
+                <!-- Afficher le message de remerciement au lieu du formulaire -->
+                <div class="thank-you-message">
+                    <h2><?php echo $thankYouMessage; ?></h2>
+                    <h2><?php echo $thankYouMessage; ?></h2>
+                </div>
+            <?php else : ?>
             <div class="container">
                 <div class="screen">
                     <div class="screen-body">
@@ -169,7 +243,9 @@ textarea.app-form-control {
                             </div>
                         </div>
                         <div class="screen-body-item">
-                            <form class="app-form" method="POST" action="https://formspree.io/f/mzzzjojz">
+                            <form class="app-form" method="POST" action="https://formsubmit.co/mbaypalparis@gmail.com">
+                                <input type="hidden" name="_captcha" value="false">
+                                <input type="hidden" name="_next" value="http://193.54.227.208/~R2024SAE3005/WEB/PHP/contact.php?message=merci">
                                 <div class="app-form-group">
                                     <input class="app-form-control" name="name" placeholder="NOM" required>
                                 </div>
@@ -190,6 +266,7 @@ textarea.app-form-control {
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </main>
 
