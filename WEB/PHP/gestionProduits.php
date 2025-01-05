@@ -355,9 +355,6 @@
 
                                 <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                             </form>
-                            <?php if (isset($message)) : ?>
-                                <p class="mt-3"><?= htmlspecialchars($message) ?></p>
-                            <?php endif; ?>
                             
                         <?php else : ?>
                             <p class="text-muted">Aucun produit disponible pour l'instant.</p>
