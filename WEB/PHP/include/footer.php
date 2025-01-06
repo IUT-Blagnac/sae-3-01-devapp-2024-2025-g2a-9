@@ -11,7 +11,6 @@
             <li><a href="apropos.php">À propos</a></li>
             <li><a href="#">Services</a></li>
             <li><a href="carrieres.php">Carrières</a></li>
-            <li><a href="#">FAQ</a></li>
             <li><a href="#">Mentions légales</a></li>
             <li><a href="contact.php">Contact</a></li>
         </ul>
