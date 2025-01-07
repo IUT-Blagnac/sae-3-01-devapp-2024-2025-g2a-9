@@ -116,7 +116,7 @@ require_once "./include/head.php";
         <!-- Section image du produit -->
         <div class="col-md-6">
             <div class="product-gallery">
-                <img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" 
+                <img src="./image/produit/prod<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" 
                      alt="<?= htmlspecialchars($produit['NOMPRODUIT']); ?>" 
                      class="img-fluid main-image">
             </div>
