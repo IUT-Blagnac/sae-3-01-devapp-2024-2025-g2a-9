@@ -22,7 +22,7 @@
                 $insertQuery = $conn->prepare("
                     INSERT INTO CATEGORIE (NOMCATEGORIE)
                     VALUES (:nomCategorie)
-                ");
+                ;");
 
                 $insertQuery->execute([
                     ':nomCategorie' => $nomCategorie
@@ -32,7 +32,7 @@
                 $insertQuery = $conn->prepare("
                     INSERT INTO CATEGORIE (IDCATEGPERE, NOMCATEGORIE)
                     VALUES (:idCategPere, :nomCategorie)
-                ");
+                ;");
                 $insertQuery->execute([
                     ':idCategPere' => $idCategPere,
                     ':nomCategorie' => $nomCategorie
@@ -46,15 +46,16 @@
     }
 
     // modification categorie
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idcategorie']) && isset($_POST['form_name']) && $_POST['form_name'] === 'modificationCategorie') {
-
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idCategorie']) && isset($_POST['form_name']) && $_POST['form_name'] === 'modificationCategorie') {
+        $idCategorie = $_POST['idCategorie'];
+        $nomCategorie = $_POST['nomCategorie'];
         try {
             if ($_POST['idCategPere'] === 'null') {
                 $updateQuery = $conn->prepare("
-                    UPDATE categorie
-                    SET NOMCATEGORIE = :nomCategorie,
+                    UPDATE CATEGORIE
+                    SET NOMCATEGORIE = :nomCategorie
                     WHERE IDCATEGORIE = :idCategorie
-                ");
+                ;");
 
                 $updateQuery->execute([
                     ':nomCategorie' => $nomCategorie,
@@ -63,11 +64,11 @@
             } else {
                 $idCategPere = $_POST['idCategPere'];
                 $updateQuery = $conn->prepare("
-                    UPDATE categorie
+                    UPDATE CATEGORIE
                     SET IDCATEGPERE = :idCategPere,
-                        NOMCATEGORIE = :nomCategorie,
+                        NOMCATEGORIE = :nomCategorie
                     WHERE IDCATEGORIE = :idCategorie
-                ");
+                ;");
                 $updateQuery->execute([
                     ':idCategPere' => $idCategPere,
                     ':nomCategorie' => $nomCategorie,
@@ -82,20 +83,20 @@
     }
 
     // Suppression categorie
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idcategorie']) && isset($_POST['form_name']) && $_POST['form_name'] === 'suppressionCategorie') {
-        $idcategorie = (int)$_POST['idcategorie']; // Conversion en entier pour éviter des problèmes de sécurité
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idCategorie']) && isset($_POST['form_name']) && $_POST['form_name'] === 'suppressionCategorie') {
+        $idCategorie = (int)$_POST['idCategorie']; // Conversion en entier pour éviter des problèmes de sécurité
 
         try {
             $deleteQuery = $conn->prepare("
-                DELETE FROM categorie
-                WHERE IDcategorie = :idcategorie
-            ");
+                DELETE FROM CATEGORIE
+                WHERE IDCATEGORIE = :idCategorie
+            ;");
 
-            $deleteQuery->execute([':idcategorie' => $idcategorie]);
+            $deleteQuery->execute([':idCategorie' => $idCategorie]);
 
-            $message = "Le categorie a été supprimé avec succès.";
+            $message = "Le categorie a été supprimée avec succès.";
         } catch (PDOException $e) {
-            $message = "Erreur lors de la suppression du categorie : " . htmlspecialchars($e->getMessage());
+            $message = "Erreur lors de la suppression de la catégorie : " . htmlspecialchars($e->getMessage());
         }
     }
 
@@ -242,21 +243,22 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="nomcategorie" class="form-label">Nom de la catégorie :</label>
-                                    <input type="text" name="nomcategorie" id="nomcategorie" class="form-control" value="<?= htmlspecialchars($nomCategorie) ?>" required maxlength="30">
+                                    <label for="nomCategorie" class="form-label">Nom de la catégorie :</label>
+                                    <input type="text" name="nomCategorie" id="nomCategorie" class="form-control" value="<?= htmlspecialchars($nomCategorie) ?>" required maxlength="30">
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="categPere" class="form-label">Catégorie Père :</label>
                                     <select name="idCategPere" id="categPere" class="form-select" required>
+                                        <option value="null">Aucune</option>
                                         <?php
-                                        $reqCategoriesModif = $conn->prepare("SELECT IDCATEGORIE, NOMCATEGORIE FROM CATEGORIE WHERE IDCATEGORIE IS NOT NULL;");
-                                        $reqCategoriesModif->execute();
-                                        foreach ($reqCategoriesModif as $categorie) {
+                                        $reqCategories = $conn->prepare("SELECT IDCATEGORIE, NOMCATEGORIE FROM CATEGORIE WHERE IDCATEGPERE IS NOT NULL;");
+                                        $reqCategories->execute();
+                                        foreach ($reqCategories as $categorie) {
                                             $selected = ($categorie['IDCATEGORIE'] == $idCategPere) ? 'selected' : '';
                                             echo "<option value=\"{$categorie['IDCATEGORIE']}\" $selected>{$categorie['NOMCATEGORIE']}</option>";
                                         }
-                                        $reqCategoriesModif->closeCursor();
+                                        $reqCategories->closeCursor();
                                         ?>
                                     </select>
                                 </div>
@@ -275,7 +277,7 @@
                         <!-- Selection du categorie -->
                         <div class="col d-flex justify-content-between align-items-center mb-3">
                             
-                            <?php if (!empty($selectedcategorie)) : ?>
+                            <?php if (!empty($selectedCategorie)) : ?>
                                 <!-- Formulaire pour supprimer la categorie sélectionnée -->
                                 <form method="POST" id="suppressionCategorie" class="w-100">
                                     <input type="hidden" name="form_name" value="suppressionCategorie">
@@ -340,7 +342,6 @@
                                 <p class="text-muted">Aucune catégorie disponible pour l'instant.</p>
                             <?php endif; ?>
                         </div>
-                        
                     </div>
                 </div>
             </div>
