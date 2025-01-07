@@ -8,141 +8,242 @@ require_once "./include/head.php";
     <?php
     require_once "./include/header.php";
     require_once "./include/menu.php";
+    require_once './include/connect.inc.php';
+
+    $query = $conn->prepare("SELECT * FROM PRODUIT ORDER BY IDPRODUIT ASC");
+    $query->execute();
+    $produits = $query->fetchAll(PDO::FETCH_ASSOC);
+    $query->closeCursor();
     ?>
+    
     <!-- Contenu principal -->
     <main role="main">
-    <center>
-        <img src="image/m3-banner.jpeg" class="d-block w-100">
-        <br>
-        <br>
-        <h2>OFFRE DU MOMENT</h2>
-        <p>Découvrez et profitez de nos meilleures offres sur l’ensemble de la gamme de Nautic Horizon</p>
-        <div id="carouselExampleDark" class="carousel carousel-dark slide bg-secondary" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+        <!-- Première section: Image en plein écran avec texte -->
+            <section class="first-section" style="position: relative; height: 75vh; background-image: url('image/bateau.jpg'); background-size: cover; background-position: center;">
+                <!-- Overlay sombre uniquement sur l'image -->
+                <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1;"></div>
+                <!-- Texte au-dessus de l'image -->
+                <div class="container-fluid h-100 d-flex justify-content-center align-items-center text-center text-white" style="position: relative; z-index: 2;">
+                    <div>
+                        <h3 class="display-6">Éloignez-vous de la vie urbaine</h3>
+                        <h1 class="display-4" style="font-weight: bold; font-size: 4rem;">Détendez votre esprit au large</h1>
+                    </div>
+                </div>
+            </section>
+
+        <!-- Deuxième section: Choisissez le bateau -->
+        <style>
+            /* Augmenter la taille des icônes de navigation */
+            .carousel-control-prev-icon, .carousel-control-next-icon {
+                width: 4rem;  /* Augmente la taille de l'icône */
+                height: 4rem; /* Augmente la hauteur de l'icône */
+                background-size: 100%, 100%; /* Assure que l'icône conserve sa forme */
+            }
+            
+            .carousel-control-prev,
+            .carousel-control-prev > span {
+                margin-right: 5rem !important;
+            }
+
+            .carousel-control-next,
+            .carousel-control-next > span {
+                margin-left: 5rem !important;
+            }
+
+            .carousel-item .card {
+                margin: 0 15px; /* Ajoute une marge de 15px à gauche et à droite */
+            }
+
+            .card {
+                overflow: hidden; /* Pour éviter que l'image dépasse les limites de la carte */
+                transition: transform 0.3s ease; /* Animation fluide */
+            }
+
+            .card:hover {
+                transform: scale(1.05); /* Augmente légèrement la taille de la carte */
+            }
+
+            .carousel-item {
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            @media (max-width: 767px) {
+                .carousel-inner .carousel-item > div {
+                    display: none;
+                }
+                .carousel-inner .carousel-item > div:first-child {
+                    display: block;
+                }
+            }
+
+            .carousel-inner .carousel-item.active,
+            .carousel-inner .carousel-item-next,
+            .carousel-inner .carousel-item-prev {
+                display: flex;
+            }
+
+            /* medium and up screens */
+            @media (min-width: 768px) {
+                
+                .carousel-inner .carousel-item-end.active,
+                .carousel-inner .carousel-item-next {
+                transform: translateX(25%);
+                }
+                
+                .carousel-inner .carousel-item-start.active, 
+                .carousel-inner .carousel-item-prev {
+                transform: translateX(-25%);
+                }
+            }
+
+            .carousel-inner .carousel-item-end,
+            .carousel-inner .carousel-item-start { 
+            transform: translateX(0);
+            }
+        </style>
+        <section class="second-section py-5">
+            <div class="container text-center my-3">
+                <div class="row mx-auto my-auto justify-content-center">
+                    <h2 class="my-5 display-6 font-weight-bold">Choisissez le bateau qui vous inspire</h2>
+                    <div id="recipeCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <?php
+                            $limiteProduits = array_intersect_key($produits, array_flip([8, 12, 15, 17, 19, 21, 22, 23]));
+                            $firstItem = true; // Variable pour identifier le premier produit
+                            foreach ($limiteProduits as $produit) :
+                            ?>
+                             <div class="carousel-item <?php if ($firstItem) { echo 'active'; $firstItem = false; } ?>">
+                                <!-- Envelopper toute la carte dans un lien cliquable -->
+                                <a href="detailProduit.php?id=<?= htmlspecialchars($produit['IDPRODUIT']); ?>" style="text-decoration: none; color: inherit;">
+                                    <div class="card" style="border: none; background-color: #F8F9FA;">
+                                        <!-- Affichage de l'image du produit -->
+                                        <img src="./image/produit/prod<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" 
+                                            class="card-img-top" 
+                                            style="width: 100%; height: 250px; object-fit: cover;"
+                                            alt="<?= htmlspecialchars($produit['NOMPRODUIT']); ?>">
+                                        <div class="card-body text-center">
+                                            <!-- Nom du produit -->
+                                            <h4 class="card-title" style="font-size: 1.6rem;"><?= htmlspecialchars($produit['NOMPRODUIT']); ?></h4>
+                                            <!-- Prix du produit -->
+                                            <p class="card-text">Prix : <?= number_format($produit['PRIX'], 2, ',', ' '); ?> €</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <a class="carousel-control-prev bg-transparent w-auto" href="#recipeCarousel" role="button" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </a>
+                        <a class="carousel-control-next bg-transparent w-auto" href="#recipeCarousel" role="button" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="carousel-inner w-100 ">
-                <div class="carousel-item active" data-bs-interval="10000">
-                    <img src="image/produit/test20.jpg" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Yacht</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=1" role="button">Voir plus</a>
+        </section>
+        <script>
+            let items = document.querySelectorAll('.carousel .carousel-item')
+            items.forEach((el) => {
+                const minPerSlide = 4
+                let next = el.nextElementSibling
+                for (var i=1; i<minPerSlide; i++) {
+                    if (!next) {
+                        // wrap carousel by using first child
+                        next = items[0]
+                    }
+                    let cloneChild = next.cloneNode(true)
+                    el.appendChild(cloneChild.children[0])
+                    next = next.nextElementSibling
+                }
+            })
+        </script>
+
+
+        <!-- Troisième section: Nos types de bateau proposés -->
+        <section class="third-section py-5" style="position: relative; background-image: url('image/bateau-interieur.jpg'); background-size: cover; background-position: center;">
+            <!-- Overlay sombre -->
+            <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1;"></div>
+
+            <div class="container text-center text-white" style="position: relative; z-index: 2;">
+                <h2 class="display-4">Nos types de bateau proposés</h2>
+                <div class="row mt-5">
+                    <!-- Type de bateau 1 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div class="card-body text-center" style="flex-grow: 1;">
+                                <h5 class="card-title font-weight-bold" style="font-size: 1.6rem;">Bateaux de transport</h5>
+                                <p class="card-text">Les bateaux de transport sont conçus pour transporter des passagers ou des marchandises sur de longues distances. Ils sont généralement équipés de moteurs puissants et sont conçus pour être robustes et spacieux.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="carousel-item" data-bs-interval="2000">
-                    <img src="image/produit/test21.jpg" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Yacht</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=2" role="button">Voir plus</a>
+                    <!-- Type de bateau 2 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div class="card-body text-center" style="flex-grow: 1;">
+                                <h5 class="card-title font-weight-bold" style="font-size: 1.6rem;">Bateaux de plaisance</h5>
+                                <p class="card-text">Les bateaux de plaisance sont Confortables et élégants, conçus pour offrir une expérience agréable en mer ou sur des plans d'eau tranquilles, permettant ainsi de profiter pleinement de moments de détente en toute sérénité.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="image/produit/test22.jpg" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Jetski</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=3" role="button">Voir plus</a>
+                    <!-- Type de bateau 3 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div class="card-body text-center" style="flex-grow: 1;">
+                                <h5 class="card-title font-weight-bold" style="font-size: 1.6rem;">Bateaux de loisirs</h5>
+                                <p class="card-text">Les bateaux de loisirs sont parfaits pour des activités comme la pêche, la baignade ou même la navigation tranquille. Polyvalents, ils offrent un excellent rapport qualité-prix et sont parfaits pour ceux qui recherchent à la fois confort et fonctionnalité.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <br>
-        <br>
-        <h2>Découvrez aussi...</h2>
-        <p>Notre gamme professionnel</p>
-        <br>
-        <br>
-        <div id="pro" class="carousel carousel-dark slide bg-secondary" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#pro" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#pro" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#pro" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner w-100 ">
-                <div class="carousel-item active" data-bs-interval="10000">
-                    <img src="image/produit/test30.jpg" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Tanker</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=5" role="button">Voir plus</a>
+                    <!-- Type de bateau 4 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div class="card-body text-center" style="flex-grow: 1;">
+                                <h5 class="card-title font-weight-bold" style="font-size: 1.6rem;">Bateaux de pêche</h5>
+                                <p class="card-text">Les bateaux de pêche sont spécialement conçus pour les passionnés de pêche. Avec des caractéristiques comme des espaces de rangement et des plateformes de pêche, ils assurent confort et efficacité lors de vos sorties en mer.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="carousel-item" data-bs-interval="2000">
-                    <img src="image/produit/test31.png" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Porte Conteneur</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=6" role="button">Voir plus</a>
+                    <!-- Type de bateau 5 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div class="card-body text-center" style="flex-grow: 1;">
+                                <h5 class="card-title font-weight-bold" style="font-size: 1.6rem;">Bateaux non motorisés</h5>
+                                <p class="card-text">Les bateaux non motorisés sont parfaits pour ceux qui souhaitent une expérience calme et apaisante sur l'eau. Ces bateaux comprennent des canoës, kayaks et petites embarcations à pagaie, idéaux pour la détente et l'exploration.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="image/produit/test32.jpg" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Ferie</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=7" role="button">Voir plus</a>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#pro" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#pro" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <br>
-        <br>
-        <p>Notre gamme ecologique</p>
-        <br>
-        <br>
-        <div id="eco" class="carousel carousel-dark slide bg-secondary" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#eco" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#eco" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#eco" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner w-100 ">
-                <div class="carousel-item active" data-bs-interval="10000">
-                    <img src="image/produit/test40.jpg" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Voilier</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=9" role="button">Voir plus</a>
-                    </div>
-                </div>
-                <div class="carousel-item" data-bs-interval="2000">
-                    <img src="image/produit/test41.jpg" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Catamaran</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=10" role="button">Voir plus</a>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="image/produit/test42.jpg" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block text-white">
-                        <h5>Yacht electrique</h5>
-                        <a class="btn btn-primary" href="detailProduit.php?id=11" role="button">Voir plus</a>
+                    <!-- Type de bateau 6 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="background-color: rgba(0, 0, 0, 0.6); color: white; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div class="card-body text-center" style="flex-grow: 1;">
+                                <h5 class="card-title font-weight-bold" style="font-size: 1.6rem;">Bateaux spécialisés</h5>
+                                <p class="card-text">Les bateaux spécialisés sont conçus pour des utilisations spécifiques comme les excursions en mer ou les expéditions en eaux peu profondes. Chaque modèle est adapté à des besoins particuliers, offrant une performance optimale pour sa vocation.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#eco" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#eco" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </center>
+        </section>
+
+        <!-- Nouvelle section avec texte à gauche et image à droite -->
+        <section class="fourth-section py-5 my-5" style="background-color: #f8f9fa;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Texte et bouton à gauche -->
+                    <div class="col-md-6">
+                        <h2 class="display-6 font-weight-bold">Apprenez en plus sur nous</h2>
+                        <a href="apropos.php" class="btn btn-primary btn-lg mt-4">En savoir plus</a>
+                    </div>
+                    <!-- Image à droite -->
+                    <div class="col-md-6">
+                        <img src="image/logo_nautic.png" alt="Bateau en mer" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <script>
