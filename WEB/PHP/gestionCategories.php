@@ -16,23 +16,28 @@
 
     // Ajout categorie
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_name']) && $_POST['form_name'] === 'ajoutCategorie') {
-        if ($_POST['idCategPere'] === 'null') {
-            $idCategPere = "NULL";
-        } else {
-            $idCategPere = $_POST['idCategPere'];
-        }
         $nomCategorie = $_POST['nomCategorie'];
-
         try {
-            $insertQuery = $conn->prepare("
-                INSERT INTO CATEGORIE (IDCATEGPERE, NOMCATEGORIE)
-                VALUES (:idCategPere, :nomCategorie)
-            ");
+            if ($_POST['idCategPere'] === 'null') {
+                $insertQuery = $conn->prepare("
+                    INSERT INTO CATEGORIE (NOMCATEGORIE)
+                    VALUES (:nomCategorie)
+                ");
 
-            $insertQuery->execute([
-                ':idCategPere' => $idCategPere,
-                ':nomCategorie' => $nomcategorie
-            ]);
+                $insertQuery->execute([
+                    ':nomCategorie' => $nomCategorie
+                ]);
+            } else {
+                $idCategPere = $_POST['idCategPere'];
+                $insertQuery = $conn->prepare("
+                    INSERT INTO CATEGORIE (IDCATEGPERE, NOMCATEGORIE)
+                    VALUES (:idCategPere, :nomCategorie)
+                ");
+                $insertQuery->execute([
+                    ':idCategPere' => $idCategPere,
+                    ':nomCategorie' => $nomCategorie
+                ]);
+            }
 
             $message = "La catégorie a été ajoutée avec succès.";
         } catch (PDOException $e) {
@@ -42,26 +47,33 @@
 
     // modification categorie
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idcategorie']) && isset($_POST['form_name']) && $_POST['form_name'] === 'modificationCategorie') {
-        if ($_POST['idCategPere'] === 'null') {
-            $idCategPere = "NULL";
-        } else {
-            $idCategPere = $_POST['idCategPere'];
-        }
-        $nomCategorie = $_POST['nomCategorie'];
 
         try {
-            $updateQuery = $conn->prepare("
-                UPDATE categorie
-                SET IDCATEGPERE = :idCategPere,
-                    NOMCATEGORIE = :nomCategorie,
-                WHERE IDCATEGORIE = :idCategorie
-            ");
+            if ($_POST['idCategPere'] === 'null') {
+                $updateQuery = $conn->prepare("
+                    UPDATE categorie
+                    SET NOMCATEGORIE = :nomCategorie,
+                    WHERE IDCATEGORIE = :idCategorie
+                ");
 
-            $updateQuery->execute([
-                ':idCategPere' => $idCategPere,
-                ':nomCategorie' => $nomCategorie,
-                ':idCategorie' => $idCategorie
-            ]);
+                $updateQuery->execute([
+                    ':nomCategorie' => $nomCategorie,
+                    ':idCategorie' => $idCategorie
+                ]);
+            } else {
+                $idCategPere = $_POST['idCategPere'];
+                $updateQuery = $conn->prepare("
+                    UPDATE categorie
+                    SET IDCATEGPERE = :idCategPere,
+                        NOMCATEGORIE = :nomCategorie,
+                    WHERE IDCATEGORIE = :idCategorie
+                ");
+                $updateQuery->execute([
+                    ':idCategPere' => $idCategPere,
+                    ':nomCategorie' => $nomCategorie,
+                    ':idCategorie' => $idCategorie
+                ]);
+            }
 
             $message = "La catégorie a été modifiée avec succès.";
         } catch (PDOException $e) {
@@ -124,9 +136,9 @@
                 </div>
                 <!-- Boutons navigation (tab) -->
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link d-flex align-items-center mb-2 <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'categorieForm') ? '' : 'active'; ?>" id="ajouterCategTab" data-bs-toggle="tab" data-bs-target="#ajouterCategPane" type="button" role="tab" aria-controls="ajouterCategPane" aria-selected="true"><i class="bi bi-plus-circle me-3"></i>Ajouter un categorie</button>
-                    <button class="nav-link d-flex align-items-center mb-2 <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'categorieForm') ? 'active' : ''; ?>" id="modifierCategTab" data-bs-toggle="tab" data-bs-target="#modifierCategPane" type="button" role="tab" aria-controls="modifierCategPane" aria-selected="false"><i class="bi bi-pencil-square me-3"></i>Modifier un categorie</button>
-                    <button class="nav-link d-flex align-items-center mb-2" id="supprimerCategTab" data-bs-toggle="tab" data-bs-target="#supprimerCategPane" type="button" role="tab" aria-controls="supprimerCategPane" aria-selected="false"><i class="bi bi-trash me-3"></i>Supprimer un categorie</button>
+                    <button class="nav-link d-flex align-items-center mb-2 <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'categorieForm') ? '' : 'active'; ?>" id="ajouterCategTab" data-bs-toggle="tab" data-bs-target="#ajouterCategPane" type="button" role="tab" aria-controls="ajouterCategPane" aria-selected="true"><i class="bi bi-plus-circle me-3"></i>Ajouter une catégorie</button>
+                    <button class="nav-link d-flex align-items-center mb-2 <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'categorieForm') ? 'active' : ''; ?>" id="modifierCategTab" data-bs-toggle="tab" data-bs-target="#modifierCategPane" type="button" role="tab" aria-controls="modifierCategPane" aria-selected="false"><i class="bi bi-pencil-square me-3"></i>Modifier une catégorie</button>
+                    <button class="nav-link d-flex align-items-center mb-2" id="supprimerCategTab" data-bs-toggle="tab" data-bs-target="#supprimerCategPane" type="button" role="tab" aria-controls="supprimerCategPane" aria-selected="false"><i class="bi bi-trash me-3"></i>Supprimer une catégorie</button>
                 </div>
             </div>
             <div class="col-8">
@@ -155,13 +167,14 @@
                                 <input type="hidden" name="form_name" value="ajoutCategorie">
 
                                 <div class="mb-3">
-                                    <label for="nomcategorie" class="form-label">Nom de la categorie :</label>
-                                    <input type="text" name="nomcategorie" id="nomcategorie" class="form-control" required maxlength="30">
+                                    <label for="nomCategorie" class="form-label">Nom de la categorie :</label>
+                                    <input type="text" name="nomCategorie" id="nomCategorie" class="form-control" required maxlength="30">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="categorie" class="form-label">Catégorie père :</label>
-                                    <select name="idCategPere" id="categorie" class="form-select" required>
+                                    <label for="categPere" class="form-label">Catégorie père :</label>
+                                    <select name="idCategPere" id="categPere" class="form-select" required>
+                                        <option value="null">Aucune</option>
                                         <?php
                                         $reqCategories = $conn->prepare("SELECT IDCATEGORIE, NOMCATEGORIE FROM CATEGORIE;");
                                         $reqCategories->execute();
@@ -171,7 +184,6 @@
                                         }
                                         $reqCategories->closeCursor();
                                         ?>
-                                        <option value="null">Aucune</option>
                                     </select>
                                 </div>
 
@@ -189,7 +201,7 @@
                                 <input type="hidden" name="form_name" value="categorieForm">
                                 <select name="categorie" class="form-select w-100" aria-label="Liste des catégories" onchange="this.form.submit();">
                                     <?php
-                                    $reqCategories = $conn->prepare("SELECT * FROM categorie ORDER BY NOMCATEGORIE ASC;");
+                                    $reqCategories = $conn->prepare("SELECT * FROM CATEGORIE ORDER BY NOMCATEGORIE ASC;");
                                     $reqCategories->execute();
                                     $selectedCategorie = $_POST['categorie'] ?? null;
 
@@ -238,13 +250,13 @@
                                     <label for="categPere" class="form-label">Catégorie Père :</label>
                                     <select name="idCategPere" id="categPere" class="form-select" required>
                                         <?php
-                                        $reqCategories = $conn->prepare("SELECT IDCATEGORIE, NOMCATEGORIE FROM CATEGORIE;");
-                                        $reqCategories->execute();
-                                        foreach ($reqCategories as $categorie) {
+                                        $reqCategoriesModif = $conn->prepare("SELECT IDCATEGORIE, NOMCATEGORIE FROM CATEGORIE WHERE IDCATEGORIE IS NOT NULL;");
+                                        $reqCategoriesModif->execute();
+                                        foreach ($reqCategoriesModif as $categorie) {
                                             $selected = ($categorie['IDCATEGORIE'] == $idCategPere) ? 'selected' : '';
                                             echo "<option value=\"{$categorie['IDCATEGORIE']}\" $selected>{$categorie['NOMCATEGORIE']}</option>";
                                         }
-                                        $reqCategories->closeCursor();
+                                        $reqCategoriesModif->closeCursor();
                                         ?>
                                     </select>
                                 </div>
@@ -280,15 +292,15 @@
 
                                     <datalist id="categorieList">
                                         <?php
-                                        $reqCategories = $conn->prepare("SELECT IDCATEGORIE, NOMCATEGORIE FROM CATEGORIE ORDER BY NOMCATEGORIE ASC;");
-                                        $reqCategories->execute();
+                                        $reqCategoriesList = $conn->prepare("SELECT IDCATEGORIE, NOMCATEGORIE FROM CATEGORIE ORDER BY NOMCATEGORIE ASC;");
+                                        $reqCategoriesList->execute();
 
-                                        foreach ($reqCategories as $categorie) {
+                                        foreach ($reqCategoriesList as $categorie) {
                                             echo "<option value='" . htmlspecialchars($categorie['IDCATEGORIE']) . "'>" 
                                                 . htmlspecialchars($categorie['NOMCATEGORIE']) . 
                                                 "</option>";
                                         }
-                                        $reqCategories->closeCursor();
+                                        $reqCategoriesList->closeCursor();
                                         ?>
                                     </datalist>
 
@@ -325,7 +337,7 @@
                                 </script>
                                 
                             <?php else : ?>
-                                <p class="text-muted">Aucune categorie disponible pour l'instant.</p>
+                                <p class="text-muted">Aucune catégorie disponible pour l'instant.</p>
                             <?php endif; ?>
                         </div>
                         
