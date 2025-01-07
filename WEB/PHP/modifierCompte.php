@@ -1,10 +1,12 @@
 <?php
-$pageTitle = "Modification du compte";
-require_once "./include/head.php";
+    
+    $pageTitle = "Modification du compte";
+    require_once "./include/head.php";
 ?>
 <body>
     <?php
     require_once "./include/header.php";
+    require_once "./include/isLogin.php";
     require_once "./include/connect.inc.php";
 
     // Vérifiez si le formulaire a été soumis

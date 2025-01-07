@@ -158,7 +158,7 @@ require_once "./include/head.php";
                     if (!$isUserLoggedIn) {
                         echo '<a href="formConnexion.php" class="btn btn-primary">Connectez-vous pour passer votre commande</a>';
                     } else {
-                        echo '<a href="paiement.php" class="btn btn-primary">Payez vos articles</a>';
+                        echo '<a href="commander.php" class="btn btn-primary">Passer votre commande</a>';
                     }
                 ?>
             </div>
