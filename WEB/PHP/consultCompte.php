@@ -85,11 +85,11 @@
                                         <!-- Nom et prénom -->
                                         <li class="list-group-item d-flex align-items-center">
                                             <strong class="me-2">Nom :</strong> 
-                                            <input type="text" name="nom" class="form-control w-50" value="<?php echo htmlspecialchars($nom); ?>">
+                                            <input type="text" name="nom" class="form-control w-50" value="<?php echo htmlspecialchars($nom); ?>" maxlength="50">
                                         </li>
                                         <li class="list-group-item d-flex align-items-center">
                                             <strong class="me-2">Prénom :</strong> 
-                                            <input type="text" name="prenom" class="form-control w-50" value="<?php echo htmlspecialchars($prenom); ?>">
+                                            <input type="text" name="prenom" class="form-control w-50" value="<?php echo htmlspecialchars($prenom); ?>" maxlength="50">
                                         </li>
                                         <!-- Date de naissance -->
                                         <li class="list-group-item d-flex align-items-center">
@@ -115,17 +115,17 @@
                                         <!-- E-mail -->
                                         <li class="list-group-item d-flex align-items-center">
                                             <strong class="me-2">E-mail :</strong>
-                                            <input type="email" name="email" class="form-control w-50" value="<?php echo htmlspecialchars($email); ?>" required>
+                                            <input type="email" name="email" class="form-control w-50" value="<?php echo htmlspecialchars($email); ?>" maxlength="50" required>
                                         </li>
                                         <!-- Numéro de téléphone -->
                                         <li class="list-group-item d-flex align-items-center">
                                             <strong class="me-2">Numéro de téléphone :</strong>
-                                            <input type="tel" name="telephone" class="form-control w-50" value="<?php echo isset($telephone) ? htmlspecialchars($telephone) : ''; ?>">
+                                            <input type="tel" name="telephone" class="form-control w-50" value="<?php echo isset($telephone) ? htmlspecialchars($telephone) : ''; ?>" maxlength="15">
                                         </li>
                                         <!-- Pays -->
                                         <li class="list-group-item d-flex align-items-center">
                                             <strong class="me-2">Pays :</strong>
-                                            <input type="text" name="pays" class="form-control w-50" value="<?php echo isset($pays) ? htmlspecialchars($pays) : ''; ?>">
+                                            <input type="text" name="pays" class="form-control w-50" value="<?php echo isset($pays) ? htmlspecialchars($pays) : ''; ?>" maxlength="30">
                                         </li>
                                     </ul>
                                 </div>
@@ -145,42 +145,42 @@
                                                 <li class="list-group-item d-flex align-items-center">
                                                     <div>
                                                         <strong>Numéro de rue :</strong>
-                                                        <input type="text" name="numRue" class="form-control w-25" value="<?php echo htmlspecialchars($numRue) ?>">
+                                                        <input type="text" name="numRue" class="form-control w-25" value="<?php echo htmlspecialchars($numRue) ?>" maxlength="3">
                                                     </div>
                                                     <div>
                                                         <strong>Libellé de voie :</strong>
-                                                        <input type="text" name="libelleVoie" class="form-control w-100" value="<?php echo htmlspecialchars($libelleVoie) ?>">
+                                                        <input type="text" name="libelleVoie" class="form-control w-100" value="<?php echo htmlspecialchars($libelleVoie) ?>" maxlength="20">
                                                     </div>  
                                                 </li>
                                                 <li class="list-group-item d-flex align-items-center">
                                                     <div>
                                                         <strong>Code postal :</strong>
-                                                        <input type="text" name="codePostal" class="form-control w-50" value="<?php echo htmlspecialchars($codePostal) ?>">
+                                                        <input type="text" name="codePostal" class="form-control w-50" value="<?php echo htmlspecialchars($codePostal) ?>" maxlength="5">
                                                     </div>
                                                     <div>
                                                         <strong>Ville :</strong>
-                                                        <input type="text" name="ville" class="form-control w-100" value="<?php echo htmlspecialchars($ville) ?>">
+                                                        <input type="text" name="ville" class="form-control w-100" value="<?php echo htmlspecialchars($ville) ?>" maxlength="18">
                                                     </div>  
                                                 </li>
                                             <?php } else { ?>
                                                 <li class="list-group-item d-flex align-items-center">
                                                     <div>
                                                         <strong>Numéro de rue :</strong>
-                                                        <input type="text" name="numRue" class="form-control w-25" value="">
+                                                        <input type="text" name="numRue" class="form-control w-25" value="" maxlength="3">
                                                     </div>
                                                     <div>
                                                         <strong>Libellé de voie :</strong>
-                                                        <input type="text" name="libelleVoie" class="form-control w-100" value="">
+                                                        <input type="text" name="libelleVoie" class="form-control w-100" value="" maxlength="20">
                                                     </div>  
                                                 </li>
                                                 <li class="list-group-item d-flex align-items-center">
                                                     <div>
                                                         <strong>Code postal :</strong>
-                                                        <input type="text" name="codePostal" class="form-control w-50" value="">
+                                                        <input type="text" name="codePostal" class="form-control w-50" value="" maxlength="5">
                                                     </div>
                                                     <div>
                                                         <strong>Ville :</strong>
-                                                        <input type="text" name="ville" class="form-control w-100" value="">
+                                                        <input type="text" name="ville" class="form-control w-100" value="" maxlength="18">
                                                     </div>  
                                                 </li>
                                             <?php } ?>

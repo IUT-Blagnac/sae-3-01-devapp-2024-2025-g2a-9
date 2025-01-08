@@ -35,10 +35,10 @@
                 <form method="post" action="traitConnexion.php">
                     <!-- Mail -->
                     <label for="inputMail" class="form-label">Adresse E-mail</label>
-                    <input type="email" class="form-control w-50" id="inputMail" name="email" value="<?php echo htmlentities($cookie); ?>" require /><br>
+                    <input type="email" class="form-control w-50" id="inputMail" name="email" value="<?php echo htmlentities($cookie); ?>" maxlength="50" require /><br>
                     <!-- Mot de passe -->
                     <label for="inputPwd" class="form-label">Mot de passe</label>
-                    <input type="password" class="form-control w-50" id="inputPwd" name="pwd" require/><br>
+                    <input type="password" class="form-control w-50" id="inputPwd" name="pwd" maxlength="30" require/><br>
                     <!-- Checkbox -->
                     <div class="col d-flex justify-content-evenly">
                         <div class="form-check">

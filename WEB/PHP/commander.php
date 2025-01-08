@@ -189,6 +189,7 @@
                 $idUtilisateur = $_SESSION['user'];
                 $adresseLivraison = null;
                 $idPointRelais = null;
+                $prixCommande = number_format($totalPanier + $adresseLivraison, 2);
 
                 // Gestion de l'adresse ou du point relais en fonction du mode de livraison
                 if ($modeLivraison === 'domicile') {
@@ -212,7 +213,7 @@
                     ':adresseLivraison' => $adresseLivraison,
                     ':idPointRelais' => $idPointRelais,
                     ':modePaiement' => $modePaiement,
-                    ':prixCommande' => number_format($totalPanier + $adresseLivraison, 2)
+                    ':prixCommande' => $prixCommande
                 ]);
                 header("location:consultCompte.php?tab=commandes");
                 exit;

@@ -90,6 +90,7 @@ CREATE PROCEDURE CreerCommande(
     IN p_adresseLivraison VARCHAR(50),
     IN p_idPointRelais INT,
     IN p_modePaiement VARCHAR(30)
+    IN p_prixCommande DECIMAL(10, 2)
 )
 BEGIN
     DECLARE done INT DEFAULT FALSE;
@@ -97,7 +98,6 @@ BEGIN
     DECLARE v_idPaiement INT;
     DECLARE v_idProduit INT;
     DECLARE v_quantitePanier INT;
-    DECLARE v_prixCommande DECIMAL(10, 2);
 
     DECLARE panierCursor CURSOR FOR
     SELECT IDPRODUIT, QUANTITEPANIER
@@ -106,10 +106,9 @@ BEGIN
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
-    CALL CalculerTotalPanier(p_idUtilisateur, v_prixCommande);
     -- Insertion du paiement
-    INSERT INTO PAIEMENT (IDPAIEMENT, PRIXCOMMANDE, MODEPAIEMENT)
-    VALUES (p_idPaiement, v_prixCommande, p_modePaiement);
+    INSERT INTO PAIEMENT (PRIXCOMMANDE, MODEPAIEMENT)
+    VALUES (p_prixCommande, p_modePaiement);
     -- Récup de l'idPaiement
     SET v_idPaiement = LAST_INSERT_ID();
 
