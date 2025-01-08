@@ -228,6 +228,19 @@ La configuration recommandée pour les tests inclut :
 ^|Client_Favoris.01 ^|Cliquer sur le menu "Mes produits favoris". ^|La liste des produits marqués comme favoris est affichée. ^|Le client est sur la page de gestion de compte. ^|Réussi
 |====
 
+==== 2.4 Gestion des produits favoris
+
+|====
+
+>|Cas de test 4+|Test-02-04-01
+>|Titre 4+|Ajouter un produit aux favoris
+>|Objectif 4+| Vérifier que les clients peuvent ajouter un produit à leurs favoris
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Client_Favoris.01 ^|Accéder à la page de détails d'un produit et cliquer sur le petit cœur. ^|Le produit est ajouté à la liste des favoris. ^|Le client est connecté. ^|Réussi
+|====
+
 
 === 3. Fonctionnalités pour les administrateurs
 
