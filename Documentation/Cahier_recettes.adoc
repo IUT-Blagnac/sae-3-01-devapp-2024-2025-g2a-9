@@ -13,5 +13,31 @@ A l'attention de : _Esther Pendaries_
 
 
 == I. Introduction
-
+[.text-justify]
 Ce document constitue le cahier de recette pour le projet de création du site web de l'entreprise Nautic Horizon, spécialisée dans la vente de bateaux de tous types. Ce site permettra de voir les différents produits de l'entreprise, de les trier selon le type de produit souhaité, le prix, ... . Il permettra aussi bien sur de commander et de payer en ligne. Les administrateurs pourront gérer les stocks, les commandes, les produits, les clients, ...
+
+
+
+
+== II. Pré-requis
+
+L'exécution des tests décrits dans le chapitre suivant nécessite les éléments suivants :  
+
+* L'application déployée dans un environnement accessible via un navigateur web.
+* Une base de données correctement configurée contenant les informations nécessaires (produits, utilisateurs, commandes, etc.).
+* Un jeu de données réalistes comprenant des produits, des utilisateurs enregistrés, des avis clients, et autres données pertinentes.
+
+=== 1. Fonctionnalités à tester
+
+Les tests couvrent les fonctionnalités en lien avec les *user stories* suivantes :
+
+* **Visiteur** : Exploration du site, recherche de produits, gestion du panier.
+* **Client** : Utilisation des fonctionnalités avancées telles que la gestion des commandes, le dépôt d'avis, et le suivi des informations de compte.
+* **Administrateur** : Administration des stocks, gestion des produits, et supervision des utilisateurs.
+
+=== 2. Environnement de test
+
+La configuration recommandée pour les tests inclut :
+
+* **Systèmes d'exploitation compatibles** : tout sytème d'exploitation permettant l'accès à un navigateur web.
+* **Navigateurs pris en charge** : Chrome, Firefox, Edge, ...
