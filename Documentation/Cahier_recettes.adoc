@@ -1,11 +1,13 @@
-= Cahier De Tests - Abraca-dabra-cadabra
+= Cahier De Tests - Nautic Horizon
 :toc:
 :toc-title: Sommaire
 
-:Entreprise: Abraca-dabra-cadabra
-:Equipe:  
 
-Date: 22/11/2024
+Entreprise: Nautic Horizon
+
+Equipe: 2A9
+
+Date: 29/12/2024
 
 Créé par : _GUILLUY Matt_ | AMERI Mohammed |CARDOUAT Alexi | FUSI-BELAID Thomas
 
@@ -191,4 +193,102 @@ La configuration recommandée pour les tests inclut :
 ^|Client_Avis.02 ^|Choisir une note de 1 à 5 dans le menu déroulant et saisir un commentaire, puis valider le formulaire. ^|L'avis est enregistré et affiché sur la page du produit. ^|Le formulaire d'avis est visible. ^|Réussi
 ^|Client_Avis.03 ^|Tenter de laisser un deuxième avis pour le même produit. ^|Le formulaire ne s'affiche plus sur la page. ^|Le client a déjà laissé un avis pour ce produit. ^|Réussi
 ^|Client_Avis.04 ^|Cliquer sur "Supprimer" sous le commentaire. ^|L'avis est supprimé et n'est plus affiché sur la page du produit. ^|Le client a laissé un avis pour ce produit. ^|Réussi
+|====
+
+==== 2.3 Gestion du compte client
+
+|====
+
+>|Cas de test 4+|Test-02-03-01
+>|Titre 4+|Accès et modification des informations personnelles
+>|Objectif 4+| Vérifier que les clients peuvent accéder et modifier leurs informations personnelles
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Client_Info.01 ^|Depuis la page d'accueil, cliquer sur le bouton "Compte" en haut à droite de l'écran. ^|L'utilisateur est redirigé vers une page avec trois menus : "Informations personnelles", "Mes commandes", "Mes produits favoris". ^|Le client est connecté. ^|Réussi
+^|Client_Info.02 ^|Cliquer sur le menu "Informations personnelles". ^|Les informations personnelles du client sont affichées. ^|Le client est sur la page de gestion de compte. ^|Réussi
+^|Client_Info.03 ^|Modifier les informations personnelles et cliquer sur le bouton "Modifier mes informations". ^|Les informations personnelles sont mises à jour. ^|Les informations personnelles sont affichées. ^|Réussi
+^|Client_Info.04 ^|Cliquer sur le bouton "Modifier le mot de passe". ^|L'utilisateur est redirigé vers une page dédiée à la modification du mot de passe. ^|Le client est sur la page de gestion de compte. ^|Réussi
+
+>|Cas de test 4+|Test-02-03-02
+>|Titre 4+|Consultation des commandes passées
+>|Objectif 4+| Vérifier que les clients peuvent consulter leurs commandes passées
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Client_Commandes.01 ^|Cliquer sur le menu "Mes commandes". ^|La liste des commandes passées est affichée avec la date, les produits commandés, le prix et l'adresse de livraison (ou le point relais). ^|Le client est sur la page de gestion de compte. ^|Réussi
+^|Client_Commandes.02 ^|Naviguer entre les commandes en choisissant la commande souhaitée dans le menu déroulant en haut de l'écran. ^|Les détails de la commande sélectionnée sont affichés. ^|Le client a passé plusieurs commandes. ^|Réussi
+
+>|Cas de test 4+|Test-02-03-03
+>|Titre 4+|Consultation des produits favoris
+>|Objectif 4+| Vérifier que les clients peuvent consulter leurs produits favoris
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Client_Favoris.01 ^|Cliquer sur le menu "Mes produits favoris". ^|La liste des produits marqués comme favoris est affichée. ^|Le client est sur la page de gestion de compte. ^|Réussi
+|====
+
+
+=== 3. Fonctionnalités pour les administrateurs
+
+==== 3.1 Accès aux pages d'administration
+
+|====
+
+>|Cas de test 4+|Test-03-01-01
+>|Titre 4+|Accéder aux fonctionnalités d'administration
+>|Objectif 4+| Vérifier que les administrateurs peuvent accéder aux pages réservées
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Admin_Acces.01 ^|Depuis la page d'accueil, cliquer sur le bouton "Admin" en haut à droite de l'écran. ^|Un menu déroulant apparaît avec les options "Gestion catégories", "Gestion clients", "Gestion produits". ^|L'utilisateur est connecté en tant qu'administrateur. ^|Réussi
+^|Admin_Acces.02 ^|Cliquer sur "Gestion catégories" dans le menu déroulant. ^|L'utilisateur est redirigé vers la page "gestionCategories.php". ^|L'utilisateur est connecté en tant qu'administrateur. ^|Réussi
+^|Admin_Acces.03 ^|Cliquer sur "Gestion clients" dans le menu déroulant. ^|L'utilisateur est redirigé vers la page "gestionClients.php". ^|L'utilisateur est connecté en tant qu'administrateur. ^|Réussi
+^|Admin_Acces.04 ^|Cliquer sur "Gestion produits" dans le menu déroulant. ^|L'utilisateur est redirigé vers la page "gestionProduits.php". ^|L'utilisateur est connecté en tant qu'administrateur. ^|Réussi
+^|Admin_Acces.05 ^|Tenter d'accéder à ces pages sans être connecté ou avec un compte non administrateur. ^|Redirection vers la page d'accueil. ^|Aucun droit administrateur. ^|Réussi
+|====
+
+==== 3.2 Gestion des produits (gestionProduits.php)
+
+|====
+
+>|Cas de test 4+|Test-03-02-01
+>|Titre 4+|Afficher et gérer la liste des produits
+>|Objectif 4+| Vérifier que l'administrateur peut consulter, ajouter, modifier et supprimer des produits
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Admin_Prod.01 ^|Cliquer sur "Ajouter un produit" et remplir le formulaire avec des informations valides. ^|Le produit est ajouté en base de données et apparaît dans la liste. ^|Être administrateur. ^|Réussi
+^|Admin_Prod.02 ^|Tenter de modifier un produit existant (changement du nom, du prix, etc.). ^|Les nouvelles valeurs sont mises à jour en base de données. ^|Un produit est déjà présent. ^|Réussi
+^|Admin_Prod.03 ^|Cliquer sur "Supprimer" pour un produit donné. ^|Le produit est supprimé de la liste et de la base de données. ^|Un produit est déjà présent. ^|Réussi
+|====
+
+==== 3.3 Gestion des clients (gestionClients.php)
+
+|====
+
+>|Cas de test 4+|Test-03-03-01
+>|Titre 4+|Afficher et gérer la liste des clients
+>|Objectif 4+| Vérifier que l'administrateur peut consulter, ajouter, modifier et supprimer des clients
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Admin_Client.01 ^|Cliquer sur "Ajouter un client" et saisir des informations valides. ^|Le client est créé et apparaît dans la liste. ^|Être administrateur. ^|Réussi
+^|Admin_Client.02 ^|Modifier les informations d'un client (nom, prénom, email...). ^|Les données sont actualisées en base de données. ^|Le client existe déjà. ^|Réussi
+^|Admin_Client.03 ^|Supprimer un client existant. ^|Le client est retiré de la base de données. ^|Le client existe déjà. ^|Réussi
+|====
+
+==== 3.4 Gestion des catégories (gestionCategories.php)
+
+|====
+
+>|Cas de test 4+|Test-03-04-01
+>|Titre 4+|Créer, modifier et supprimer des catégories
+>|Objectif 4+| Vérifier que l'administrateur peut gérer les catégories de produits
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Admin_Categ.01 ^|Ajouter une nouvelle catégorie avec ou sans catégorie mère. ^|La catégorie est enregistrée et visible dans la liste. ^|Être administrateur. ^|Réussi
+^|Admin_Categ.02 ^|Modifier une catégorie existante pour changer son nom ou sa catégorie mère. ^|La catégorie est mise à jour en base de données. ^|Une catégorie existe déjà. ^|Réussi
+^|Admin_Categ.03 ^|Supprimer une catégorie. ^|La catégorie est retirée de la base de données, ainsi que ses sous-catégories si nécessaire. ^|Une catégorie existe déjà. ^|Réussi
 |====
