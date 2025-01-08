@@ -1,6 +1,4 @@
 <?php
-ob_start();
-
 $pageTitle = "Détail du Produit";
 require_once "./include/head.php";
 ?>
@@ -40,9 +38,33 @@ require_once "./include/head.php";
         $reqFav = $conn->prepare("SELECT 1 FROM FAVORI WHERE IDUTILISATEUR = :userId AND IDPRODUIT = :productId");
         $reqFav->execute(['userId' => $userId, 'productId' => $produit['IDPRODUIT']]);
         $isInFav = $reqFav->fetch() ? true : false;
+
+        // Vérification si l'utilisateur a déjà commandé ce produit
+        $queryCommande = $conn->prepare("
+            SELECT 1
+            FROM DETAILCOMMANDE DC
+            JOIN COMMANDE C ON DC.IDCOMMANDE = C.IDCOMMANDE
+            WHERE C.IDUTILISATEUR = :userId
+            AND DC.IDPRODUIT = :productId
+        ");
+        $queryCommande->execute(['userId' => $userId, 'productId' => $productId]);
+        $hasPurchased = $queryCommande->fetch() ? true : false;
+
+        $queryAvisExist = $conn->prepare("
+            SELECT 1
+            FROM AVIS
+            WHERE IDUTILISATEUR = :userId
+            AND IDPRODUIT = :productId
+        ");
+        $queryAvisExist->execute(['userId' => $userId, 'productId' => $productId]);
+        $hasReviewed = $queryAvisExist->fetch() ? true : false;
     } else {
         // Vérifier dans la session pour un utilisateur non connecté
         $isInCart = isset($_SESSION['panier'][$produit['IDPRODUIT']]);
+
+        $hasPurchased = false;
+
+        $hasReviewed = false;
     }
 
     // Traitement Ajouter au panier
@@ -85,6 +107,49 @@ require_once "./include/head.php";
         }
     }
 
+    // Traitement du formulaire d'avis
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitReview'])) {
+        $note = isset($_POST['note']) ? intval($_POST['note']) : 0;
+        $commentaire = isset($_POST['commentaire']) ? trim($_POST['commentaire']) : '';
+        $idProduit = isset($_POST['idProduit']) ? intval($_POST['idProduit']) : 0;
+
+        // Validation des données
+        if ($note >= 1 && $note <= 5 && !empty($commentaire) && $idProduit === $productId) {
+            // Insertion dans la table AVIS
+            $dateAvis = date('Y-m-d');
+            $queryAvis = $conn->prepare("
+                INSERT INTO AVIS (IDUTILISATEUR, IDPRODUIT, NOTE, COMMENTAIRE, DATEAVIS)
+                VALUES (:userId, :productId, :note, :commentaire, :dateAvis)
+            ");
+            $queryAvis->execute([
+                'userId' => $userId,
+                'productId' => $idProduit,
+                'note' => $note,
+                'commentaire' => $commentaire,
+                'dateAvis' => $dateAvis
+            ]);
+            
+        }
+    }
+
+    // Traitement de la suppression de l'avis
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'supprimer_avis') {
+        if (isset($userId) && isset($_POST['idAvis'])) {
+            $idAvis = intval($_POST['idAvis']);
+
+            // Vérification que l'avis appartient à l'utilisateur
+            $query = $conn->prepare("SELECT IDUTILISATEUR FROM AVIS WHERE IDAVIS = :idAvis");
+            $query->execute(['idAvis' => $idAvis]);
+            $avis = $query->fetch();
+
+            if ($avis && $avis['IDUTILISATEUR'] == $userId) {
+                // Si l'avis appartient à l'utilisateur connecté, supprimer l'avis
+                $deleteQuery = $conn->prepare("DELETE FROM AVIS WHERE IDAVIS = :idAvis");
+                $deleteQuery->execute(['idAvis' => $idAvis]);
+            }
+        }
+    }
+
     // Vérification de l'état des favoris (après ajout ou retrait)
     if (isset($userId)) {
         $reqFav = $conn->prepare("SELECT 1 FROM FAVORI WHERE IDUTILISATEUR = :userId AND IDPRODUIT = :productId");
@@ -95,9 +160,11 @@ require_once "./include/head.php";
     // Requête pour récupérer les avis du produit
     $queryAvis = $conn->prepare("
         SELECT 
+            A.IDAVIS,
             A.COMMENTAIRE, 
             A.NOTE, 
-            A.DATEAVIS, 
+            A.DATEAVIS,
+            A.IDUTILISATEUR, 
             U.NOM
         FROM AVIS A, UTILISATEUR U
         WHERE A.IDUTILISATEUR = U.IDUTILISATEUR
@@ -116,7 +183,7 @@ require_once "./include/head.php";
         <!-- Section image du produit -->
         <div class="col-md-6">
             <div class="product-gallery">
-                <img src="./image/produit/test<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" 
+                <img src="./image/produit/prod<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" 
                      alt="<?= htmlspecialchars($produit['NOMPRODUIT']); ?>" 
                      class="img-fluid main-image">
             </div>
@@ -180,16 +247,48 @@ require_once "./include/head.php";
                     <span class="text-muted">(<?= date('d/m/Y', strtotime($avis['DATEAVIS'])); ?>)</span>
                     <p class="rating">Note : <?= str_repeat('★', intval($avis['NOTE'])); ?><?= str_repeat('☆', 5 - intval($avis['NOTE'])); ?></p>
                     <p class="comment"><?= htmlspecialchars($avis['COMMENTAIRE']); ?></p>
+
+                    <?php if (isset($userId) && $userId == $avis['IDUTILISATEUR']): ?>
+                        <!-- Bouton de suppression visible uniquement pour l'utilisateur qui a laissé l'avis -->
+                        <form action="" method="POST" class="d-inline-block">
+                            <input type="hidden" name="action" value="supprimer_avis">
+                            <input type="hidden" name="idAvis" value="<?= htmlspecialchars($avis['IDAVIS']); ?>">
+                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
+
+    <!-- Section pour laisser un avis, visible uniquement si l'utilisateur a commandé ce produit -->
+    <?php if (isset($userId) && $hasPurchased && !$hasReviewed): ?>
+        <div class="leave-review mt-5">
+            <h3>Laissez un avis sur ce produit</h3>
+            <form action="" method="POST">
+                <div class="form-group">
+                    <label for="note">Note :</label>
+                    <select name="note" id="note" class="form-control" required>
+                        <option value="1">1 - Très mauvais</option>
+                        <option value="2">2 - Mauvais</option>
+                        <option value="3">3 - Moyen</option>
+                        <option value="4">4 - Bon</option>
+                        <option value="5">5 - Excellent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="commentaire">Commentaire :</label>
+                    <textarea name="commentaire" id="commentaire" class="form-control" rows="5" required></textarea>
+                </div>
+                <input type="hidden" name="idProduit" value="<?= htmlspecialchars($productId); ?>">
+                <button type="submit" class="btn btn-primary mt-3" name="submitReview">Soumettre l'avis</button>
+            </form>
+        </div>
+    <?php endif; ?>
+
 </main>
 
 <!-- Pied de page -->
 <?php require_once "./include/footer.php"; ?>
 </body>
 </html>
-<?php
-ob_end_flush();
-?>

@@ -10,14 +10,15 @@
         <ul class="list-unstyled footer-links mb-4">
             <li><a href="apropos.php">À propos</a></li>
             <li><a href="services.php">Services</a></li>
-            <li><a href="#">Carrières</a></li>
-            <li><a href="#">FAQ</a></li>
+            <li><a href="carrieres.php">Carrières</a></li>
             <li><a href="mentions.php">Mentions légales</a></li>
             <li><a href="contact.php">Contact</a></li>
         </ul>
 
         <div class="copyright">
-          <p class="mb-0"><small>© 2024 Nautic Horizon. All Rights Reserved.</small></p>
+            <p class="mb-0">
+                <small><a href="easteregg.php" style="text-decoration: none; color: inherit; cursor: not-allowed;">&copy;</a> 2024 Nautic Horizon. All Rights Reserved.</small>
+            </p>
         </div>
 
       </div>

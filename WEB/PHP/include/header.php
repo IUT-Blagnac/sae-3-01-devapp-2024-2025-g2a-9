@@ -71,7 +71,7 @@
                     $_SESSION['panier'] = []; // Stocke les articles sous forme de tableau associatif
                 }
             ?>
-            <li><a class="nav-link" href="#"><i class="bi bi-translate"></i></a></li>
+            <li><a class="nav-link" href="quiz.php"><i class="bi bi-question-circle"></i></a></li>
             <li><a class="nav-link" href="consultPanier.php"><i class="bi bi-cart"></i></a></li>
         </ul>
     </div>

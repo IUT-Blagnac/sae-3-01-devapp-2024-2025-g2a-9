@@ -19,6 +19,11 @@ require_once "./include/head.php";
             opacity: 1;
             transform: translateY(0);
         }
+        .product-card img {
+            width: 100%;          /* L'image prend toute la largeur de la carte */
+            height: 250px;        /* Fixe la hauteur des images */
+            object-fit: cover;    /* L'image couvre l'espace sans déformation, et s'adapte si nécessaire */
+            }
     </style>
 </head>
 
@@ -133,7 +138,7 @@ require_once "./include/head.php";
                     <div class="col-md-4 mb-4">
                         <div class="card h-100 product-card">
                             <a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>">
-                                <img src="https://static.wikia.nocookie.net/lego/images/7/73/70618_-_2.jpg/revision/latest?cb=20170727200641&path-prefix=fr" 
+                                <img src="./image/produit/prod<?= htmlspecialchars($produit['IDPRODUIT']); ?>.png" 
                                      class="card-img-top" 
                                      alt="<?php echo htmlspecialchars($produit['NOMPRODUIT']); ?>">
                             </a>
