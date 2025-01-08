@@ -8,12 +8,12 @@
         </div>
 
         <ul class="list-unstyled footer-links mb-4">
-            <li><a href="#">À propos</a></li>
-            <li><a href="#">Services</a></li>
+            <li><a href="apropos.php">À propos</a></li>
+            <li><a href="services.php">Services</a></li>
             <li><a href="#">Carrières</a></li>
             <li><a href="#">FAQ</a></li>
-            <li><a href="#">Mentions légales</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="mentions.php">Mentions légales</a></li>
+            <li><a href="contact.php">Contact</a></li>
         </ul>
 
         <div class="copyright">

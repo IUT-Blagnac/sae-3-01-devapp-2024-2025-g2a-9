@@ -99,11 +99,11 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 === Partie IoT (Tous les liens à changer)
 
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Application finale]
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/IOT/Application[Application finale]
 
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Utilisateur]
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/Documentation[Documentation Utilisateur]
 
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Technique] 
+-> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/Documentation[Documentation Technique] 
 
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Cahier de Recettes (Tests)]
 
@@ -131,7 +131,7 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 === Partie WEB
 
--> http://lien.du.site[Site Web]
+-> http://193.54.227.208/~R2024SAE3005/[Site Web]
 
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Utilisateur]
 
@@ -169,8 +169,8 @@ Planning des séances (demi-journée en télétravail) :
 | Sprint 1 |  |  |  |  |  |  |  |  | Télétravail |  
 | Sprint 2 |  |  | Télétravail | Télétravail |  |  | Télétravail |  | Télétravail possible |  
 | Sprint 3 |  | Télétravail |  |  | Télétravail |  | Télétravail |  | Télétravail |  
-| Sprint 4 |  |  |  |  |  |  |  |  |  |  
-| Sprint 5 |  |  |  |  |  |  |  |  |  |  
+| Sprint 4 |  |  |  |  |  |  |  |  | Télétravail | 
+| Sprint 5 |  |  |  | Télétravail |  |  |  |  |  |  
 |===
 
 - Version courante : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[v0]
@@ -196,7 +196,11 @@ note : 1,7/3
 
 === retour semaine 49
 Mettre le lien directement vers le document actif. Pb date convocation ! Préciser qui est responsable de quel thème. Le sprint review est pour le client vous vous faites la rétropective de sprint. CR : chaque compte rendu est clairement identifié on ne recycle pas l'ancien du coup je n'ai pas de CR pour la réunion du 6/12 ! Il manque analyse des difficultés et réussites ainsi que le cr du rdv client.
-note : 0,73/3
+note : 0,4/3
+
+=== retour semaine 50
+Je n'ai toujours pas de liens directs vers ODJ et CR ! ODJ ok il manque juste la salle et qq pb de mise en page à gauche. J'ai un soucis de date dans vos CR … du coup vous prenez une pénalité c'est dommage !
+Note : 1,86/3
 
 == Suivi de l'évaluation en GPO :
 
