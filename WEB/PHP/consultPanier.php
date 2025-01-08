@@ -187,9 +187,12 @@ require_once "./include/head.php";
                 <div class="panier-total my-4">
                     <?php
                     $total = 0;
-                    foreach ($panier as $produit) {
-                        $total += $produit['PRIX'] * $produit['QUANTITEPANIER'];
-                    }
+                    $reqTotal = $conn->prepare("CALL CalculerTotalPanier(:idUtilisateur, @total)");
+                    $reqTotal->execute([':idUtilisateur' => $_SESSION['user']]);
+                    $reqTotalResult = $conn->prepare("SELECT @total AS total");
+                    $reqTotalResult->execute([]);
+                    $result = $reqTotalResult->fetch(PDO::FETCH_ASSOC);
+                    $total = $result['total'];
                     ?>
                     <h3>Total : <?= number_format($total, 2, ',', ' '); ?>€</h3>
                 </div>

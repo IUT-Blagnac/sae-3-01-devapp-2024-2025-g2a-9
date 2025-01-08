@@ -46,7 +46,7 @@
                             <label class="form-check-label" for="rememberMe">Se souvenir de moi </label>
                         </div>
                         <!-- Fonctionnalité could -->
-                        <a href="#">Mot de passe oublié ?</a>
+                        <a href="resetMDP.php">Mot de passe oublié ?</a>
                     </div><br>
                     <!-- Bouton confirm -->
                     <button type="submit" name="submit" class="btn btn-primary">Se connecter</button><br><br>
