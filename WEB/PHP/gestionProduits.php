@@ -42,6 +42,35 @@
                 ':stockLimite' => $stockLimite
             ]);
 
+            // ID du produit
+            $idProduit = $conn->lastInsertId();
+
+            // Chemin où le fichier sera stocké
+            $uploadDir = 'image/produit/';
+
+            // Générer le nom du fichier comme "prod<num_prod>.png"
+            $fileName = "prod" . $idProduit . ".png"; // Exemple : prod123.png
+
+            // Chemin complet du fichier
+            $uploadFile = $uploadDir . $fileName;
+
+            // Vérifiez si le fichier est une image PNG
+            $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
+
+            // Autoriser uniquement les fichiers PNG
+            if ($imageFileType === 'png') {
+                // Déplacer le fichier téléchargé vers le dossier avec le nouveau nom
+                if (move_uploaded_file($_FILES['imageProduit']['tmp_name'], $uploadFile)) {
+                    chmod($uploadFile, 0777);
+                    // chown($uploadFile, "R2024SAE3005");
+                    $message = "L'image a été téléchargée avec succès sous le nom : $fileName";
+                } else {
+                    $message = "Erreur lors du téléchargement de l'image.";
+                }
+            } else {
+                $message = "Seules les images PNG sont autorisées.";
+            }
+
             $message = "Le produit a été ajouté avec succès.";
         } catch (PDOException $e) {
             $message = "Erreur lors de l'ajout du produit : " . $e->getMessage();
@@ -85,6 +114,46 @@
                 ':stockLimite' => $stockLimite,
                 ':idProduit' => $idProduit
             ]);
+
+            if (isset($_FILES['imageProduit']) && $_FILES['imageProduit']['error'] === 0) {
+                // Chemin où le fichier sera stocké
+                $uploadDir = 'image/produit/';
+
+                // Générer le nom du fichier comme "prod<num_prod>.png"
+                $fileName = "prod" . $idProduit . ".png"; // Exemple : prod123.png
+
+                // Chemin complet du fichier
+                $uploadFile = $uploadDir . $fileName;
+
+                // Vérifiez si l'ancienne image existe et la supprimer
+                $oldImagePath = $uploadDir . "prod" . $idProduit . ".png"; // Chemin de l'ancienne image
+                if (file_exists($oldImagePath)) {
+                    if (unlink($oldImagePath)) {
+                        $message = "Ancienne image supprimée avec succès.";
+                    } else {
+                        $message = "Erreur lors de la suppression de l'ancienne image.";
+                    }
+                } else {
+                    $message = "Aucune image précédente trouvée.";
+                }
+
+                // Vérifiez si le fichier est une image PNG
+                $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
+
+                // Autoriser uniquement les fichiers PNG
+                if ($imageFileType === 'png') {
+                    // Déplacer le fichier téléchargé vers le dossier avec le nouveau nom
+                    if (move_uploaded_file($_FILES['imageProduit']['tmp_name'], $uploadFile)) {
+                        chmod($uploadFile, 0777);
+                        // chown($uploadFile, "R2024SAE3005");
+                        $message = "L'image a été téléchargée avec succès sous le nom : $fileName";
+                    } else {
+                        $message = "Erreur lors du téléchargement de l'image.";
+                    }
+                } else {
+                    $message = "Seules les images PNG sont autorisées.";
+                }
+            }
 
             $message = "Le produit a été modifié avec succès.";
         } catch (PDOException $e) {
@@ -155,10 +224,6 @@
             <div class="col-8">
                 <!-- Contenu des tabs -->
                 <div class="tab-content" id="tab-content" aria-orientation="vertical">
-
-                    <!-- Tab ajout produit -->
-                    <div class="tab-pane fade <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'produitForm') ? '' : 'show active'; ?>" id="ajouterProdPane" role="tabpanel" aria-labelledby="ajouterProdTab">
-                        <h2 class="mb-4">Ajouter un produit :</h2>
                             <?php
                                 if(isset($_GET['msgErreur'])){
                                     echo '<div class="alert alert-danger w-50" role="alert">';
@@ -172,9 +237,13 @@
                                     echo '</div>';
                                 }
                             ?>
+
+                    <!-- Tab ajout produit -->
+                    <div class="tab-pane fade <?php echo (isset($_POST['form_name']) && $_POST['form_name'] === 'produitForm') ? '' : 'show active'; ?>" id="ajouterProdPane" role="tabpanel" aria-labelledby="ajouterProdTab">
+                        <h2 class="mb-4">Ajouter un produit :</h2>         
                             
                             <!-- form pour ajouter un produit -->
-                            <form method="POST" id="ajoutProduit">
+                            <form method="POST" id="ajoutProduit" enctype="multipart/form-data">
                                 <input type="hidden" name="form_name" value="ajoutProduit">
 
                                 <div class="mb-3">
@@ -235,6 +304,12 @@
                                     <input type="number" name="stockLimite" id="stockLimite" class="form-control" min="1" required>
                                 </div>
 
+                                <!-- Champ pour télécharger l'image -->
+                                <div class="mb-3">
+                                    <label for="imageProduit" class="form-label">Image du produit :</label>
+                                    <input type="file" name="imageProduit" id="imageProduit" class="form-control" accept="image/png">
+                                </div>
+
                                 <button type="submit" class="btn btn-primary">Ajouter le produit</button>
                             </form>
                     </div>
@@ -245,7 +320,7 @@
                         <!-- Selection du produit -->
                         <div class="col d-flex justify-content-between align-items-center mb-3">
                             <p class="card-text">Choisissez votre produit :</p>
-                            <form method="POST" id="produitForm">
+                            <form method="POST" id="produitForm" enctype="multipart/form-data">
                                 <input type="hidden" name="form_name" value="produitForm">
                                 <select name="produit" class="form-select w-100" aria-label="Liste des produits" onchange="this.form.submit();">
                                     <?php
@@ -351,6 +426,12 @@
                                 <div class="mb-3">
                                     <label for="stockLimite" class="form-label">Stock limite :</label>
                                     <input type="number" name="stockLimite" id="stockLimite" class="form-control" min="1" value="<?= htmlspecialchars($stockLimite) ?>" required>
+                                </div>
+
+                                <!-- Champ pour télécharger l'image -->
+                                <div class="mb-3">
+                                    <label for="imageProduit" class="form-label">Image du produit :</label>
+                                    <input type="file" name="imageProduit" id="imageProduit" class="form-control" accept="image/png">
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
