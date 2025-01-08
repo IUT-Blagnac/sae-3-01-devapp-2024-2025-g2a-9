@@ -35,9 +35,143 @@ Les tests couvrent les fonctionnalités en lien avec les *user stories* suivante
 * **Client** : Utilisation des fonctionnalités avancées telles que la gestion des commandes, le dépôt d'avis, et le suivi des informations de compte.
 * **Administrateur** : Administration des stocks, gestion des produits, et supervision des utilisateurs.
 
+On considèrera que un client à accès à toutes les fonctionnalités d'un visiteur, et qu'un administrateur à accès à toutes les fonctionnalités d'un client.
+
+
+
+
 === 2. Environnement de test
 
 La configuration recommandée pour les tests inclut :
 
 * **Systèmes d'exploitation compatibles** : tout sytème d'exploitation permettant l'accès à un navigateur web.
 * **Navigateurs pris en charge** : Chrome, Firefox, Edge, ...
+
+
+
+
+== III. Cas de test
+
+=== 1. Fonctionnalités pour les visiteurs
+
+==== 1.1 Inscription d’un nouvel utilisateur
+
+|====
+
+>|Cas de test 4+|Test-01-01-01
+>|Titre 4+|Création d’un compte utilisateur
+>|Objectif 4+| S’assurer que les visiteurs peuvent créer un compte
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Visi_Reg.01 ^|Cliquer sur l'icône "Se connecter" dans le menu principal, puis choisir "S'inscrire". ^|Une page contenant un formulaire d’inscription s’ouvre. ^|Le visiteur est sur la page d'accueil. ^|Réussi
+^|Visi_Reg.02 ^|Remplir les champs requis avec des informations valides et valider le formulaire. ^|Un nouveau compte est enregistré et l’utilisateur est redirigé vers son espace personnel. ^|Les informations saisies sont valides. ^|Réussi
+^|Visi_Reg.03 ^|Remplir les champs requis avec des informations incorrectes et tenter de valider le formulaire. ^|Le formulaire ne peut pas être validé et des messages d'erreur sont affichés. ^|Les informations saisies sont incorrectes. ^|Réussi
+|====
+
+==== 1.2 Connexion d’un utilisateur existant
+
+|====
+
+>|Cas de test 4+|Test-01-02-01
+>|Titre 4+|Authentification d’un utilisateur
+>|Objectif 4+| Vérifier qu’un utilisateur enregistré peut accéder à son compte
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Visi_Login.01 ^|Cliquer sur l'icône "Se connecter" dans le menu, remplir les champs "adresse E-mail" et "Mot de passe", puis valider. ^|L’utilisateur est authentifié et accède à la page d'accueil. ^|L’utilisateur possède déjà un compte avec des informations valides. ^|Réussi
+^|Visi_Login.02 ^|Cliquer sur l'icône "Se connecter" dans le menu, remplir les champs "adresse E-mail" et "Mot de passe" avec des informations incorrectes, puis valider. ^|Un message d'erreur est affiché indiquant que les informations de connexion sont incorrectes. ^|L’utilisateur tente de se connecter avec des informations invalides. ^|Réussi
+|====
+
+==== 1.3 Affichage des produits disponibles
+
+|====
+
+>|Cas de test 4+|Test-01-03-01
+>|Titre 4+|Navigation dans les catégories de produits
+>|Objectif 4+| Vérifier que l'utilisateur peut naviguer dans les catégories et sous-catégories de produits
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Visi_categ.01 ^|Depuis n'importe quelle page, cliquer sur les trois barres latérales en haut à gauche de l'écran. ^|Un menu déroulant apparaît avec les catégories et sous-catégories. ^|L'utilisateur est sur n'importe quelle page du site. ^|Réussi
+^|Visi_categ.02 ^|Cliquer sur une catégorie ou une sous-catégorie dans le menu déroulant. ^|L'utilisateur voit tous les produits de la catégorie sélectionnée avec leur nom, une image et le prix. ^|Le menu déroulant est visible. ^|Réussi
+|====
+
+==== 1.4 Recherche de produits par mots-clés
+
+|====
+
+>|Cas de test 4+|Test-01-04-01
+>|Titre 4+|Recherche avancée dans le catalogue
+>|Objectif 4+| Garantir que les visiteurs peuvent rechercher des articles spécifiques
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Visi_rech.01 ^|Saisir un mot-clé pertinent dans la barre de recherche et appuyer sur Entrée. ^|Les produits correspondants s’affichent. ^|Des articles liés au mot-clé existent. ^|Réussi
+^|Visi_rech.02 ^|Saisir un terme inexistant et valider. ^|Un message indiquant "Aucun produit trouvé" apparaît. ^|Aucun article ne correspond au mot-clé saisi. ^|Réussi
+|====
+
+==== 1.5 Organisation et tri des produits
+
+|====
+
+>|Cas de test 4+|Test-01-05-01
+>|Titre 4+|Tri des articles par critères spécifiques
+>|Objectif 4+| Vérifier que les visiteurs peuvent organiser les produits selon leurs préférences
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Visi_Tri_Prod.01 ^|Choisir l'option "Prix croissant" dans le menu de tri. ^|Les produits sont affichés du moins cher au plus cher. ^|Plusieurs articles ont des prix différents. ^|Réussi
+^|Visi_Tri_Prod.02 ^|Choisir l'option "Prix décroissant". ^|Les produits sont affichés du plus cher au moins cher. ^|Plusieurs articles ont des prix différents. ^|Réussi
+^|Visi_Tri_Prod.04 ^|Appliquer le filtre "Type d'énergie". ^|Les produits sont filtrés selon le type d'énergie sélectionné. ^|Plusieurs articles ont des types d'énergie différents. ^|Réussi
+^|Visi_Tri_Prod.05 ^|Appliquer le filtre "Taille". ^|Les produits sont filtrés selon la taille sélectionnée (avec une marge de 5 mètres à la hausse et à la baisse). ^|Plusieurs articles ont des tailles différentes. ^|Réussi
+^|Visi_Tri_Prod.06 ^|Appliquer le filtre "Prix minimum". ^|Les produits affichés ont un prix supérieur ou égal au prix minimum sélectionné (à 10% près). ^|Plusieurs articles ont des prix différents. ^|Réussi
+^|Visi_Tri_Prod.07 ^|Appliquer le filtre "Prix maximum". ^|Les produits affichés ont un prix inférieur ou égal au prix maximum sélectionné (à 10% près). ^|Plusieurs articles ont des prix différents. ^|Réussi
+|====
+
+==== 1.6 Affichage des détails d’un produit
+
+|====
+
+>|Cas de test 4+|Test-01-06-01
+>|Titre 4+|Accès aux informations détaillées d’un article
+>|Objectif 4+| Vérifier que les visiteurs peuvent consulter les caractéristiques d’un produit
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Visi_Detail_Prod.01 ^|Cliquer sur le nom d'un produit, son nom ou sur "voir détails" (tous les noms et images de produit sont cliquables peu importe la page). ^|Une page dédiée au produit s’ouvre, affichant sa description, son prix, sa disponibilité et ses avis. ^|Le produit est présent dans la base de données. ^|Réussi
+|====
+
+==== 1.7 Gestion du panier
+
+|====
+
+>|Cas de test 4+|Test-01-07-01
+>|Titre 4+|Ajout, modification et suppression d’articles dans le panier
+>|Objectif 4+| Vérifier que les visiteurs peuvent gérer leur panier d’achat
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Visi_Gest_Panier.01 ^|Cliquer sur "Ajouter au panier" depuis une page produit. ^|L’article est ajouté au panier avec une quantité de 1. ^|Le produit existe. ^|Réussi
+^|Visi_Gest_Panier.02 ^|Modifier la quantité d’un produit dans le panier. ^|Le total est recalculé immédiatement. ^|L’article est déjà présent dans le panier. ^|Réussi
+^|Visi_Gest_Panier.03 ^|Supprimer un produit du panier. ^|L’article est retiré et le total est mis à jour. ^|L’article est dans le panier. ^|Réussi
+|====
+
+==== 1.8 Passer une commande
+
+|====
+
+>|Cas de test 4+|Test-01-08-01
+>|Titre 4+|Passer une commande
+>|Objectif 4+| Vérifier que les utilisateurs peuvent passer une commande
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Visi_Commande.01 ^|Depuis la page panier, cliquer sur le bouton "Passer votre commande". ^|L'utilisateur est redirigé vers une page de choix de livraison et de paiement. ^|L'utilisateur a des articles dans son panier. ^|Réussi
+^|Visi_Commande.02 ^|Cocher "Livraison à domicile" si une adresse est enregistrée dans les informations personnelles. ^|L'option de livraison à domicile est sélectionnée. ^|L'utilisateur a une adresse enregistrée. ^|Réussi
+^|Visi_Commande.03 ^|Cocher "Livraison dans un point relais" et sélectionner un point relais. ^|L'option de livraison dans un point relais est sélectionnée et un point relais est choisi. ^|Aucune. ^|Réussi
+^|Visi_Commande.04 ^|Cocher "Carte bancaire" et remplir les champs numéro de carte, date d'expiration et cryptogramme. ^|Les informations de carte bancaire sont saisies. ^|L'utilisateur choisit le paiement par carte bancaire. ^|Réussi
+^|Visi_Commande.05 ^|Cocher "PayPal" et remplir le champ adresse mail. ^|L'adresse mail PayPal est saisie. ^|L'utilisateur choisit le paiement par PayPal. ^|Réussi
+^|Visi_Commande.06 ^|Cliquer sur le bouton "Passer votre commande". ^|L'utilisateur est redirigé vers une page affichant ses anciennes commandes. ^|Les informations de livraison et de paiement sont saisies. ^|Réussi
+|====
+
