@@ -74,7 +74,7 @@
                                     echo '</div>';
                                 }
                             ?>
-                            <form method="post" action="modifierCompte.php">
+                            <form method="post" action="modifierCompte.php" id="modifierCompte">
                                 <input type="hidden" name="action" value="updateInfo">
                                 <!-- Les infos générales -->
                                 <div class="card mb-2 w-75">
@@ -354,104 +354,6 @@
 
     <!-- Pied de page -->
     <?php require_once "./include/footer.php"; ?>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Récupérer les paramètres URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const tab = urlParams.get('tab');
-
-            // Activer l'onglet correspondant
-            if (tab) {
-                const activeTab = document.querySelector(`[data-bs-target="#${tab}Pane"]`);
-                const activePane = document.getElementById(`${tab}Pane`);
-
-                if (activeTab && activePane) {
-                    // Désactiver l'onglet actif par défaut
-                    document.querySelector('.nav-link.active').classList.remove('active');
-                    document.querySelector('.tab-pane.active').classList.remove('show', 'active');
-
-                    // Activer l'onglet spécifié
-                    activeTab.classList.add('active');
-                    activePane.classList.add('show', 'active');
-                }
-            }
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            // Validation en temps réel
-            const form = document.querySelector('form');
-            const inputs = form.querySelectorAll('input, select');
-
-            // Fonction pour vérifier un champ
-            function validateField(field) {
-                let isValid = true;
-                const value = field.value.trim();
-
-                // Validation spécifique pour chaque champ
-                switch (field.name) {
-                    case 'nom':
-                    case 'prenom':
-                    case 'ville':
-                    case 'libelleVoie':
-                        isValid = /^[a-zA-ZÀ-ÿ\s-]+$/.test(value); // Lettres uniquement
-                        break;
-
-                    case 'numRue':
-                        isValid = /^[0-9]{1,3}$/.test(value); // 1 à 3 chiffres uniquement
-                        break;
-
-                    case 'codePostal':
-                        isValid = /^[0-9]{5}$/.test(value); // 5 chiffres
-                        break;
-
-                    case 'email':
-                        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); // Email valide
-                        break;
-
-                    case 'telephone':
-                        isValid = /^[0-9]{10}$/.test(value); // 10 chiffres
-                        break;
-
-                    case 'pays':
-                        isValid = /^[a-zA-ZÀ-ÿ\s-]{30}$/.test(value); // Lettres uniquement, 1 à 30 caractères
-                        break;
-
-                    default:
-                        break;
-                }
-
-                // Affichage des erreurs
-                if (!isValid) {
-                    field.classList.add('is-invalid');
-                    field.classList.remove('is-valid');
-                } else {
-                    field.classList.remove('is-invalid');
-                    field.classList.add('is-valid');
-                }
-
-                return isValid;
-            }
-
-            // Vérification sur chaque champ
-            inputs.forEach(input => {
-                input.addEventListener('input', () => validateField(input));
-            });
-
-            // Validation globale avant envoi du formulaire
-            form.addEventListener('submit', function (event) {
-                let isFormValid = true;
-
-                inputs.forEach(input => {
-                    if (!validateField(input)) {
-                        isFormValid = false;
-                    }
-                });
-
-                if (!isFormValid) {
-                    event.preventDefault(); // Empêche l'envoi si le formulaire est invalide
-                    alert('Veuillez corriger les champs invalides avant de soumettre le formulaire.');
-                }
-            });
-        });
-    </script>
+    <script src="javascript/scriptConsultCompte.js"></script>
 </body>
 </html>

@@ -86,7 +86,7 @@ require_once "./include/head.php";
     ?>
 
     <div class="container mt-4">
-        <h1 class="text-center">Nos Produits</h1>
+        <h1 class="text-center mb-5">Nos Produits</h1>
         <div class="text-center mb-4">
             <form method="GET" class="row g-3">
                 <input type="hidden" name="idCateg" value="<?php echo $idCateg; ?>">
