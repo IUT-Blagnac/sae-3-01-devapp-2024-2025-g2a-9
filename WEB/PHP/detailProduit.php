@@ -1,4 +1,5 @@
 <?php
+ob_start();
 $pageTitle = "Détail du Produit";
 require_once "./include/head.php";
 ?>
@@ -173,6 +174,18 @@ require_once "./include/head.php";
     ");
     $queryAvis->execute(['productId' => $productId]);
     $avisList = $queryAvis->fetchAll();
+
+    // Requête pour récupérer l'avis global produit
+    $queryAvisGlobal = $conn->prepare("
+        SELECT AVG(A.NOTE) AS AVG_NOTE
+        FROM AVIS A
+        WHERE A.IDPRODUIT = :productId
+    ");
+    $queryAvisGlobal->execute(['productId' => $productId]);
+    $avisGlobal = $queryAvisGlobal->fetch();
+
+    // Si la moyenne existe, vous pouvez l'afficher
+    $avgNote = $avisGlobal['AVG_NOTE'] ?? 0;
 ?>
 <!-- Contenu principal -->
 <main role="main" class="container my-5">
@@ -192,7 +205,31 @@ require_once "./include/head.php";
         <!-- Section détails du produit -->
         <div class="col-md-6">
             <h1><?= htmlspecialchars($produit['NOMPRODUIT']); ?></h1>
-            <h3 class="price"><?= number_format($produit['PRIX'], 2, ',', ' '); ?> €</h3>
+            <!-- Affichage des étoiles avec Bootstrap -->
+            <div class="product-rating" style="color: #ffc107; font-size: 1.4em;">
+                <?php
+                // On arrondit la note pour avoir un nombre entier d'étoiles pleines
+                $fullStars = floor($avgNote); // Nombre d'étoiles pleines
+                $halfStars = ($avgNote - $fullStars) >= 0.5 ? 1 : 0; // Demi-étoile si la partie décimale >= 0.5
+                $emptyStars = 5 - ($fullStars + $halfStars); // Étoiles vides pour compléter 5
+
+                if($fullStars != 0){
+                    // Affichage des étoiles avec Bootstrap
+                    for ($i = 0; $i < $fullStars; $i++) {
+                        echo '<i class="bi bi-star-fill"></i>'; // Étoile pleine
+                    }
+
+                    if ($halfStars) {
+                        echo '<i class="bi bi-star-half"></i>'; // Demi-étoile
+                    }
+
+                    for ($i = 0; $i < $emptyStars; $i++) {
+                        echo '<i class="bi bi-star"></i>'; // Étoile vide
+                    }
+                }
+                ?>
+            </div>
+            <h3 class="price mt-2"><?= number_format($produit['PRIX'], 2, ',', ' '); ?> €</h3>
             <p class="product-description mt-4"><?= htmlspecialchars($produit['DESCRIPTION']); ?></p>
             <p class="product-description mt-4">Taille : <?= htmlspecialchars($produit['TAILLE']); ?></p>
             <p class="product-description mt-4">Type d'énergie : <?= htmlspecialchars($produit['ENERGIE']); ?></p>
@@ -292,3 +329,4 @@ require_once "./include/head.php";
 <?php require_once "./include/footer.php"; ?>
 </body>
 </html>
+<?php ob_end_flush(); ?>
