@@ -90,7 +90,7 @@ CREATE PROCEDURE CreerCommande(
     IN p_adresseLivraison VARCHAR(50),
     IN p_idPointRelais INT,
     IN p_modePaiement VARCHAR(30)
-    IN p_prixCommande DECIMAL(10, 2)
+    IN p_prixCommande DECIMAL(15, 2)
 )
 BEGIN
     DECLARE done INT DEFAULT FALSE;
