@@ -59,4 +59,5 @@
         </main>
     </body>
     <?php require_once "./include/footer.php" ?>
+    <script src="javascript/script.js"></script>
 </html>
