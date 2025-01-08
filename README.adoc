@@ -169,8 +169,8 @@ Planning des séances (demi-journée en télétravail) :
 | Sprint 1 |  |  |  |  |  |  |  |  | Télétravail |  
 | Sprint 2 |  |  | Télétravail | Télétravail |  |  | Télétravail |  | Télétravail possible |  
 | Sprint 3 |  | Télétravail |  |  | Télétravail |  | Télétravail |  | Télétravail |  
-| Sprint 4 |  |  |  |  |  |  |  |  |  |  
-| Sprint 5 |  |  |  |  |  |  |  |  |  |  
+| Sprint 4 |  |  |  |  |  |  |  |  | Télétravail | 
+| Sprint 5 |  |  |  | Télétravail |  |  |  |  |  |  
 |===
 
 - Version courante : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[v0]

@@ -52,7 +52,7 @@
                     unset($_SESSION['panier']);
                 }
                 
-                // Renvoi sur la page en cours (could)
+                // Renvoi sur la page en cours
                 if (isset($_SESSION['url'])) {
                     $url = $_SESSION['url'];
                     unset($_SESSION['url']);
@@ -62,14 +62,8 @@
                 header("location:index.php");
                 exit();
             }
-            else {
-                header("location: formConnexion.php?msgErreur=Le mot de passe est incorrect.");
-                exit();
-            }
         }
-        else {
-            header("location: formConnexion.php?msgErreur=L'adresse e-mail est incorrect.");
-            exit();
-        }
+        header("location: formConnexion.php?msgErreur=L'adresse e-mail ou le mot de passe est incorrect.");
+        exit();
     }
 ?>

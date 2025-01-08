@@ -1,4 +1,5 @@
 <?php
+    require_once "./include/isLogin.php";
     session_start();
     if (isset($_SESSION['user'])) { 
         unset($_SESSION['user']);

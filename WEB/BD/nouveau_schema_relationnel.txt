@@ -1,0 +1,16 @@
+Schéma relationnel
+Produit(idProduit, nomProduit, prix, description, taille, energie, #idCategorie,
+stockDisponible,stockLimite)
+Catégorie(idCategorie,nomCategorie,description,#idCategPere)
+Utilisateur(idClient, civilite, nom, prenom, Pays, Ville, codePostal, adresse, dateN, mail,téléphone, password,droit)
+PointRelais(idPointRelais,adressePointRelais)
+Livraison(idLivraison,adresseLivraison,modeLivraison,#idPointRelais)
+Commande(idCommande,dateCommande,#idClient,#idLivraison)
+DetailCommande(#idCommande,#idProduit,quantitéCommandee)
+Paiement(idPaiement, prixCommande, modePaiement, #idCommande)
+Avis(idAvis, note, commentaire, date, #idProduit, #idClient)
+Panier(idPanier, datePanier, #idClient)
+DetailPanier(#idPanier, #idProduit, quantitéPanier)
+Ensemble(idEnsemble, prixEnsemble)
+DetailEnsemble(#idEnsembel, #idProduit,quantitéEnsemble)
+Favori(#idClient,#idProduit,dateFavori)
