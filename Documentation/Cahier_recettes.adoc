@@ -157,21 +157,23 @@ La configuration recommandée pour les tests inclut :
 ^|Visi_Gest_Panier.03 ^|Supprimer un produit du panier. ^|L’article est retiré et le total est mis à jour. ^|L’article est dans le panier. ^|Réussi
 |====
 
-==== 1.8 Passer une commande
+=== 2. Fonctionnalités pour les clients
+
+==== 2.1 Passer une commande
 
 |====
 
->|Cas de test 4+|Test-01-08-01
+>|Cas de test 4+|Test-02-01-01
 >|Titre 4+|Passer une commande
->|Objectif 4+| Vérifier que les utilisateurs peuvent passer une commande
+>|Objectif 4+| Vérifier que les clients peuvent passer une commande
 
 5+|
 ^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
-^|Visi_Commande.01 ^|Depuis la page panier, cliquer sur le bouton "Passer votre commande". ^|L'utilisateur est redirigé vers une page de choix de livraison et de paiement. ^|L'utilisateur a des articles dans son panier. ^|Réussi
-^|Visi_Commande.02 ^|Cocher "Livraison à domicile" si une adresse est enregistrée dans les informations personnelles. ^|L'option de livraison à domicile est sélectionnée. ^|L'utilisateur a une adresse enregistrée. ^|Réussi
-^|Visi_Commande.03 ^|Cocher "Livraison dans un point relais" et sélectionner un point relais. ^|L'option de livraison dans un point relais est sélectionnée et un point relais est choisi. ^|Aucune. ^|Réussi
-^|Visi_Commande.04 ^|Cocher "Carte bancaire" et remplir les champs numéro de carte, date d'expiration et cryptogramme. ^|Les informations de carte bancaire sont saisies. ^|L'utilisateur choisit le paiement par carte bancaire. ^|Réussi
-^|Visi_Commande.05 ^|Cocher "PayPal" et remplir le champ adresse mail. ^|L'adresse mail PayPal est saisie. ^|L'utilisateur choisit le paiement par PayPal. ^|Réussi
-^|Visi_Commande.06 ^|Cliquer sur le bouton "Passer votre commande". ^|L'utilisateur est redirigé vers une page affichant ses anciennes commandes. ^|Les informations de livraison et de paiement sont saisies. ^|Réussi
+^|Client_Commande.01 ^|Depuis la page panier, cliquer sur le bouton "Passer votre commande". ^|L'utilisateur est redirigé vers une page de choix de livraison et de paiement. ^|L'utilisateur a des articles dans son panier. ^|Réussi
+^|Client_Commande.02 ^|Cocher "Livraison à domicile" si une adresse est enregistrée dans les informations personnelles. ^|L'option de livraison à domicile est sélectionnée. ^|L'utilisateur a une adresse enregistrée. ^|Réussi
+^|Client_Commande.03 ^|Cocher "Livraison dans un point relais" et sélectionner un point relais. ^|L'option de livraison dans un point relais est sélectionnée et un point relais est choisi. ^|Aucune. ^|Réussi
+^|Client_Commande.04 ^|Cocher "Carte bancaire" et remplir les champs numéro de carte, date d'expiration et cryptogramme. ^|Les informations de carte bancaire sont saisies. ^|L'utilisateur choisit le paiement par carte bancaire. ^|Réussi
+^|Client_Commande.05 ^|Cocher "PayPal" et remplir le champ adresse mail. ^|L'adresse mail PayPal est saisie. ^|L'utilisateur choisit le paiement par PayPal. ^|Réussi
+^|Client_Commande.06 ^|Cliquer sur le bouton "Passer votre commande". ^|L'utilisateur est redirigé vers une page affichant ses anciennes commandes. ^|Les informations de livraison et de paiement sont saisies. ^|Réussi
 |====
 
