@@ -1,5 +1,5 @@
 <?php
-    
+    ob_start();
     $pageTitle = "Modification du compte";
     require_once "./include/head.php";
 ?>
@@ -14,58 +14,60 @@
         // Identifier l'action
         $action = $_POST['action'] ?? null;
 
-        // Récupération des données générales
-        $prenom = trim($_POST['prenom']) ?? null;
-        $nom = trim($_POST['nom']) ?? null;
-        $civilite = trim($_POST['civilite']) ?? null;
-        $email = trim($_POST['email']) ?? null;
-        $pays = trim($_POST['pays']) ?? null;
-        $dateN = trim($_POST['dateN']) ?? null;
-        $telephone = trim($_POST['telephone']) ?? null;
-
-        $numRue = trim($_POST['numRue']) ?? null;
-        $libelleVoie = trim($_POST['libelleVoie']) ?? null;
-        $codePostal = trim($_POST['codePostal']) ?? null;
-        $ville = trim($_POST['ville']) ?? null;
-
-        $adresseComplete = !empty($numRue) && !empty($libelleVoie) && !empty($codePostal) && !empty($ville) ?
-            "$numRue, $libelleVoie, $codePostal, $ville" :
-            null;
-        
-        if (($numRue && !$libelleVoie) || (!$numRue && $libelleVoie) || ($codePostal && !$ville) || (!$codePostal && $ville)) {
-            header("location:consultCompte.php?msgErreur=Veuillez remplir tous les champs de l'adresse.");
-            exit();
-        }
-
         // Vérifiez les champs obligatoires
-        if ($action === "updateInfo" && !empty($prenom) && !empty($nom) && !empty($email)) {
-            try {
-                // Appeler la procédure stockée pour mettre à jour les informations utilisateur
-                $reqUpdate = $conn->prepare("CALL ModifierUtilisateur(
-                    :idUtilisateur, :civilite, :nom, :prenom, :pays, :dateN, :email, :telephone, :adresse, NULL, FALSE
-                )");
-                $reqUpdate->execute([
-                    ':idUtilisateur' => $_SESSION['user'],
-                    ':civilite' => $civilite,
-                    ':nom' => $nom,
-                    ':prenom' => $prenom,
-                    ':pays' => $pays,
-                    ':dateN' => $dateN,
-                    ':email' => $email,
-                    ':telephone' => $telephone,
-                    ':adresse' => $adresseComplete,
-                ]);
+        if ($action === "updateInfo") {
+            // Récupération des données générales
+            $prenom = trim($_POST['prenom']) ?? null;
+            $nom = trim($_POST['nom']) ?? null;
+            $civilite = trim($_POST['civilite']) ?? null;
+            $email = trim($_POST['email']) ?? null;
+            $pays = trim($_POST['pays']) ?? null;
+            $dateN = trim($_POST['dateN']) ?? null;
+            $telephone = trim($_POST['telephone']) ?? null;
 
-                header("location:consultCompte.php?msgSucces=Modifications enregistrées.");
-                exit();
-            } catch (Exception $e) {
-                header("location:consultCompte.php?msgErreur=Erreur lors de la modification : " . $e->getMessage());
+            $numRue = trim($_POST['numRue']) ?? null;
+            $libelleVoie = trim($_POST['libelleVoie']) ?? null;
+            $codePostal = trim($_POST['codePostal']) ?? null;
+            $ville = trim($_POST['ville']) ?? null;
+
+            $adresseComplete = !empty($numRue) && !empty($libelleVoie) && !empty($codePostal) && !empty($ville) ?
+                "$numRue, $libelleVoie, $codePostal, $ville" :
+                null;
+            
+            if (($numRue && !$libelleVoie) || (!$numRue && $libelleVoie) || ($codePostal && !$ville) || (!$codePostal && $ville)) {
+                header("location:consultCompte.php?msgErreur=Veuillez remplir tous les champs de l'adresse.");
                 exit();
             }
-        } else {
-            header("location:consultCompte.php?msgErreur=Veuillez saisir les champs obligatoires.");
-            exit();
-        }
+            if (!empty($prenom) && !empty($nom) && !empty($email)) {
+                try {
+
+                    // Appeler la procédure stockée pour mettre à jour les informations utilisateur
+                    $reqUpdate = $conn->prepare("CALL ModifierUtilisateur(
+                        :idUtilisateur, :civilite, :nom, :prenom, :pays, :dateN, :email, :telephone, :adresse, NULL, FALSE
+                    )");
+                    $reqUpdate->execute([
+                        ':idUtilisateur' => $_SESSION['user'],
+                        ':civilite' => $civilite,
+                        ':nom' => $nom,
+                        ':prenom' => $prenom,
+                        ':pays' => $pays,
+                        ':dateN' => $dateN,
+                        ':email' => $email,
+                        ':telephone' => $telephone,
+                        ':adresse' => $adresseComplete,
+                    ]);
+    
+                    header("location:consultCompte.php?msgSucces=Modifications enregistrées.");
+                    exit();
+                } catch (Exception $e) {
+                    header("location:consultCompte.php?msgErreur=Erreur lors de la modification : " . $e->getMessage());
+                    exit();
+                }
+            } else {
+                header("location:consultCompte.php?msgErreur=Veuillez saisir les champs obligatoires.");
+                exit();
+            }
+        } 
 
         // Gestion du changement de mot de passe
         if ($action === "updatePassword") {
@@ -144,3 +146,4 @@
     <?php require_once "./include/footer.php"; ?>
 </body>
 </html>
+<?php ob_end_flush(); ?>
