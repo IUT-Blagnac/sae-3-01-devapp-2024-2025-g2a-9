@@ -204,7 +204,7 @@
                                     <?php
                                     $reqCommandes = $conn->prepare("SELECT * FROM COMMANDE WHERE IDUTILISATEUR = ? ORDER BY DATECOMMANDE DESC;");
                                     $reqCommandes->execute([$_SESSION['user']]);
-                                    $selectedCommande = $_POST['commande'] ?? null;
+                                    $selectedCommande = $_GET['commande'] ?? null;
 
                                     foreach ($reqCommandes as $index => $commande) {
                                         // Construire la valeur concaténé contenant les données de la commande
@@ -286,7 +286,7 @@
                                                 </div>
                                                 <div>
                                                     <strong><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>" style="color:black; text-decoration: none;"><?php echo htmlspecialchars($produit['NOMPRODUIT']); ?></a></strong><br>
-                                                    <!-- Peut etre ajouté des étoiles pour les avis --><a href="#">Donnez votre avis</a><br>
+                                                    <!-- Peut etre ajouté des étoiles pour les avis --><a href="detailProduit.php?id=<?php echo $produit['IDPRODUIT']; ?>">Donnez votre avis</a><br>
                                                     <?php echo number_format($produit['PRIX'] * $produit['QUANTITECOMMANDEE'], 2, ',', ' '); ?> €<br>
                                                     Quantité : <?php echo $produit['QUANTITECOMMANDEE']; ?><br>
                                                 </div>

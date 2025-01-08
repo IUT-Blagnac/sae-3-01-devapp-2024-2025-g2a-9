@@ -195,9 +195,9 @@ require_once "./include/head.php";
                 </div>
                 <?php 
                     if (!$isUserLoggedIn) {
-                        echo '<a href="formConnexion.php" class="btn btn-primary">Connectez-vous pour passer votre commande</a>';
+                        echo '<a href="formConnexion.php" class="btn btn-primary rounded-pill">Connectez-vous pour passer votre commande</a>';
                     } else {
-                        echo '<a href="commander.php" class="btn btn-primary">Passer votre commande</a>';
+                        echo '<a href="commander.php" class="btn btn-primary rounded-pill">Passer votre commande</a>';
                     }
                 ?>
             </div>

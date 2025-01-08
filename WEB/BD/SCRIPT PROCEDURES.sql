@@ -127,7 +127,7 @@ BEGIN
             END IF;
 
             -- Vérifier le stock disponible
-            SELECT STOCK INTO v_stockProduit
+            SELECT STOCKDISPONIBLE INTO v_stockProduit
             FROM PRODUIT
             WHERE IDPRODUIT = v_idProduit;
 
@@ -138,7 +138,7 @@ BEGIN
 
                 -- Mise à jour du stock après la commande
                 UPDATE PRODUIT
-                SET STOCK = STOCK - v_quantitePanier
+                SET STOCKDISPONIBLE = STOCKDISPONIBLE - v_quantitePanier
                 WHERE IDPRODUIT = v_idProduit;
             ELSE
                 -- Si le stock est insuffisant, gérer l'erreur (par exemple, on peut lever une exception ou stopper la procédure)
