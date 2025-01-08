@@ -204,14 +204,15 @@
 
                 // Préparation et exécution de la procédure
                 $reqInsertCommande = $conn->prepare("CALL CreerCommande(
-                    :idUtilisateur, :modeLivraison, :adresseLivraison, :idPointRelais, :modePaiement
-                )");
+                    :idUtilisateur, :modeLivraison, :adresseLivraison, :idPointRelais, :modePaiement, :prixCommande
+                );");
                 $reqInsertCommande->execute([
                     ':idUtilisateur' => $idUtilisateur,
                     ':modeLivraison' => $modeLivraison,
                     ':adresseLivraison' => $adresseLivraison,
                     ':idPointRelais' => $idPointRelais,
                     ':modePaiement' => $modePaiement,
+                    ':prixCommande' => number_format($totalPanier + $adresseLivraison, 2)
                 ]);
                 header("location:consultCompte.php?tab=commandes");
                 exit;
