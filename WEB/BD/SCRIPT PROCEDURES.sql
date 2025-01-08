@@ -89,7 +89,7 @@ CREATE PROCEDURE CreerCommande(
     IN p_modelivraison VARCHAR(30),
     IN p_adresseLivraison VARCHAR(50),
     IN p_idPointRelais INT,
-    IN p_modePaiement VARCHAR(30)
+    IN p_modePaiement VARCHAR(30),
     IN p_prixCommande DECIMAL(15, 2)
 )
 BEGIN
@@ -98,6 +98,7 @@ BEGIN
     DECLARE v_idPaiement INT;
     DECLARE v_idProduit INT;
     DECLARE v_quantitePanier INT;
+    DECLARE v_stockProduit INT;
 
     DECLARE panierCursor CURSOR FOR
     SELECT IDPRODUIT, QUANTITEPANIER
@@ -141,7 +142,7 @@ BEGIN
                 WHERE IDPRODUIT = v_idProduit;
             ELSE
                 -- Si le stock est insuffisant, gérer l'erreur (par exemple, on peut lever une exception ou stopper la procédure)
-                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuffisant pour le produit: ' || v_idProduit;
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuffisant pour un des produits';
             END IF;
         END LOOP;
     CLOSE panierCursor;
