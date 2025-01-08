@@ -177,3 +177,18 @@ La configuration recommandée pour les tests inclut :
 ^|Client_Commande.06 ^|Cliquer sur le bouton "Passer votre commande". ^|L'utilisateur est redirigé vers une page affichant ses anciennes commandes. ^|Les informations de livraison et de paiement sont saisies. ^|Réussi
 |====
 
+==== 2.2 Gestion des avis clients
+
+|====
+
+>|Cas de test 4+|Test-02-02-01
+>|Titre 4+|Laisser un avis sur un produit
+>|Objectif 4+| Vérifier que les clients peuvent laisser un avis sur un produit commandé
+
+5+|
+^|ID ^|Étape ^|Résultat attendu ^|Conditions préalables ^|État final
+^|Client_Avis.01 ^|Accéder à la page du produit commandé et remplir le formulaire en bas de la page. ^|Un formulaire d'avis s'affiche. ^|Le client a commandé le produit. ^|Réussi
+^|Client_Avis.02 ^|Choisir une note de 1 à 5 dans le menu déroulant et saisir un commentaire, puis valider le formulaire. ^|L'avis est enregistré et affiché sur la page du produit. ^|Le formulaire d'avis est visible. ^|Réussi
+^|Client_Avis.03 ^|Tenter de laisser un deuxième avis pour le même produit. ^|Le formulaire ne s'affiche plus sur la page. ^|Le client a déjà laissé un avis pour ce produit. ^|Réussi
+^|Client_Avis.04 ^|Cliquer sur "Supprimer" sous le commentaire. ^|L'avis est supprimé et n'est plus affiché sur la page du produit. ^|Le client a laissé un avis pour ce produit. ^|Réussi
+|====
