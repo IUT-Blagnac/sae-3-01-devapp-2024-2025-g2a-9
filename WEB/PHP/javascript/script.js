@@ -7,6 +7,7 @@ const livraisonDomicile = document.getElementById('livraisonDomicile');
 const pointRelaisRadios = document.querySelectorAll('input[name="pointRelais"]');
 const livraisonPrix = document.getElementById('livraisonPrix');
 const totalPrix = document.getElementById('totalPrix');
+const adresseNonRenseignee = document.querySelector('.adresse-non-renseignee'); // élément qui affiche "Adresse non renseignée"
 
 // Fonction pour mettre à jour les états
 function updateState() {
@@ -31,32 +32,6 @@ livraisonRelais.addEventListener('change', updateState);
 livraisonDomicile.addEventListener('change', updateState);
 updateState(); // Initialisation
 
-// Gestion des paiements
-const paiementCB = document.getElementById('paiementCB');
-const paiementPaypal = document.getElementById('paiementPaypal');
-const formCarteBancaire = document.getElementById('formCarteBancaire');
-const formPaypal = document.getElementById('formPaypal');
-
-// Champs des formulaires
-const numCarte = document.getElementById('numCarte');
-const dateExpiration = document.getElementById('dateExpiration');
-const cryptogramme = document.getElementById('cryptogramme');
-const emailPaypal = document.getElementById('emailPaypal');
-
-// Gestion de l'affichage dynamique
-function togglePaymentForms() {
-    if (paiementCB.checked) {
-        formCarteBancaire.closest('.card-body').classList.remove('d-none'); // Affiche tout le bloc
-        formPaypal.closest('.card-body').classList.add('d-none'); // Masque tout le bloc PayPal
-    } else if (paiementPaypal.checked) {
-        formCarteBancaire.closest('.card-body').classList.add('d-none'); // Masque tout le bloc carte bancaire
-        formPaypal.closest('.card-body').classList.remove('d-none'); // Affiche tout le bloc PayPal
-    }
-}
-
-paiementCB.addEventListener('change', togglePaymentForms);
-paiementPaypal.addEventListener('change', togglePaymentForms);
-
 // Validation des champs
 function validerFormulaire() {
     let valide = true;
@@ -64,6 +39,13 @@ function validerFormulaire() {
     // Réinitialiser les erreurs
     [numCarte, dateExpiration, cryptogramme, emailPaypal].forEach(input => input.classList.remove('is-invalid'));
 
+    // Vérifie que l'adresse est renseignée si la livraison à domicile est sélectionnée
+    if (livraisonDomicile.checked && adresseNonRenseignee) {
+        alert('Veuillez renseigner votre adresse de livraison à domicile.');
+        valide = false;
+    }
+
+    // Validation des informations de paiement
     if (paiementCB.checked) {
         if (!/^\d{16}$/.test(numCarte.value)) {
             numCarte.classList.add('is-invalid');

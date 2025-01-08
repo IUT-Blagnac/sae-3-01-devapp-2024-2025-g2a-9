@@ -65,7 +65,7 @@
                                         </div>";
                                 } else {
                                     echo "
-                                        <div class=\"d-flex justify-content-between align-items-center text-muted\">
+                                        <div class=\"d-flex justify-content-between align-items-center text-muted adresse-non-renseignee\">
                                             <span>Adresse non renseignée</span>
                                             <a href=\"consultCompte.php\" class=\"btn btn-sm btn-outline-secondary rounded-pill\">Modifier</a>
                                         </div>";
