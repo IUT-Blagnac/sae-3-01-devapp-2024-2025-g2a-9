@@ -10,3 +10,8 @@ Date: 22/11/2024
 Créé par : _GUILLUY Matt_ | AMERI Mohammed |CARDOUAT Alexi | FUSI-BELAID Thomas
 
 A l'attention de : _Esther Pendaries_
+
+
+== I. Introduction
+
+Ce document constitue le cahier de recette pour le projet de création du site web de l'entreprise Nautic Horizon, spécialisée dans la vente de bateaux de tous types. Ce site permettra de voir les différents produits de l'entreprise, de les trier selon le type de produit souhaité, le prix, ... . Il permettra aussi bien sur de commander et de payer en ligne. Les administrateurs pourront gérer les stocks, les commandes, les produits, les clients, ...
