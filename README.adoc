@@ -202,6 +202,11 @@ note : 0,4/3
 Je n'ai toujours pas de liens directs vers ODJ et CR ! ODJ ok il manque juste la salle et qq pb de mise en page à gauche. J'ai un soucis de date dans vos CR … du coup vous prenez une pénalité c'est dommage !
 Note : 1,86/3
 
+=== retour semaine 51
+Pas d'ODJ ni de CR trouvé dans le readme. Il manque le lien vers la fiche de synthèse en droit.
+Pensez à m'envoyer l'ODJ pour la semaine prochaine
+note 0/3
+
 == Suivi de l'évaluation en GPO :
 
 ifdef::env-github[]
