@@ -31,7 +31,7 @@ import java.util.concurrent.*;
 
 /**
  * Contrôleur pour le graphique de données en temps réel.
- * @autor Thomas
+ * @author Thomas
  */
 public class GraphController {
 

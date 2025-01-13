@@ -282,7 +282,7 @@ public class CapteursViewController {
      * @param _cStage la scène principale de l'application
      * @param _p le contrôleur de dialogue associé
      * 
-     * @autor Thomas
+     * @author Thomas
      */
     public void initContext(Stage _cStage, CapteursController _p) {
         this.cDialogController = _p;
@@ -344,7 +344,7 @@ public class CapteursViewController {
     /**
      * Configure la fenêtre de dialogue.
      * 
-     * @autor Thomas
+     * @author Thomas
      */
     private void configure() {
         this.cStage.setOnCloseRequest(this::closeWindow);

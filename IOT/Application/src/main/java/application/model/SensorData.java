@@ -2,7 +2,7 @@ package application.model;
 
 /**
  * Classe pour gérer les données des capteurs.
- * @autor Thomas
+ * @author Thomas
  */
 public class SensorData {
     private String room;
