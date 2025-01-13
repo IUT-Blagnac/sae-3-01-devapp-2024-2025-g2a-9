@@ -147,12 +147,20 @@ Planning des séances (demi-journée en télétravail) :
 | Sprint 5 |  |  |  | Télétravail |  |  |  |  |  |  
 |===
 
-- Version courante : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[vFinal]
+- https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/tree/master/IOT/Application/src/main/java/application[code source]
 - Backlog général : https://github.com/orgs/IUT-Blagnac/projects/274/views/2[BL Général]
 - Backlog du sprint actuel : https://github.com/orgs/IUT-Blagnac/projects/274/views/7[BL Sprint]
-- Ordres du jour et les CR des réunions : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/tree/master/COM/[Réunions]
-- Ordres du jour et les CR des réunions : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2016_01.pdf[Ordre du jour de la réunion à venir]
-- Ordres du jour et les CR des réunions : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2020_12.pdf[Compte rendu de la dernière réunion]
+
+- Réunion du 29/11/2024 : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2029_11.pdf[ordre du jour] et https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2029_11.pdf[compte rendu]
+
+- Réunion du 06/12/2024 : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2006_12.pdf[ordre du jour] et https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2006_12.pdf[compte rendu]
+
+- Réunion du 13/12/2024 : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2013_12.pdf[ordre du jour] et https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2013_12_2024.pdf[compte rendu]
+
+- Réunion du 20/12/2024 : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2020_12.pdf[ordre du jour] et https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2020_12.pdf[compte rendu]
+
+- Réunion du 16/01/2025 : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2016_01.pdf[ordre du jour] et https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2013_12_2024.pdf[compte rendu]
+
 - Synthèse fiche droit : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Droit/Fiche_conseil_juridiques_securite_G2A9.pdf[Fiche de synthèse droit]
 - https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Documentation/DocTechnique_PY.adoc[Documentation IOT PY]
 - https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Documentation/DocTechnique_JFX.adoc[Documentation IOT Jfx]
