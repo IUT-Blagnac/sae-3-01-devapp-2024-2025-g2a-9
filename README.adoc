@@ -97,15 +97,9 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 == Réalisations 
 
-=== Partie IoT (Tous les liens à changer)
+=== Partie IoT
 
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/tree/master/IOT/Application/src/main/java/application[Application finale]
-
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/Documentation[Documentation] 
-
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Cas d'utilisations (Uses cases)]
-
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Diagrammes de séquences système]
 
 **Partie Python**
 
