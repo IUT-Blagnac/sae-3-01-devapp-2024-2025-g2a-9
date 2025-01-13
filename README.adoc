@@ -105,8 +105,6 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Documentation[Documentation Technique]
 
--> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Documentation/Cahier_recettes.adoc[Cahier de Recettes (Tests)]
-
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Cas d'utilisations (Uses cases)]
 
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Diagrammes de séquences système]
@@ -123,13 +121,11 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 => https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Documentation/DocTechnique_JFX.adoc[Documentation technique] 
 
-=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[JavaDoc] 
-
-=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Tests]
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/tree/master/IOT/Application/target/site/apidocs[JavaDoc]
 
 === Partie WEB
 
--> http://193.54.227.208/~R2024SAE3005/[Site Web]
+-> http://193.54.227.208/~R2024SAE3005/[Notre site Web]
 
 -> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Documentation Utilisateur]
 
@@ -143,19 +139,15 @@ Tuteur/tutrice enseignant(e) de l'équipe:: https://github.com/jmbruel[JMB]
 
 **Partie PHP**
 
-=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Fichiers sources] 
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/tree/master/WEB/PHP[Fichiers sources] 
 
-=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Docs] 
-
-=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Tests]
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Documentation/Cahier_recettes.adoc[Cahier de recettes]
 
 **Partie BD**
 
-=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Fichiers sources] 
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/tree/master/WEB/BD/src[Fichiers sources] 
 
-=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Docs] 
-
-=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/[Tests]
+=> https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/tree/master/WEB/BD/docs[Docs]
 
 == Gestion de projet & Qualité
 
