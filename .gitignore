@@ -23,7 +23,6 @@
 
 # Maven
 log/
-target/
 
 # Inclusions
 !lib/**

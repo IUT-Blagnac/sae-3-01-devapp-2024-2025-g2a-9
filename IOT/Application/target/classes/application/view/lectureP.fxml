@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.PanneauxViewController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Fichier">
+            <items>
+              <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" onAction="#doQuitter" text="Quitter" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Modifier">
+            <items>
+              <MenuItem fx:id="configMenuItem" mnemonicParsing="false" onAction="#doConfig" text="Configuration" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Aide">
+            <items>
+              <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#doAide" text="OnVerra" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Temps réel">
+               <content>
+                  <TableView fx:id="realTimeTable" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn fx:id="typeColumn" prefWidth="110.0" text="Type" />
+                      <TableColumn fx:id="dataColumn" prefWidth="110.0" text="Donnée" />
+                    </columns>
+                  </TableView>
+               </content>
+          </Tab>
+          <Tab text="Graphiques">
+               <content>
+                  <VBox>
+                      <LineChart fx:id="lineChart" title="Énergie">
+                          <xAxis>
+                              <NumberAxis label="Temps (s)" />
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis label="Énergie (kWh)" />
+                          </yAxis>
+                      </LineChart>
+                  </VBox>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>
