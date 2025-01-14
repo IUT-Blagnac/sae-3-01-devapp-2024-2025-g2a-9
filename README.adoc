@@ -188,6 +188,10 @@ Pas d'ODJ ni de CR trouvé dans le readme. Il manque le lien vers la fiche de sy
 Pensez à m'envoyer l'ODJ pour la semaine prochaine
 note 0/3
 
+== Note fiche de synthèse droit
+rendu incomplet il manque les items 2 à 4 !!!
+note : 4/20
+
 == Suivi de l'évaluation en GPO :
 
 ifdef::env-github[]
