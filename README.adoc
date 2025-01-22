@@ -159,7 +159,7 @@ Planning des séances (demi-journée en télétravail) :
 
 - Réunion du 20/12/2024 : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2020_12.pdf[ordre du jour] et https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2020_12.pdf[compte rendu]
 
-- Réunion du 16/01/2025 : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2016_01.pdf[ordre du jour] et https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2013_12_2024.pdf[compte rendu]
+- Réunion du 16/01/2025 : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/OdJ/OdJ%2016_01.pdf[ordre du jour] et https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/COM/Comptes%20rendus/CR%2016_01_2025%20PostMortem.pdf[compte rendu]
 
 - Synthèse fiche droit : https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Droit/Fiche_conseil_juridiques_securite_G2A9.pdf[Fiche de synthèse droit]
 - https://github.com/IUT-Blagnac/sae-3-01-devapp-2024-2025-G2A-9/blob/master/Documentation/DocTechnique_PY.adoc[Documentation IOT PY]
